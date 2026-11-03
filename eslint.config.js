@@ -26,6 +26,11 @@ export default tseslint.config(
     },
   },
   {
+    // Tests index into fixtures they just built; `!` there is noise, not a risk.
+    files: ['**/*.test.{ts,tsx}'],
+    rules: { '@typescript-eslint/no-non-null-assertion': 'off' },
+  },
+  {
     files: ['scripts/**/*.ts', 'vite.config.ts'],
     languageOptions: { globals: globals.node },
   },
