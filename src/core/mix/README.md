@@ -1,3 +1,3 @@
 # core/mix
 
-Serializable `Mix` model plus local/link serialization. Implemented in Phases 1–4.
+Serializable `Mix` model. Persistence and link serialization arrive in Phase 4.
