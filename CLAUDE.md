@@ -14,7 +14,7 @@ App web de "6 personajes con loops cuantizados al compás" (juego casual de beat
 ## Fases
 
 0. Scaffold ✅
-1. Motor de audio + packs: Zod, `AudioEngine`, loops cuantizados, canales, mute/solo, limitador, placeholders, tests de cuantización y manifest.
+1. Motor de audio + packs ✅ (pendiente: QA manual en Safari/iOS y Android, ver `docs/QA.md`)
 2. Escena y drag & drop: pantalla "Toca para empezar", 6 personajes SVG, pointer events + fallback teclado/tap, controles, i18n.
 3. Visual reactivo: `CharacterRenderer` SVG ligado al nivel de cada canal; 60 fps sin re-renders por frame.
 4. Guardar y compartir: `MixRepository` (localStorage), link versionado, exportar audio con `Tone.Recorder`.

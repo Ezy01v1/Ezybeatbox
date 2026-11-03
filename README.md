@@ -2,7 +2,9 @@
 
 App web de música/beatbox: 6 personajes que "cantan" loops sincronizados al compás. Arrastras un sonido sobre un personaje y armas un beat por capas. Más adelante tendrá una _loop station_ y reconocimiento de beatbox.
 
-> Estado: **Fase 0 — scaffold.** Plan de fases en [`CLAUDE.md`](CLAUDE.md), arquitectura en [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+> Estado: **Fase 1 — motor de audio y packs.** Plan de fases en [`CLAUDE.md`](CLAUDE.md), arquitectura en [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), formato de samples en [`docs/SAMPLES.md`](docs/SAMPLES.md) y pruebas manuales en [`docs/QA.md`](docs/QA.md).
+>
+> **Banco de pruebas del motor:** con `npm run dev`, abre `/harness.html`.
 
 ## Requisitos
 
@@ -21,17 +23,17 @@ Abre la URL que imprime Vite (por defecto http://localhost:5173). Para probar en
 
 ## Scripts
 
-| Script                          | Qué hace                                                       |
-| ------------------------------- | -------------------------------------------------------------- |
-| `npm run dev`                   | Servidor de desarrollo con HMR                                 |
-| `npm run build`                 | Typecheck (`tsc -b`) + build de producción en `dist/`          |
-| `npm run preview`               | Sirve el build de producción                                   |
-| `npm test`                      | Pruebas (Vitest + Testing Library), una vez                    |
-| `npm run test:watch`            | Pruebas en modo watch                                          |
-| `npm run lint`                  | ESLint, sin warnings permitidos                                |
-| `npm run typecheck`             | Solo verificación de tipos                                     |
-| `npm run format`                | Formatea con Prettier                                          |
-| `npm run generate:placeholders` | Genera los samples placeholder del pack `boom-bap-01` (Fase 1) |
+| Script                          | Qué hace                                                                                          |
+| ------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `npm run dev`                   | Servidor de desarrollo con HMR                                                                    |
+| `npm run build`                 | Typecheck (`tsc -b`) + build de producción en `dist/`                                             |
+| `npm run preview`               | Sirve el build de producción                                                                      |
+| `npm test`                      | Pruebas (Vitest + Testing Library), una vez                                                       |
+| `npm run test:watch`            | Pruebas en modo watch                                                                             |
+| `npm run lint`                  | ESLint, sin warnings permitidos                                                                   |
+| `npm run typecheck`             | Solo verificación de tipos                                                                        |
+| `npm run format`                | Formatea con Prettier                                                                             |
+| `npm run generate:placeholders` | Genera los samples placeholder del pack `boom-bap-01` (`--force` sobrescribe, `--wav` sin ffmpeg) |
 
 ## Stack
 
