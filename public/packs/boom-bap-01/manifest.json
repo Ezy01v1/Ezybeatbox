@@ -1,0 +1,235 @@
+{
+  "id": "boom-bap-01",
+  "name": "Boom Bap",
+  "version": 1,
+  "bpm": 90,
+  "timeSignature": [
+    4,
+    4
+  ],
+  "loopBars": 2,
+  "characters": [
+    {
+      "id": "kick",
+      "role": "kick",
+      "label": "Kick",
+      "sounds": [
+        {
+          "id": "kick-1",
+          "label": "Clásico",
+          "file": "kick/kick-1.ogg",
+          "fallback": "kick/kick-1.m4a"
+        },
+        {
+          "id": "kick-2",
+          "label": "Doble",
+          "file": "kick/kick-2.ogg",
+          "fallback": "kick/kick-2.m4a"
+        },
+        {
+          "id": "kick-3",
+          "label": "Sincopado",
+          "file": "kick/kick-3.ogg",
+          "fallback": "kick/kick-3.m4a"
+        },
+        {
+          "id": "kick-4",
+          "label": "Pesado",
+          "file": "kick/kick-4.ogg",
+          "fallback": "kick/kick-4.m4a"
+        },
+        {
+          "id": "kick-5",
+          "label": "Rebote",
+          "file": "kick/kick-5.ogg",
+          "fallback": "kick/kick-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "snare",
+      "role": "snare",
+      "label": "Snare",
+      "sounds": [
+        {
+          "id": "snare-1",
+          "label": "Caja",
+          "file": "snare/snare-1.ogg",
+          "fallback": "snare/snare-1.m4a"
+        },
+        {
+          "id": "snare-2",
+          "label": "Rimshot",
+          "file": "snare/snare-2.ogg",
+          "fallback": "snare/snare-2.m4a"
+        },
+        {
+          "id": "snare-3",
+          "label": "Aplauso",
+          "file": "snare/snare-3.ogg",
+          "fallback": "snare/snare-3.m4a"
+        },
+        {
+          "id": "snare-4",
+          "label": "Fantasma",
+          "file": "snare/snare-4.ogg",
+          "fallback": "snare/snare-4.m4a"
+        },
+        {
+          "id": "snare-5",
+          "label": "Redoble",
+          "file": "snare/snare-5.ogg",
+          "fallback": "snare/snare-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "hihat",
+      "role": "hihat",
+      "label": "Hi-hat",
+      "sounds": [
+        {
+          "id": "hihat-1",
+          "label": "Corcheas",
+          "file": "hihat/hihat-1.ogg",
+          "fallback": "hihat/hihat-1.m4a"
+        },
+        {
+          "id": "hihat-2",
+          "label": "Semicorcheas",
+          "file": "hihat/hihat-2.ogg",
+          "fallback": "hihat/hihat-2.m4a"
+        },
+        {
+          "id": "hihat-3",
+          "label": "Abierto",
+          "file": "hihat/hihat-3.ogg",
+          "fallback": "hihat/hihat-3.m4a"
+        },
+        {
+          "id": "hihat-4",
+          "label": "Swing",
+          "file": "hihat/hihat-4.ogg",
+          "fallback": "hihat/hihat-4.m4a"
+        },
+        {
+          "id": "hihat-5",
+          "label": "Shaker",
+          "file": "hihat/hihat-5.ogg",
+          "fallback": "hihat/hihat-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "bass",
+      "role": "bass",
+      "label": "Bass",
+      "sounds": [
+        {
+          "id": "bass-1",
+          "label": "Raíz",
+          "file": "bass/bass-1.ogg",
+          "fallback": "bass/bass-1.m4a"
+        },
+        {
+          "id": "bass-2",
+          "label": "Caminante",
+          "file": "bass/bass-2.ogg",
+          "fallback": "bass/bass-2.m4a"
+        },
+        {
+          "id": "bass-3",
+          "label": "Sub",
+          "file": "bass/bass-3.ogg",
+          "fallback": "bass/bass-3.m4a"
+        },
+        {
+          "id": "bass-4",
+          "label": "Saltarín",
+          "file": "bass/bass-4.ogg",
+          "fallback": "bass/bass-4.m4a"
+        },
+        {
+          "id": "bass-5",
+          "label": "Deslizado",
+          "file": "bass/bass-5.ogg",
+          "fallback": "bass/bass-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "voice",
+      "role": "voice",
+      "label": "Voice",
+      "sounds": [
+        {
+          "id": "voice-1",
+          "label": "Llamada",
+          "file": "voice/voice-1.ogg",
+          "fallback": "voice/voice-1.m4a"
+        },
+        {
+          "id": "voice-2",
+          "label": "Coro",
+          "file": "voice/voice-2.ogg",
+          "fallback": "voice/voice-2.m4a"
+        },
+        {
+          "id": "voice-3",
+          "label": "Respuesta",
+          "file": "voice/voice-3.ogg",
+          "fallback": "voice/voice-3.m4a"
+        },
+        {
+          "id": "voice-4",
+          "label": "Grave",
+          "file": "voice/voice-4.ogg",
+          "fallback": "voice/voice-4.m4a"
+        },
+        {
+          "id": "voice-5",
+          "label": "Agudo",
+          "file": "voice/voice-5.ogg",
+          "fallback": "voice/voice-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "fx",
+      "role": "fx",
+      "label": "FX",
+      "sounds": [
+        {
+          "id": "fx-1",
+          "label": "Barrido",
+          "file": "fx/fx-1.ogg",
+          "fallback": "fx/fx-1.m4a"
+        },
+        {
+          "id": "fx-2",
+          "label": "Láser",
+          "file": "fx/fx-2.ogg",
+          "fallback": "fx/fx-2.m4a"
+        },
+        {
+          "id": "fx-3",
+          "label": "Scratch",
+          "file": "fx/fx-3.ogg",
+          "fallback": "fx/fx-3.m4a"
+        },
+        {
+          "id": "fx-4",
+          "label": "Vinilo",
+          "file": "fx/fx-4.ogg",
+          "fallback": "fx/fx-4.m4a"
+        },
+        {
+          "id": "fx-5",
+          "label": "Caída",
+          "file": "fx/fx-5.ogg",
+          "fallback": "fx/fx-5.m4a"
+        }
+      ]
+    }
+  ]
+}
