@@ -168,5 +168,5 @@ animationLoop (un solo rAF) ──► SvgCharacter × 6: followLevel → compute
 - **2026-11-04 — El master es un `Tone.Volume`, no un `Tone.Channel`.** El solo de Tone es global para todo el contexto: con un master `Channel`, poner en solo a cualquier personaje silenciaba **toda** la app. Era un bug desde la Fase 1 y se encontró al exportar en la Fase 4.
 - **2026-11-04 — El motor guarda el volumen elegido por canal** en lugar de leerlo de Tone: un canal en mute informa `-Infinity`, que rompía los links y los mixes guardados.
 - **2026-11-04 — Link en el hash** (no en el query string): el mix no llega a los logs del servidor ni a analytics, y no hace falta backend.
-- **2026-11-04 — La exportación son 2 loops completos, desde un inicio de loop,** en el formato nativo de MediaRecorder. Alternativa propuesta (pendiente de decisión): render offline a WAV (ver resumen de la Fase 4).
+- **2026-11-04 — La exportación son 2 loops completos, desde un inicio de loop,** en el formato nativo de MediaRecorder. Se evaluó el render offline a WAV y Daniel decidió mantener `Tone.Recorder` (2026-11-04).
 - **2026-11-03 — `tsconfig.node.json`** usa `moduleResolution: bundler` para que `scripts/` importe código de `src/core` sin extensiones.

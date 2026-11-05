@@ -2,6 +2,14 @@
 
 App web de "6 personajes con loops cuantizados al compás" (juego casual de beatbox). Autor: Daniel (beatboxer, ingeniero). Arquitectura en `docs/ARCHITECTURE.md`.
 
+## Al empezar y al terminar una sesión
+
+Daniel trabaja en **dos PCs con cuentas distintas**: la memoria de Claude y las conversaciones no se comparten entre ellas. El repo es la única memoria común.
+
+- **Al empezar:** lee `docs/PENDIENTES.md`. Es la lista viva de lo que falta, las decisiones abiertas y las tareas de Daniel. Si pide "continúa", sigue con el primer punto pendiente de su sección 1.
+- **Al terminar un trabajo:** actualiza `docs/PENDIENTES.md` en el mismo commit (marca lo hecho, agrega lo nuevo que quedó pendiente y cambia la fecha).
+- Cuando Daniel dice "continúa", avanza con la opción recomendada en lugar de abrir preguntas; deja las decisiones tomadas en el resumen para que pueda revertirlas.
+
 ## Reglas de trabajo
 
 - Trabajar **por fases**. Al terminar cada una: qué se hizo, cómo probarlo, pendientes y decisiones. Esperar aprobación antes de la siguiente.
@@ -17,10 +25,10 @@ App web de "6 personajes con loops cuantizados al compás" (juego casual de beat
 1. Motor de audio + packs ✅ (pendiente: QA manual en Safari/iOS y Android, ver `docs/QA.md`)
 2. Escena y drag & drop ✅ (pendiente: QA con touch real en el celular, ver `docs/QA.md`)
 3. Visual reactivo ✅ (pendiente: medir fps en un celular de gama media, ver `docs/QA.md`)
-4. Guardar y compartir ✅ (pendiente: QA del link en otro dispositivo y exportación en Safari; decisión abierta sobre exportar a WAV con render offline)
+4. Guardar y compartir ✅ (pendiente: QA del link en otro dispositivo y exportación en Safari)
 5. Puntos de extensión ✅ (contratos en `src/extensions/`, diseño en `docs/EXTENSIONS.md`; la app no los importa)
 
-Después de las fases (orden en `docs/EXTENSIONS.md`): PWA ✅ → Loop Station → backend → reconocimiento → colaborativo.
+Después de las fases: PWA ✅. Lo que sigue y su orden está en `docs/PENDIENTES.md`.
 
 ## Reglas de audio (no negociables)
 
