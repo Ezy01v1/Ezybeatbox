@@ -13,9 +13,6 @@ Las 6 fases del plan (0–5) y la PWA están terminadas y en `main`. El juego ti
 
 ## 1. Próximo paso de código (en este orden)
 
-- [ ] **Publicar la app (deploy)** en Vercel o Netlify, conectada al repo de GitHub, para que cada push se publique solo.
-  - Desbloquea la QA en el celular, la instalación de la PWA (necesita HTTPS) y, después, el micrófono de la Loop Station.
-  - Si se usa GitHub Pages, la app queda en `/Ezybeatbox/`: hay que ajustar `base` en Vite y el `start_url`, el `scope` y el patrón `/packs/` de la PWA.
 - [ ] **Sistema multi-pack y temáticas** (ver `docs/DESIGN_BRIEF.md`, sección 3):
   - [ ] Campo `theme` en el manifest (colores por rol, fondo, skin de personajes) y que `src/visuals/` lo use en lugar de los colores fijos de `theme.ts`.
   - [ ] Pantalla para elegir el pack antes de "Toca para empezar".
@@ -30,7 +27,11 @@ Las 6 fases del plan (0–5) y la PWA están terminadas y en `main`. El juego ti
 - [ ] **Diseño:** explorar en Google Stitch con los prompts de `docs/DESIGN_BRIEF.md` → diseño final en Figma (primero el rig base y la temática hip hop).
 - [ ] **Autorizar la integración de Figma** con `/mcp` en una terminal de `claude` y pasar el link del archivo.
 - [ ] **Grabar los samples reales** del pack hip hop siguiendo `docs/SAMPLES.md` (90 BPM, 2 compases exactos, ~−18 LUFS). Basta reemplazar los archivos: el script de placeholders no los vuelve a pisar.
-- [ ] **Crear la cuenta en Vercel o Netlify** y conectar el repo cuando se haga el deploy.
+- [ ] **Publicar la app (deploy)** desde la otra cuenta/PC, en Vercel o Netlify conectado al repo de GitHub, para que cada push se publique solo.
+  - Desbloquea la QA en el celular, la instalación de la PWA (necesita HTTPS) y, después, el micrófono de la Loop Station.
+  - Configuración: build `npm run build`, carpeta de salida `dist`, Node 24. No hace falta nada más: es una app estática.
+  - Si se usa GitHub Pages, la app queda en `/Ezybeatbox/`: hay que ajustar `base` en Vite y el `start_url`, el `scope` y el patrón `/packs/` de la PWA (pedírselo a Claude).
+  - Al terminar, anotar aquí la URL publicada.
 - [ ] **QA en dispositivos reales:** ver la sección 3.
 
 ## 3. QA pendiente (solo se puede probar a mano)
@@ -51,7 +52,7 @@ Detalle completo en `docs/QA.md`. Lo más importante:
 ## 4. Decisiones abiertas
 
 - [ ] **¿Un 7.º personaje "Tú" para los sonidos de la Loop Station?** Por ahora los sonidos de usuario van en uno de los 6 personajes; el número fijo de personajes es `CHARACTER_COUNT = 6` en `src/core/packs/schema.ts`.
-- [ ] **Hosting:** Vercel, Netlify o GitHub Pages.
+- [ ] **Hosting:** Vercel, Netlify o GitHub Pages (lo decide Daniel al hacer el deploy desde su otra cuenta).
 - [ ] **Estilo visual base:** cuál de las 3 direcciones de Stitch (street 90s, neón o casual).
 
 ## 5. Deuda técnica y mejoras menores
