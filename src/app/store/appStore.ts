@@ -21,6 +21,8 @@ export type EngineLike = Pick<
   | 'getSlot'
   | 'getMeter'
   | 'getMasterMeter'
+  | 'getBeatClock'
+  | 'getOutputLatency'
   | 'contextState'
   | 'isPlaying'
 >

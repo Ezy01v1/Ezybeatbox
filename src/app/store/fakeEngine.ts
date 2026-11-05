@@ -81,11 +81,24 @@ export class FakeEngine implements EngineLike {
   }
 
   getMeter() {
-    return { getLevel: () => 0 }
+    return { getLevel: () => this.level }
   }
 
   getMasterMeter() {
-    return { getLevel: () => 0 }
+    return { getLevel: () => this.level }
+  }
+
+  /** Level returned by every meter; tests set it to simulate sound. */
+  level = 0
+
+  getBeatClock() {
+    return { beatsPerBar: 4, getBeatPosition: () => (this.isPlaying ? this.beatPosition : null) }
+  }
+
+  beatPosition = 0
+
+  getOutputLatency() {
+    return 0
   }
 
   /** Simulates the next bar line: applies queued changes and emits the engine events. */

@@ -12,8 +12,11 @@ export const AUDIO_CONFIG = {
   volumeRampSeconds: 0.05,
   /** Master brick-wall limiter threshold. */
   limiterThresholdDb: -1,
-  /** Meter smoothing (0–1). Higher = slower, calmer animation. */
-  meterSmoothing: 0.8,
+  /**
+   * Meter smoothing (0–1). Kept low so kick/snare transients survive; visuals apply their own
+   * attack/release envelope (src/visuals/config.ts).
+   */
+  meterSmoothing: 0.5,
   /** A sample whose length differs from the expected loop length by more than this is reported. */
   loopLengthToleranceSeconds: 0.01,
 } as const

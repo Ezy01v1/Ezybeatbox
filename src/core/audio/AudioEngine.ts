@@ -39,6 +39,16 @@ export interface LevelReader {
   getLevel(): number
 }
 
+/** Live musical position for animation. Read it from `requestAnimationFrame`. */
+export interface BeatClock {
+  /**
+   * Fractional beats since bar 1 at the moment the listener hears it (output latency already
+   * subtracted), or `null` while stopped. `Math.floor` gives the beat, the fraction its phase.
+   */
+  getBeatPosition(): number | null
+  readonly beatsPerBar: number
+}
+
 export interface LoadPackOptions {
   /** Called with 0–1 as samples finish decoding. */
   onProgress?: (progress: number) => void
@@ -288,6 +298,29 @@ export class AudioEngine {
 
   getMasterMeter(): LevelReader {
     return { getLevel: () => levelOf(this.masterMeter) }
+  }
+
+  /**
+   * Seconds between the audio graph and the listener's ears (bigger on Bluetooth). Meters read
+   * the graph, so visuals delay levels by this much to line up with what is heard.
+   */
+  getOutputLatency(): number {
+    // Not every browser exposes these (Safari lacks outputLatency); fall back to 0.
+    const raw = Tone.getContext().rawContext as { outputLatency?: number; baseLatency?: number }
+    return (raw.outputLatency ?? 0) + (raw.baseLatency ?? 0)
+  }
+
+  getBeatClock(): BeatClock {
+    const pack = this.requirePack()
+    return {
+      beatsPerBar: pack.manifest.timeSignature[0],
+      getBeatPosition: () => {
+        if (!this.playing || this.pack !== pack) return null
+        const heardAt = Tone.immediate() - this.getOutputLatency()
+        const ticks = Tone.getTransport().getTicksAtTime(heardAt)
+        return ticks > 0 ? ticks / pack.ticksPerBeat : null
+      },
+    }
   }
 
   getSlot(characterId: string): SlotSnapshot {
