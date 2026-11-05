@@ -55,6 +55,13 @@
   "common": {
     "close": "Cerrar"
   },
+  "pwa": {
+    "updateAvailable": "Hay una versión nueva de EzyBeatbox.",
+    "updateHint": "Al actualizar se recarga la página y se detiene lo que está sonando.",
+    "update": "Actualizar",
+    "later": "Después",
+    "offlineReady": "EzyBeatbox ya funciona sin conexión."
+  },
   "mixes": {
     "button": "Mis mixes",
     "title": "Mis mixes",

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Full-bleed background so the maskable variant has no transparent corners. -->
+  <rect width="512" height="512" fill="#0a0a0a"/>
+  <!-- Beat rings (same motif as the stage backdrop). -->
+  <circle cx="256" cy="276" r="200" fill="none" stroke="#fbbf24" stroke-opacity="0.18" stroke-width="10"/>
+  <circle cx="256" cy="276" r="160" fill="none" stroke="#fbbf24" stroke-opacity="0.35" stroke-width="10"/>
+  <!-- Singing character, kept inside the central safe zone. -->
+  <rect x="166" y="262" width="180" height="140" rx="70" fill="#fb923c"/>
+  <circle cx="256" cy="200" r="88" fill="#fb923c"/>
+  <circle cx="226" cy="186" r="17" fill="#fafafa"/>
+  <circle cx="286" cy="186" r="17" fill="#fafafa"/>
+  <circle cx="229" cy="189" r="8" fill="#18181b"/>
+  <circle cx="289" cy="189" r="8" fill="#18181b"/>
+  <ellipse cx="256" cy="242" rx="26" ry="20" fill="#18181b"/>
+</svg>

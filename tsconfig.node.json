@@ -25,5 +25,5 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["vite.config.ts", "eslint.config.js", "scripts"]
+  "include": ["vite.config.ts", "pwa-assets.config.ts", "eslint.config.js", "scripts"]
 }
