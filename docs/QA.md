@@ -65,9 +65,21 @@ El audio real no se puede validar con pruebas unitarias. Esta lista se recorre a
 - [ ] Bloquear y desbloquear el celular con el audio sonando: aparece "Toca para reanudar" y funciona.
 - [ ] En el celular, la escena entra en pantalla sin scroll vertical (probar 375×667 y 390×844).
 
+## Visual reactivo (Fase 3)
+
+- [ ] Cada personaje mueve la boca con **su propio** sonido (mutear uno lo deja con la boca quieta).
+- [ ] El rebote de la cabeza cae en cada tiempo, al mismo tiempo que el golpe que se escucha (no antes).
+- [ ] Con **Bluetooth**: los visuales siguen alineados con lo que se escucha (en Chrome/Android; Safari no informa la latencia).
+- [ ] Los anillos del fondo salen en cada tiempo, más fuertes en el tiempo 1. El brillo crece con el volumen general.
+- [ ] Los personajes en silencio "respiran" suavemente.
+- [ ] Con "reducir movimiento": nada rebota ni respira y no hay anillos, pero la boca y el brillo siguen el nivel.
+- [ ] **Rendimiento en un celular de gama media:** Chrome DevTools remoto → Performance, 10 s con los 6 sonando. Objetivo: ~60 fps y ningún frame largo.
+- [ ] La pestaña en segundo plano no consume CPU por animación (rAF pausado).
+
 ## Resultados registrados
 
-| Fecha      | Fase | Navegador / dispositivo                                  | Resultado                                                                                                                                                                                                                                 |
-| ---------- | ---- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-11-03 | 1    | Chrome (panel de Claude), Windows                        | Pack carga sin avisos; entradas cuantizadas al compás; mute OK; `.ogg` y `.m4a` decodifican a 235 200 muestras exactas. Sin escucha (prueba automatizada).                                                                                |
-| 2026-11-04 | 2    | Chrome (panel de Claude), escritorio y emulación 375×812 | Arrastre real paleta → personaje OK; soltar en otro personaje se ignora; tap asigna; arrastrar fuera quita; play/pausa e indicador OK; foco visible; sin errores en consola. El touch real no se probó (el panel envía eventos de mouse). |
+| Fecha      | Fase | Navegador / dispositivo                                         | Resultado                                                                                                                                                                                                                                 |
+| ---------- | ---- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-03 | 1    | Chrome (panel de Claude), Windows                               | Pack carga sin avisos; entradas cuantizadas al compás; mute OK; `.ogg` y `.m4a` decodifican a 235 200 muestras exactas. Sin escucha (prueba automatizada).                                                                                |
+| 2026-11-04 | 2    | Chrome (panel de Claude), escritorio y emulación 375×812        | Arrastre real paleta → personaje OK; soltar en otro personaje se ignora; tap asigna; arrastrar fuera quita; play/pausa e indicador OK; foco visible; sin errores en consola. El touch real no se probó (el panel envía eventos de mouse). |
+| 2026-11-04 | 3    | Chrome (panel de Claude), escritorio Windows, pantalla de 75 Hz | 6 personajes + fondo: 75 fps estables, p99 13,5 ms, peor frame 13,6 ms, 0 frames > 20 ms. Las bocas siguen el nivel de su canal. Falta probar en un celular real.                                                                         |

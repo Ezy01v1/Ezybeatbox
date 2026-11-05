@@ -83,6 +83,28 @@ main.tsx ─ new AudioEngine() ─ createAppStore(engine) ─ <AppStoreProvider>
 - **i18n:** todos los textos de la UI están en `i18n/locales/es/common.json`, con claves tipadas. Los textos del pack (nombres, etiquetas) se resuelven con `useLocalizedText`.
 - **Movimiento reducido:** `usePrefersReducedMotion` desactiva el pulso del estado "en espera"; las transiciones CSS usan `motion-reduce:`.
 
+## Visual reactivo (Fase 3)
+
+```
+AudioEngine ── getMeter(id) ──► compensateLatency ──► LevelReader ─┐
+            ── getBeatClock() ─────────────────────► BeatClock ───┤
+                                                                   ▼
+animationLoop (un solo rAF) ──► SvgCharacter × 6: followLevel → computePose → setAttribute(...)
+                            └─► StageBackdrop (canvas): nivel master → brillo; ringsAt(beat) → anillos
+```
+
+- **Un único `requestAnimationFrame`** (`visuals/animationLoop.ts`) para todo lo animado. Solo corre mientras hay suscriptores, y el navegador lo pausa en pestañas ocultas.
+- **Cero renders de React por frame.** React dibuja las formas solo cuando cambia el estado (`status`, `muted`). El movimiento (boca, rebote, pulso, brillo) se escribe directo en los atributos SVG mediante refs. Lo verifica `features/stage/animation.test.tsx` con `<Profiler>`: 30 frames animados, 0 commits.
+- **Pose independiente del arte:** `computePose` (función pura) convierte nivel + tiempo de compás en `{ mouthOpen, headOffset, bodyScale, glow }`. Un renderer de Rive puede reutilizarla mapeando esos valores a los inputs de su state machine.
+- **Sincronía con lo que se escucha:**
+  - `BeatClock.getBeatPosition()` usa el tiempo del transporte menos la latencia de salida (`outputLatency + baseLatency`).
+  - `compensateLatency` retrasa los niveles de los medidores esa misma cantidad con una `DelayLine`. Importa sobre todo con Bluetooth.
+  - Safari no expone `outputLatency`: ahí la compensación vale 0.
+- **Nivel visual:** `normalizeLevel` (raíz cuadrada + ganancia) y `followLevel` (envolvente con ataque de 15 ms y release de 120 ms). El suavizado del `Tone.Meter` bajó a 0.5 para no perder los golpes de kick y snare. Las constantes están en `visuals/config.ts`.
+- **Escena:** `StageBackdrop` es un canvas detrás de los personajes. El brillo sigue al nivel del master y cada tiempo emite un anillo, más fuerte en el tiempo 1. `ringsAt` deriva los anillos solo de la posición del compás, sin estado, así que no puede desfasarse.
+- **Movimiento reducido:** sin rebote, sin pulso del cuerpo, sin respiración ni anillos. La boca y el brillo siguen mostrando el nivel, porque es información y no decoración.
+- **Cambiar el arte:** se implementa `CharacterRenderer` y se cambia `ActiveCharacterRenderer` en `visuals/index.ts`. El motor y la escena no se tocan.
+
 ## Principios
 
 1. **Motor de audio separado de la UI.** El motor es TS puro con eventos; React solo lo consume.
