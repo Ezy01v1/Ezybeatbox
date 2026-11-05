@@ -74,6 +74,8 @@ interface Slot {
   readonly players: ReadonlyMap<string, Tone.Player>
   playing: string | null
   target: string | null
+  /** The chosen volume. Not read back from Tone: a muted channel reports -Infinity. */
+  volumeDb: number
 }
 
 interface LoadedPack {
@@ -92,27 +94,31 @@ function levelOf(meter: Tone.Meter): number {
 /**
  * Framework-free audio engine. Owns the Tone.js graph:
  *
- *   Player(s) → Channel (per character, + Meter) → master Channel → Limiter → Meter → out
+ *   Player(s) → Channel (per character, + Meter) → master Volume → Limiter → Meter → out
  *
  * Every sound change is applied on the next bar line from a transport callback, so timing
  * never depends on the main thread (no setTimeout/setInterval).
  */
 export class AudioEngine {
   private readonly emitter = new TypedEmitter<AudioEngineEvents>()
-  private readonly masterChannel: Tone.Channel
+  // A Volume, not a Channel: Tone's solo is global, so a master Channel would be muted
+  // whenever any character is soloed (silencing everything).
+  private readonly master: Tone.Volume
   private readonly limiter: Tone.Limiter
   private readonly masterMeter: Tone.Meter
   private readonly onContextStateChange = () =>
     this.emitter.emit('contextStateChanged', { state: this.contextState })
+  private recorder: Tone.Recorder | null = null
+  private masterVolumeDb: number = AUDIO_CONFIG.defaultMasterVolumeDb
   private pack: LoadedPack | null = null
   private loadToken = 0
   private playing = false
 
   constructor() {
-    this.masterChannel = new Tone.Channel({ volume: AUDIO_CONFIG.defaultMasterVolumeDb })
+    this.master = new Tone.Volume(AUDIO_CONFIG.defaultMasterVolumeDb)
     this.limiter = new Tone.Limiter(AUDIO_CONFIG.limiterThresholdDb)
     this.masterMeter = new Tone.Meter({ normalRange: true, smoothing: AUDIO_CONFIG.meterSmoothing })
-    this.masterChannel.chain(this.limiter, Tone.getDestination())
+    this.master.chain(this.limiter, Tone.getDestination())
     this.limiter.connect(this.masterMeter)
     Tone.getContext().on('statechange', this.onContextStateChange)
   }
@@ -191,7 +197,7 @@ export class AudioEngine {
         normalRange: true,
         smoothing: AUDIO_CONFIG.meterSmoothing,
       })
-      channel.connect(this.masterChannel)
+      channel.connect(this.master)
       channel.connect(channelMeter)
 
       const players = new Map<string, Tone.Player>()
@@ -216,7 +222,15 @@ export class AudioEngine {
         players.set(sound.id, player)
       }
 
-      slots.set(def.id, { def, channel, meter: channelMeter, players, playing: null, target: null })
+      slots.set(def.id, {
+        def,
+        channel,
+        meter: channelMeter,
+        players,
+        playing: null,
+        target: null,
+        volumeDb: AUDIO_CONFIG.defaultChannelVolumeDb,
+      })
     }
 
     const transport = Tone.getTransport()
@@ -273,7 +287,10 @@ export class AudioEngine {
   }
 
   setMute(characterId: string, muted: boolean): void {
-    this.requireSlot(characterId).channel.mute = muted
+    const slot = this.requireSlot(characterId)
+    slot.channel.mute = muted
+    // Tone restores the pre-mute volume; apply any change made while muted.
+    if (!muted) slot.channel.volume.rampTo(slot.volumeDb, AUDIO_CONFIG.volumeRampSeconds)
   }
 
   setSolo(characterId: string, solo: boolean): void {
@@ -281,14 +298,16 @@ export class AudioEngine {
   }
 
   setVolume(characterId: string, volumeDb: number): void {
-    this.requireSlot(characterId).channel.volume.rampTo(
-      clampVolumeDb(volumeDb),
-      AUDIO_CONFIG.volumeRampSeconds,
-    )
+    const slot = this.requireSlot(characterId)
+    slot.volumeDb = clampVolumeDb(volumeDb)
+    // While muted, Tone keeps the volume at -Infinity; the new value applies on unmute.
+    if (slot.channel.mute) return
+    slot.channel.volume.rampTo(slot.volumeDb, AUDIO_CONFIG.volumeRampSeconds)
   }
 
   setMasterVolume(volumeDb: number): void {
-    this.masterChannel.volume.rampTo(clampVolumeDb(volumeDb), AUDIO_CONFIG.volumeRampSeconds)
+    this.masterVolumeDb = clampVolumeDb(volumeDb)
+    this.master.volume.rampTo(this.masterVolumeDb, AUDIO_CONFIG.volumeRampSeconds)
   }
 
   getMeter(characterId: string): LevelReader {
@@ -298,6 +317,31 @@ export class AudioEngine {
 
   getMasterMeter(): LevelReader {
     return { getLevel: () => levelOf(this.masterMeter) }
+  }
+
+  /** Whether this browser can record the master output (MediaRecorder). */
+  get canRecord(): boolean {
+    return Tone.Recorder.supported
+  }
+
+  /**
+   * Starts recording the master output (after the limiter, so it matches what is heard).
+   * MediaRecorder is not sample-accurate: callers start it on a bar event.
+   */
+  async startRecording(): Promise<void> {
+    if (!this.recorder) {
+      this.recorder = new Tone.Recorder()
+      this.limiter.connect(this.recorder)
+    }
+    await this.recorder.start()
+  }
+
+  /** Stops recording; the Blob's type is the browser's codec (WebM/Opus, or MP4 in Safari). */
+  async stopRecording(): Promise<Blob> {
+    if (!this.recorder || this.recorder.state !== 'started') {
+      throw new AudioEngineError('Not recording')
+    }
+    return this.recorder.stop()
   }
 
   /**
@@ -332,7 +376,7 @@ export class AudioEngine {
       status: slotStatus(slot),
       muted: slot.channel.mute,
       solo: slot.channel.solo,
-      volumeDb: slot.channel.volume.value,
+      volumeDb: slot.volumeDb,
     }
   }
 
@@ -343,7 +387,7 @@ export class AudioEngine {
       schemaVersion: MIX_SCHEMA_VERSION,
       packId: manifest.id,
       packVersion: manifest.version,
-      masterVolumeDb: this.masterChannel.volume.value,
+      masterVolumeDb: this.masterVolumeDb,
       characters: Object.fromEntries(
         [...slots.values()].map((slot) => [
           slot.def.id,
@@ -351,7 +395,7 @@ export class AudioEngine {
             soundId: slot.target,
             muted: slot.channel.mute,
             solo: slot.channel.solo,
-            volumeDb: slot.channel.volume.value,
+            volumeDb: slot.volumeDb,
           },
         ]),
       ),
@@ -363,9 +407,10 @@ export class AudioEngine {
     this.stop()
     this.disposePack()
     Tone.getContext().off('statechange', this.onContextStateChange)
+    this.recorder?.dispose()
     this.masterMeter.dispose()
     this.limiter.dispose()
-    this.masterChannel.dispose()
+    this.master.dispose()
     this.emitter.clear()
   }
 
