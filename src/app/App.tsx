@@ -1,12 +1,11 @@
-import { useTranslation } from 'react-i18next'
+import { StageScreen } from '@/features/stage/StageScreen'
+import { StartScreen } from '@/features/start/StartScreen'
+import { useAppStore } from './store/AppStoreContext'
 
 export function App() {
-  const { t } = useTranslation()
+  const phase = useAppStore((s) => s.phase)
+  const manifest = useAppStore((s) => s.manifest)
 
-  return (
-    <main className="flex min-h-full flex-col items-center justify-center gap-2 p-4 text-center">
-      <h1 className="text-4xl font-bold tracking-tight">{t('app.name')}</h1>
-      <p className="text-neutral-400">{t('app.tagline')}</p>
-    </main>
-  )
+  if (phase === 'ready' && manifest) return <StageScreen manifest={manifest} />
+  return <StartScreen />
 }

@@ -1,3 +1,3 @@
 # features/stage
 
-Scene with the 6 characters. Implemented in Phase 2.
+Stage screen: 6 `CharacterSlot`s (drop targets, mute/solo/remove) and the resume overlay.

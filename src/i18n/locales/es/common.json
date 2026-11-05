@@ -2,5 +2,53 @@
   "app": {
     "name": "EzyBeatbox",
     "tagline": "Arma tu beat, capa por capa."
+  },
+  "start": {
+    "tap": "Toca para empezar",
+    "hint": "Sube el volumen o ponte audífonos.",
+    "loading": "Cargando sonidos… {{percent}} %"
+  },
+  "errors": {
+    "title": "Algo salió mal",
+    "pack": "No se pudo cargar el pack de sonidos. Revisa tu conexión e inténtalo de nuevo.",
+    "audioBlocked": "El navegador bloqueó el audio. Toca el botón para intentarlo otra vez.",
+    "unknown": "Ocurrió un error inesperado.",
+    "retry": "Reintentar",
+    "details": "Detalles técnicos"
+  },
+  "resume": {
+    "title": "El audio está en pausa",
+    "action": "Toca para reanudar"
+  },
+  "transport": {
+    "play": "Reproducir",
+    "pause": "Pausar",
+    "masterVolume": "Volumen general",
+    "position": "Compás {{bar}}, tiempo {{beat}}",
+    "bar": "Compás {{bar}}"
+  },
+  "stage": {
+    "label": "Escenario",
+    "hint": "Arrastra un sonido hasta su personaje o tócalo para asignarlo."
+  },
+  "character": {
+    "status": {
+      "empty": "En silencio",
+      "queued": "En espera",
+      "playing": "Cantando",
+      "stopping": "Se calla en el próximo compás"
+    },
+    "label": "{{name}}: {{status}}",
+    "labelWithSound": "{{name}}: {{sound}}, {{status}}",
+    "mute": "Silenciar {{name}}",
+    "solo": "Solo de {{name}}",
+    "remove": "Quitar sonido de {{name}}",
+    "dropHere": "Suelta aquí",
+    "dragOutHint": "Arrastra fuera para quitar"
+  },
+  "palette": {
+    "label": "Sonidos",
+    "sound": "{{sound}} para {{character}}",
+    "selected": "{{sound}} para {{character}} (elegido)"
   }
 }
