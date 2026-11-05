@@ -40,7 +40,7 @@ Las dependencias solo apuntan "hacia abajo":
 
 ```
 Player × 5 ─┐
-            ├─► Channel (vol/mute/solo) ─┬─► master Channel ─► Limiter (−1 dB) ─┬─► salida
+            ├─► Channel (vol/mute/solo) ─┬─► master Volume ─► Limiter (−1 dB) ─┬─► salida
             │   × 6 personajes           └─► Meter (nivel 0–1)                  └─► Meter master
 ```
 
@@ -105,6 +105,27 @@ animationLoop (un solo rAF) ──► SvgCharacter × 6: followLevel → compute
 - **Movimiento reducido:** sin rebote, sin pulso del cuerpo, sin respiración ni anillos. La boca y el brillo siguen mostrando el nivel, porque es información y no decoración.
 - **Cambiar el arte:** se implementa `CharacterRenderer` y se cambia `ActiveCharacterRenderer` en `visuals/index.ts`. El motor y la escena no se tocan.
 
+## Guardar, compartir y exportar (Fase 4)
+
+- **`MixRepository`** (`core/mix/repository.ts`) es un puerto asíncrono con `list`, `get`, `save` y `delete`. Hoy lo implementa `LocalStorageMixRepository`, que guarda todo en una sola clave (`ezybeatbox.mixes.v1`). Al leer valida con Zod y descarta las entradas corruptas. Si el almacenamiento está lleno o bloqueado (modo privado), lanza `MixStorageError`.
+- **Link para compartir** (`core/mix/shareLink.ts`): el mix viaja en el **hash** de la URL. No pasa por ningún servidor ni necesita backend. Ejemplo del formato v1:
+
+  ```
+  #v=1&p=boom-bap-01&pv=1&s=kick.kick-3~bass.bass-2&m=snare&o=bass&vol=bass.-3&mv=-2
+  ```
+
+  - Solo se escriben los valores que no son los de por defecto, y los separadores (`.` y `~`) son caracteres que no se escapan.
+  - `decodeShareLink` nunca lanza errores. Devuelve `invalid` o `newer-version`, y los ids se validan como kebab-case, así que un link no puede apuntar fuera de `public/packs/`.
+  - `resolveSharedMix` adapta el mix al pack cargado: omite los sonidos que ya no existen y avisa si el pack cambió de versión. Las migraciones de formatos viejos van en `decodeShareLink`, según `v`.
+
+- **Al abrir un link:** el hash se lee al iniciar (`initialHash`). Después de "Toca para empezar" se carga **el pack del link** y se aplica el mix. Luego el hash se borra de la barra de direcciones para que una recarga empiece limpia. Si el link llega con la app ya abierta (`hashchange`), se aplica en el momento.
+- **Exportar audio:** `AudioEngine.startRecording`/`stopRecording` usan `Tone.Recorder` (MediaRecorder) conectado **después del limitador**, así que se graba lo mismo que se escucha.
+  - MediaRecorder no es preciso a la muestra, por eso el store arranca la grabación en el evento `barStart` de un **inicio de loop** y la detiene tras `EXPORT_LOOP_COUNT` (2) loops completos.
+  - El formato depende del navegador: WebM/Opus en Chrome y Firefox, MP4 en Safari.
+  - Si se detiene la reproducción a mitad de la exportación, se cancela limpio.
+- **Avisos:** el store emite `Notice` con claves independientes del idioma (`notices.<key>` en i18n). Los informativos se cierran solos a los 5 s; los errores se quedan hasta que el usuario los cierra.
+- **UI:** "Mis mixes", "Compartir" y "Exportar audio" en la barra superior. Los diálogos usan `ui/Modal` (accesible: foco inicial en el contenido, Tab no sale del diálogo, Escape lo cierra y el foco vuelve al botón que lo abrió).
+
 ## Principios
 
 1. **Motor de audio separado de la UI.** El motor es TS puro con eventos; React solo lo consume.
@@ -130,4 +151,8 @@ animationLoop (un solo rAF) ──► SvgCharacter × 6: followLevel → compute
 - **2026-11-04 — Paleta en una barra inferior** con los 30 sonidos agrupados por personaje y scroll horizontal en el celular (`touch-action: pan-x`). Así el gesto vertical hacia arriba arrastra y el horizontal hace scroll.
 - **2026-11-04 — Un sonido solo cae en su personaje** (los roles son fijos). Mientras arrastras, el personaje correcto se resalta con "Suelta aquí" y los demás se atenúan.
 - **2026-11-04 — Pausa = detener y volver al compás 1.** Los sonidos elegidos se mantienen y vuelven a entrar en el compás 1 al reproducir. Con loops, retomar a mitad de compás no aporta nada.
+- **2026-11-04 — El master es un `Tone.Volume`, no un `Tone.Channel`.** El solo de Tone es global para todo el contexto: con un master `Channel`, poner en solo a cualquier personaje silenciaba **toda** la app. Era un bug desde la Fase 1 y se encontró al exportar en la Fase 4.
+- **2026-11-04 — El motor guarda el volumen elegido por canal** en lugar de leerlo de Tone: un canal en mute informa `-Infinity`, que rompía los links y los mixes guardados.
+- **2026-11-04 — Link en el hash** (no en el query string): el mix no llega a los logs del servidor ni a analytics, y no hace falta backend.
+- **2026-11-04 — La exportación son 2 loops completos, desde un inicio de loop,** en el formato nativo de MediaRecorder. Alternativa propuesta (pendiente de decisión): render offline a WAV (ver resumen de la Fase 4).
 - **2026-11-03 — `tsconfig.node.json`** usa `moduleResolution: bundler` para que `scripts/` importe código de `src/core` sin extensiones.

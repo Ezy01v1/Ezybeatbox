@@ -76,10 +76,27 @@ El audio real no se puede validar con pruebas unitarias. Esta lista se recorre a
 - [ ] **Rendimiento en un celular de gama media:** Chrome DevTools remoto → Performance, 10 s con los 6 sonando. Objetivo: ~60 fps y ningún frame largo.
 - [ ] La pestaña en segundo plano no consume CPU por animación (rAF pausado).
 
+## Guardar, compartir y exportar (Fase 4)
+
+- [ ] **Link en otro navegador o dispositivo:** arma un mix con mute, solo y volumen general. "Compartir" → "Copiar link" → ábrelo en otro navegador (o en el celular). Tras "Toca para empezar" debe sonar idéntico.
+- [ ] El aviso "Vas a escuchar un mix que te compartieron" aparece en la pantalla de inicio. Después de cargar, la barra de direcciones queda sin `#…`.
+- [ ] Pegar un link en una pestaña que ya tiene la app abierta: el mix se aplica en el siguiente compás.
+- [ ] Link roto (borra caracteres): aviso "no es válido" y escenario vacío, sin pantalla en blanco.
+- [ ] Link con `v=9`: aviso de versión más nueva.
+- [ ] En el celular aparece "Compartir…" (menú nativo) y funciona.
+- [ ] **Mis mixes:** guardar, recargar la página, cargar → mismo mix. Eliminar pide confirmación ("¿Seguro?").
+- [ ] Modo privado / almacenamiento bloqueado: aviso de error al guardar, la app sigue funcionando.
+- [ ] **Exportar audio:** el archivo dura ~10,7 s (2 loops a 90 BPM), empieza en el compás 1 del loop y suena igual que la app (incluyendo mute/solo y volumen general).
+- [ ] Exportar con **solo** activo: el archivo tiene audio (regresión del bug del master).
+- [ ] Detener la reproducción durante la exportación: aviso "cancelada" y no se descarga nada.
+- [ ] Safari: la exportación descarga `.m4a`/MP4 y se reproduce. Si Safari no soporta MediaRecorder, aparece el aviso de "no permite grabar".
+- [ ] Teclado: los diálogos se abren y cierran con Enter y Escape, y el foco vuelve al botón que los abrió.
+
 ## Resultados registrados
 
-| Fecha      | Fase | Navegador / dispositivo                                         | Resultado                                                                                                                                                                                                                                 |
-| ---------- | ---- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-11-03 | 1    | Chrome (panel de Claude), Windows                               | Pack carga sin avisos; entradas cuantizadas al compás; mute OK; `.ogg` y `.m4a` decodifican a 235 200 muestras exactas. Sin escucha (prueba automatizada).                                                                                |
-| 2026-11-04 | 2    | Chrome (panel de Claude), escritorio y emulación 375×812        | Arrastre real paleta → personaje OK; soltar en otro personaje se ignora; tap asigna; arrastrar fuera quita; play/pausa e indicador OK; foco visible; sin errores en consola. El touch real no se probó (el panel envía eventos de mouse). |
-| 2026-11-04 | 3    | Chrome (panel de Claude), escritorio Windows, pantalla de 75 Hz | 6 personajes + fondo: 75 fps estables, p99 13,5 ms, peor frame 13,6 ms, 0 frames > 20 ms. Las bocas siguen el nivel de su canal. Falta probar en un celular real.                                                                         |
+| Fecha      | Fase | Navegador / dispositivo                                         | Resultado                                                                                                                                                                                                                                                                                                              |
+| ---------- | ---- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-03 | 1    | Chrome (panel de Claude), Windows                               | Pack carga sin avisos; entradas cuantizadas al compás; mute OK; `.ogg` y `.m4a` decodifican a 235 200 muestras exactas. Sin escucha (prueba automatizada).                                                                                                                                                             |
+| 2026-11-04 | 2    | Chrome (panel de Claude), escritorio y emulación 375×812        | Arrastre real paleta → personaje OK; soltar en otro personaje se ignora; tap asigna; arrastrar fuera quita; play/pausa e indicador OK; foco visible; sin errores en consola. El touch real no se probó (el panel envía eventos de mouse).                                                                              |
+| 2026-11-04 | 3    | Chrome (panel de Claude), escritorio Windows, pantalla de 75 Hz | 6 personajes + fondo: 75 fps estables, p99 13,5 ms, peor frame 13,6 ms, 0 frames > 20 ms. Las bocas siguen el nivel de su canal. Falta probar en un celular real.                                                                                                                                                      |
+| 2026-11-04 | 4    | Chrome (panel de Claude), escritorio, dos pestañas              | El link reconstruyó el mix exacto (3 sonidos, mute, solo) en una pestaña nueva. Exportación: `.webm` de 10,62 s (esperado 10,67 s), con audio. Encontrados y corregidos: **el solo silenciaba todo** (master como `Tone.Channel`) y **un canal en mute rompía el link** (`-Infinity`). Mis mixes: guardar y listar OK. |
