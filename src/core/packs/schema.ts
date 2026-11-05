@@ -8,7 +8,7 @@ export const CHARACTER_ROLES = ['kick', 'snare', 'hihat', 'bass', 'voice', 'fx']
 /** Audio extensions a pack may reference. */
 export const AUDIO_EXTENSIONS = ['ogg', 'm4a', 'mp3', 'wav', 'webm'] as const
 
-const idSchema = z
+export const idSchema = z
   .string()
   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'must be kebab-case (a-z, 0-9, "-")')
   .max(64)

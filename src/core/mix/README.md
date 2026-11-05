@@ -1,3 +1,3 @@
 # core/mix
 
-Serializable `Mix` model. Persistence and link serialization arrive in Phase 4.
+Serializable `Mix` model, Zod schema, versioned share-link codec and the `MixRepository` port with its localStorage adapter.
