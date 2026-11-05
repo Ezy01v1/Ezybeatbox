@@ -1,3 +1,3 @@
 # extensions
 
-Typed extension points (Loop Station, beatbox recognition). Interfaces only — Phase 5.
+Typed contracts for future features (Loop Station, beat recognition, collaboration, user sounds). Types and constants only; the app does not import this folder. See docs/EXTENSIONS.md.
