@@ -70,16 +70,20 @@ export async function fetchCatalog(
   const catalog = await fetchCatalogIndex(packsBaseUrl, fetchFn)
   const ids = [...new Set(catalog.packs)]
   const results = await Promise.allSettled(
-    ids.map((id) => fetchManifest(`${packsBaseUrl}${id}/`, fetchFn)),
+    ids.map(async (id) => ({
+      id,
+      manifest: await fetchManifest(`${packsBaseUrl}${id}/`, fetchFn),
+    })),
   )
 
   const packs: PackSummary[] = []
   const failed: string[] = []
   results.forEach((result, i) => {
-    const id = ids[i]!
+    // allSettled keeps order, so a rejected entry belongs to ids[i].
+    const id = result.status === 'fulfilled' ? result.value.id : (ids[i] ?? '?')
     // The manifest id must match its folder, or links and saved mixes would point elsewhere.
-    if (result.status === 'fulfilled' && result.value.id === id) {
-      const manifest = result.value
+    if (result.status === 'fulfilled' && result.value.manifest.id === id) {
+      const { manifest } = result.value
       packs.push({
         id,
         manifest,
