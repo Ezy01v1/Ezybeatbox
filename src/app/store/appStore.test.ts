@@ -1,0 +1,86 @@
+import { PackLoadError } from '@/core/packs/loader'
+import { makeTestManifest } from '@/core/packs/testing'
+import { createAppStore } from './appStore'
+import { FakeEngine } from './fakeEngine'
+
+function setup() {
+  const engine = new FakeEngine()
+  const manifest = makeTestManifest()
+  const fetchFn = vi.fn(async () => new Response(JSON.stringify(manifest)))
+  const store = createAppStore({ engine, packUrl: '/packs/test-pack/', fetchFn })
+  return { engine, store, manifest }
+}
+
+describe('appStore', () => {
+  it('starts on the start screen', () => {
+    expect(setup().store.getState().phase).toBe('start')
+  })
+
+  it('begin() unlocks audio, loads the pack and exposes empty slots', async () => {
+    const { store } = setup()
+    await store.getState().begin()
+
+    const state = store.getState()
+    expect(state.phase).toBe('ready')
+    expect(state.contextState).toBe('running')
+    expect(state.manifest?.id).toBe('test-pack')
+    expect(Object.keys(state.slots)).toHaveLength(6)
+    expect(state.slots.kick?.status).toBe('empty')
+  })
+
+  it('reports blocked audio', async () => {
+    const { engine, store } = setup()
+    engine.failUnlock = true
+    await store.getState().begin()
+    expect(store.getState()).toMatchObject({ phase: 'error', error: { kind: 'audio-blocked' } })
+  })
+
+  it('reports pack errors with details', async () => {
+    const { engine, store } = setup()
+    engine.failLoad = new PackLoadError('audio', 'boom', ['/packs/x/kick.ogg'])
+    await store.getState().begin()
+    expect(store.getState().error).toEqual({ kind: 'pack', details: ['/packs/x/kick.ogg'] })
+  })
+
+  it('tracks queued → playing → stopping → empty across bar lines', async () => {
+    const { engine, store } = setup()
+    await store.getState().begin()
+    await store.getState().togglePlay()
+
+    store.getState().setSound('kick', 'kick-1')
+    expect(store.getState().slots.kick?.status).toBe('queued')
+
+    engine.advanceBar()
+    expect(store.getState().slots.kick).toMatchObject({ status: 'playing', playing: 'kick-1' })
+
+    store.getState().clearSound('kick')
+    expect(store.getState().slots.kick?.status).toBe('stopping')
+
+    engine.advanceBar()
+    expect(store.getState().slots.kick?.status).toBe('empty')
+  })
+
+  it('keeps selections queued after stopping, and resets the position', async () => {
+    const { engine, store } = setup()
+    await store.getState().begin()
+    await store.getState().togglePlay()
+    store.getState().setSound('bass', 'bass-2')
+    engine.advanceBar()
+    engine.advanceBar()
+
+    await store.getState().togglePlay()
+    expect(store.getState()).toMatchObject({ playing: false, position: { bar: 0, beat: 0 } })
+    expect(store.getState().slots.bass).toMatchObject({ status: 'queued', target: 'bass-2' })
+  })
+
+  it('toggles mute and solo', async () => {
+    const { store } = setup()
+    await store.getState().begin()
+    store.getState().toggleMute('snare')
+    store.getState().toggleSolo('voice')
+    expect(store.getState().slots.snare?.muted).toBe(true)
+    expect(store.getState().slots.voice?.solo).toBe(true)
+    store.getState().toggleMute('snare')
+    expect(store.getState().slots.snare?.muted).toBe(false)
+  })
+})
