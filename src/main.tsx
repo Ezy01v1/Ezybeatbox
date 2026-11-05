@@ -6,15 +6,28 @@ import { App } from '@/app/App'
 import { AppStoreProvider } from '@/app/store/AppStoreProvider'
 import { createAppStore } from '@/app/store/appStore'
 import { AudioEngine } from '@/core/audio/AudioEngine'
+import { LocalStorageMixRepository } from '@/core/mix/localStorageRepository'
 
 const rootElement = document.getElementById('root')
 if (!rootElement) {
   throw new Error('Root element #root not found')
 }
 
-const PACK_URL = `${import.meta.env.BASE_URL}packs/boom-bap-01/`
 const engine = new AudioEngine()
-const store = createAppStore({ engine, packUrl: PACK_URL })
+const store = createAppStore({
+  engine,
+  packsBaseUrl: `${import.meta.env.BASE_URL}packs/`,
+  defaultPackId: 'boom-bap-01',
+  repository: new LocalStorageMixRepository(),
+  shareBaseUrl: `${window.location.origin}${window.location.pathname}`,
+  initialHash: window.location.hash,
+  // Drop the hash once applied, so a reload starts clean instead of re-applying the link.
+  onLinkConsumed: () =>
+    history.replaceState(null, '', `${window.location.pathname}${window.location.search}`),
+})
+
+// Pasting a share link into a tab that already shows the app only changes the hash.
+window.addEventListener('hashchange', () => store.getState().openLink(window.location.hash))
 
 createRoot(rootElement).render(
   <StrictMode>

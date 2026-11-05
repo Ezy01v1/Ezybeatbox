@@ -1,15 +1,7 @@
 import { PackLoadError } from '@/core/packs/loader'
-import { makeTestManifest } from '@/core/packs/testing'
-import { createAppStore } from './appStore'
-import { FakeEngine } from './fakeEngine'
+import { createTestApp } from './testing'
 
-function setup() {
-  const engine = new FakeEngine()
-  const manifest = makeTestManifest()
-  const fetchFn = vi.fn(async () => new Response(JSON.stringify(manifest)))
-  const store = createAppStore({ engine, packUrl: '/packs/test-pack/', fetchFn })
-  return { engine, store, manifest }
-}
+const setup = createTestApp
 
 describe('appStore', () => {
   it('starts on the start screen', () => {

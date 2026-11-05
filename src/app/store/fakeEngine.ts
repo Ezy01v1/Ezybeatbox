@@ -1,6 +1,8 @@
 import type { AudioEngineEvents, ContextState, SlotSnapshot } from '@/core/audio/AudioEngine'
+import { AUDIO_CONFIG } from '@/core/audio/config'
 import { planBarTransitions, slotStatus } from '@/core/audio/transitions'
 import { TypedEmitter } from '@/core/events'
+import { MIX_SCHEMA_VERSION, type Mix } from '@/core/mix/types'
 import type { PackManifest } from '@/core/packs/schema'
 import type { EngineLike } from './appStore'
 
@@ -9,6 +11,7 @@ interface FakeSlot {
   target: string | null
   muted: boolean
   solo: boolean
+  volumeDb: number
 }
 
 /**
@@ -18,11 +21,22 @@ interface FakeSlot {
 export class FakeEngine implements EngineLike {
   private readonly emitter = new TypedEmitter<AudioEngineEvents>()
   private readonly slots = new Map<string, FakeSlot>()
+  private manifest: PackManifest | null = null
   private bar = -1
+  private masterVolumeDb: number = AUDIO_CONFIG.defaultMasterVolumeDb
   contextState: ContextState = 'suspended'
   isPlaying = false
   failLoad: Error | null = null
   failUnlock = false
+  /** Packs requested via loadPack, for assertions. */
+  loadedPackUrls: string[] = []
+
+  canRecord = true
+  recording = false
+
+  /** Level returned by every meter; tests set it to simulate sound. */
+  level = 0
+  beatPosition = 0
 
   readonly on = this.emitter.on.bind(this.emitter)
 
@@ -33,13 +47,21 @@ export class FakeEngine implements EngineLike {
 
   async loadPack(
     manifest: PackManifest,
-    _packUrl: string,
+    packUrl: string,
     options?: { onProgress?: (p: number) => void },
   ) {
+    this.loadedPackUrls.push(packUrl)
     if (this.failLoad) throw this.failLoad
     options?.onProgress?.(0.5)
+    this.manifest = manifest
     for (const c of manifest.characters) {
-      this.slots.set(c.id, { playing: null, target: null, muted: false, solo: false })
+      this.slots.set(c.id, {
+        playing: null,
+        target: null,
+        muted: false,
+        solo: false,
+        volumeDb: AUDIO_CONFIG.defaultChannelVolumeDb,
+      })
     }
     options?.onProgress?.(1)
     return { warnings: [] }
@@ -73,11 +95,33 @@ export class FakeEngine implements EngineLike {
     this.slot(characterId).solo = solo
   }
 
-  setMasterVolume() {}
+  setVolume(characterId: string, volumeDb: number) {
+    this.slot(characterId).volumeDb = volumeDb
+  }
+
+  setMasterVolume(volumeDb: number) {
+    this.masterVolumeDb = volumeDb
+  }
 
   getSlot(characterId: string): SlotSnapshot {
     const slot = this.slot(characterId)
-    return { characterId, ...slot, status: slotStatus(slot), volumeDb: -6 }
+    return { characterId, ...slot, status: slotStatus(slot) }
+  }
+
+  getMix(): Mix {
+    if (!this.manifest) throw new Error('No pack loaded')
+    return {
+      schemaVersion: MIX_SCHEMA_VERSION,
+      packId: this.manifest.id,
+      packVersion: this.manifest.version,
+      masterVolumeDb: this.masterVolumeDb,
+      characters: Object.fromEntries(
+        [...this.slots].map(([id, s]) => [
+          id,
+          { soundId: s.target, muted: s.muted, solo: s.solo, volumeDb: s.volumeDb },
+        ]),
+      ),
+    }
   }
 
   getMeter() {
@@ -88,17 +132,21 @@ export class FakeEngine implements EngineLike {
     return { getLevel: () => this.level }
   }
 
-  /** Level returned by every meter; tests set it to simulate sound. */
-  level = 0
-
   getBeatClock() {
     return { beatsPerBar: 4, getBeatPosition: () => (this.isPlaying ? this.beatPosition : null) }
   }
 
-  beatPosition = 0
-
   getOutputLatency() {
     return 0
+  }
+
+  async startRecording() {
+    this.recording = true
+  }
+
+  async stopRecording() {
+    this.recording = false
+    return new Blob(['fake audio'], { type: 'audio/webm' })
   }
 
   /** Simulates the next bar line: applies queued changes and emits the engine events. */
