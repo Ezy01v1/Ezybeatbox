@@ -124,6 +124,65 @@ Si sigues esto, puedo leer el archivo y convertirlo a código directamente.
 
 ---
 
-## 3. Qué no hace falta diseñar
+## 3. Temáticas por género (skins sobre un mismo rig)
+
+EzyBeatbox va a tener varias temáticas (hip hop, trap, pop, latino…). Como en Incredibox, **los personajes cambian de estilo en cada una, pero la base es la misma**.
+
+### Rig base + skins
+
+- **Rig base (se diseña una vez):** los 6 personajes neutrales, con las capas fijas de la sección 2 (`glow`, `body`, `head`, `eyes-*`, `mouth`). Define la silueta, las proporciones y dónde va la boca.
+- **Skin (una por temática):** encima del rig agrega ropa, accesorios (gorras, cadenas, sombreros), su paleta, el fondo del escenario y los íconos de la paleta de sonidos. **No cambia los nombres ni la estructura de las capas**, así la animación funciona igual en todas las temáticas.
+- **La interfaz de la app es común:** barra superior, diálogos, botones y avisos son iguales en todas las temáticas. Solo se "viste" el escenario: personajes, fondo y paleta de sonidos.
+
+### En Figma
+
+| Página           | Contenido                                                                                           |
+| ---------------- | --------------------------------------------------------------------------------------------------- |
+| `Rig`            | `rig/kick` … `rig/fx`: los personajes neutrales (componentes principales)                           |
+| `Tema · hip-hop` | `hip-hop/char/kick` …: instancias del rig con su skin; `hip-hop/fondo`; `hip-hop/iconos`            |
+| `Tema · trap`    | Igual, con el prefijo `trap/`                                                                       |
+| `Tokens`         | Variables con **un modo por temática** (`hip-hop`, `trap`, …): `role/*`, `stage/bg`, `stage/accent` |
+
+El nombre de la temática debe coincidir con el `id` del pack (o con el campo `theme` que se agregará al manifest), en kebab-case.
+
+### Qué cambia por temática
+
+| Elemento                     | ¿Cambia? | Notas                                                                     |
+| ---------------------------- | -------- | ------------------------------------------------------------------------- |
+| Personajes (skin)            | Sí       | Sobre el mismo rig                                                        |
+| Colores de cada rol          | Sí       | Modo de variables por temática                                            |
+| Fondo del escenario          | Sí       | Imagen o SVG; los anillos de beat se dibujan encima                       |
+| Íconos de sonido             | Sí       | Uno por rol o por sonido                                                  |
+| Nombres de personajes        | Sí       | Vienen del manifest (por ejemplo, en bachata: "Güira" en vez de "Hi-hat") |
+| Interfaz (botones, diálogos) | No       | Común a toda la app                                                       |
+
+### Orden recomendado
+
+1. **Hip hop boom bap** (90 BPM): la temática base, terminada de punta a punta (samples reales y arte final). Con ella se define el rig.
+2. **Trap** (~140 BPM): mismos roles (808, hi-hats rápidos). Sirve para probar el sistema de skins con poco riesgo.
+3. **Pop:** más melódico; la voz y los coros ganan protagonismo.
+4. **Latino / cultural** (por ejemplo bachata, ~130 BPM, loops de 4 compases): los roles se reinterpretan (hi-hat → güira, snare → bongó, FX → requinto). Todo hecho con la boca, que es la identidad de EzyBeatbox.
+
+### Prompt extra para Stitch (por temática)
+
+Agrégalo al bloque **Base** de la sección 1, cambiando el género:
+
+```
+Diseña la temática "Trap" de EzyBeatbox. Los 6 personajes mantienen la misma silueta y proporciones
+que la versión hip hop, pero con ropa, accesorios y colores propios del trap (por ejemplo cadenas,
+capuchas, gafas oscuras; morados y rojos profundos, brillos fríos). El fondo del escenario cambia a
+una ambientación de trap. La barra superior, los botones y los diálogos de la app NO cambian.
+```
+
+### Lo que se agregará en código (al implementar el rediseño)
+
+- Campo `theme` en el manifest del pack: skin de personajes, colores por rol y fondo.
+- Pantalla para elegir pack o temática antes de "Toca para empezar".
+- Cambiar de pack sin recargar la página.
+- Cargar el arte de cada temática solo cuando se usa, para que la app no crezca con cada pack nuevo.
+
+---
+
+## 4. Qué no hace falta diseñar
 
 Ya funcionan y se adaptan solos al nuevo estilo: la lógica de arrastre, la cuantización al compás, los textos (vienen de i18n), el foco del teclado y el modo de movimiento reducido. Si un diseño necesita un texto nuevo, se agrega a `src/i18n/locales/es/common.json`.
