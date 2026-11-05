@@ -14,8 +14,8 @@ El audio real no se puede validar con pruebas unitarias. Esta lista se recorre a
 - [ ] "Quitar": el sonido sigue hasta el final del compás y luego se calla (`stopping` → `empty`).
 - [ ] Soltar un loop de 2 compases en un compás **par** (2, 4…): debe entrar en su segunda mitad, alineado con los demás (no empezar desde su compás 1).
 - [ ] "Aleatorio" varias veces seguidas: los 6 cambian a la vez en el siguiente compás.
-- [ ] Dejar sonando 5+ minutos con los 6 personajes: sin desfase acumulado.
-- [ ] Sin clics en el punto donde el loop vuelve a empezar (escuchar con audífonos, en especial Voice "Coro", Bass "Sub" y FX "Vinilo").
+- [x] Reproducción prolongada en Trap: seis capas durante 5 min 40 s hasta el compás 198. Daniel confirmó que se escuchó bien todo el rato con audífonos de cable, sin desfase perceptible.
+- [x] Escucha de loops con audífonos de cable: Daniel confirmó que se escuchan bien.
 
 ### Mezcla
 
@@ -78,6 +78,8 @@ El audio real no se puede validar con pruebas unitarias. Esta lista se recorre a
 
 ## Guardar, compartir y exportar (Fase 4)
 
+- [x] Mis mixes en Trap: guardé seis capas, quité FX del escenario y cargué el mix guardado. Las seis capas se restauraron, incluido Riser. También cargué ese mix desde Boom Bap: la app cambió a Trap y restauró los seis sonidos.
+
 - [ ] **Link en otro navegador o dispositivo:** arma un mix con mute, solo y volumen general. "Compartir" → "Copiar link" → ábrelo en otro navegador (o en el celular). Tras "Toca para empezar" debe sonar idéntico.
 - [ ] El aviso "Vas a escuchar un mix que te compartieron" aparece en la pantalla de inicio. Después de cargar, la barra de direcciones queda sin `#…`.
 - [ ] Pegar un link en una pestaña que ya tiene la app abierta: el mix se aplica en el siguiente compás.
@@ -87,8 +89,9 @@ El audio real no se puede validar con pruebas unitarias. Esta lista se recorre a
 - [ ] **Mis mixes:** guardar, recargar la página, cargar → mismo mix. Eliminar pide confirmación ("¿Seguro?").
 - [ ] Modo privado / almacenamiento bloqueado: aviso de error al guardar, la app sigue funcionando.
 - [ ] **Exportar audio:** el archivo dura ~10,7 s (2 loops a 90 BPM), empieza en el compás 1 del loop y suena igual que la app (incluyendo mute/solo y volumen general).
-- [ ] Exportar con **solo** activo: el archivo tiene audio (regresión del bug del master).
-- [ ] Detener la reproducción durante la exportación: aviso "cancelada" y no se descarga nada.
+- [x] Trap con seis capas en el navegador integrado: la app completó la grabación de cuatro compases y mostró «Audio exportado». Pendiente abrir el archivo para verificar contenido y duración.
+- [ ] Exportar con **solo** activo: Trap completó cuatro compases con el Kick en Solo y mostró «Audio exportado». Pendiente abrir el archivo y verificar que se escuche el Kick.
+- [x] Pausar durante la exportación en Trap: la app mostró el aviso de cancelación y habilitó de nuevo el botón. La prueba automatizada confirma que la cancelación no devuelve audio.
 - [ ] Safari: la exportación descarga `.m4a`/MP4 y se reproduce. Si Safari no soporta MediaRecorder, aparece el aviso de "no permite grabar".
 - [ ] Teclado: los diálogos se abren y cierran con Enter y Escape, y el foco vuelve al botón que los abrió.
 
@@ -122,5 +125,5 @@ Con `npm run build` y luego `npm run preview` (el service worker no existe en `d
 - [ ] "Volver al escenario" conserva el mix; elegir el otro pack lo abre con el escenario vacío.
 - [ ] Trap: el escenario es gris pizarra con anillos lima, y los sonidos van a 140 BPM sin desfase con el compás.
 - [ ] Abrir un link compartido de Trap con la app en Boom Bap: cambia de pack solo y suena el mix.
-- [ ] Cargar desde "Mis mixes" un mix guardado en el otro pack: cambia de pack y lo aplica.
+- [x] Cargar desde "Mis mixes" un mix guardado en el otro pack: Boom Bap cambió a Trap y restauró las seis capas.
 - [ ] Modo avión después de haber abierto la app una vez: el selector muestra las dos portadas y ambos packs suenan.

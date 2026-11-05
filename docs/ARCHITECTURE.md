@@ -34,7 +34,7 @@ Las dependencias solo apuntan "hacia abajo":
 | Modelo `Mix`        | `core/mix`        | 1–4  | Serializable y versionado. Base para guardar, compartir por link y colaborativo.                       |
 | `MixRepository`     | `core/mix`        | 4    | Puerto; adaptador `LocalStorage` hoy, HTTP mañana.                                                     |
 | Store de UI         | `app/` / features | 2    | Zustand. Refleja el estado del mix; no guarda nada por frame.                                          |
-| `CharacterRenderer` | `visuals/`        | 2–3  | Recibe estado (inactivo / en espera / cantando) y nivel de audio. SVG hoy, Rive mañana.                |
+| `CharacterRenderer` | `visuals/`        | 2–3  | Recibe estado (inactivo / en espera / cantando) y nivel de audio. SVG por defecto y Rive por pack.                |
 
 ## Motor de audio (Fase 1)
 
@@ -79,7 +79,7 @@ main.tsx ─ new AudioEngine() ─ createAppStore(engine) ─ <AppStoreProvider>
   - Cada `CharacterSlot` es un _drop target_ (`data-drop-character`) y se detecta con `elementFromPoint`.
   - `resolveDrop` (lógica pura, con pruebas) decide qué pasa al soltar. Un sonido de la paleta solo se asigna a **su** personaje. Arrastrar el sonido de un personaje fuera de él lo quita.
   - El fantasma sigue al puntero escribiendo `transform` directamente en el DOM (`dragStore.positionGhost`). React solo se entera del inicio, del fin y de cuando el puntero cruza el borde de un personaje.
-- **Render de personajes:** `visuals/CharacterRenderer.ts` define las props (`role`, `color`, `outline`, `status`, `muted`, `level`, `beat`, `reducedMotion`). `color` y `outline` vienen del tema del pack, así el renderer no lee el store. `visuals/index.ts` exporta `ActiveCharacterRenderer = SvgCharacter`; para cambiar el arte basta cambiar esa línea. El renderer es solo visual (`aria-hidden`): el nombre accesible y los controles viven en `CharacterSlot`.
+- **Render de personajes:** `visuals/CharacterRenderer.ts` define las props (`role`, `color`, `outline`, `status`, `muted`, `level`, `beat`, `reducedMotion`). `color` y `outline` vienen del tema del pack, así el renderer no lee el store. `visuals/PackCharacter.tsx` elige el arte por pack y rol. Los personajes de Boom Bap y Trap cargan su arte Rive al montar sus tarjetas, con SVG de respaldo. Las fuentes editables están en `assets/rive/`. El renderer es solo visual (`aria-hidden`): el nombre accesible y los controles viven en `CharacterSlot`.
 - **i18n:** todos los textos de la UI están en `i18n/locales/es/common.json`, con claves tipadas. Los textos del pack (nombres, etiquetas) se resuelven con `useLocalizedText`.
 - **Movimiento reducido:** `usePrefersReducedMotion` desactiva el pulso del estado "en espera"; las transiciones CSS usan `motion-reduce:`.
 

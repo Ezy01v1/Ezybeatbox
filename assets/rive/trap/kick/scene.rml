@@ -1,0 +1,174 @@
+<Rive version="1" kind="fragment">
+  <Artboard name="Kick" id="0:2" width="100" height="130" styleId="0:3" defaultStateMachineId="0:4">
+    <LayoutComponentStyle id="0:3"/>
+    <Node name="Avatar" id="0:20">
+      <Node name="Compression pivot" id="0:21" x="50" y="118">
+        <Node name="Artwork" x="-50" y="-118">
+          <Node name="Head bounce" id="0:23">
+        <Shape name="Left brow" x="38" y="39" rotation="0.1">
+          <Rectangle width="12" height="3" originX="0.5" originY="0.5" cornerRadiusTL="1" cornerRadiusTR="1" cornerRadiusBL="1" cornerRadiusBR="1"/>
+          <Fill><SolidColor colorValue="FF241C35"/></Fill>
+        </Shape>
+        <Shape name="Right brow" x="62" y="39" rotation="-0.1">
+          <Rectangle width="12" height="3" originX="0.5" originY="0.5" cornerRadiusTL="1" cornerRadiusTR="1" cornerRadiusBL="1" cornerRadiusBR="1"/>
+          <Fill><SolidColor colorValue="FF241C35"/></Fill>
+        </Shape>
+        <Shape name="Left eye" x="39" y="45" rotation="0">
+          <Rectangle width="5" height="7" originX="0.5" originY="0.5" cornerRadiusTL="3" cornerRadiusTR="3" cornerRadiusBL="3" cornerRadiusBR="3"/>
+          <Fill><SolidColor colorValue="FF241C35"/></Fill>
+        </Shape>
+        <Shape name="Right eye" x="61" y="45" rotation="0">
+          <Rectangle width="5" height="7" originX="0.5" originY="0.5" cornerRadiusTL="3" cornerRadiusTR="3" cornerRadiusBL="3" cornerRadiusBR="3"/>
+          <Fill><SolidColor colorValue="FF241C35"/></Fill>
+        </Shape>
+        <Shape name="Mouth" x="50" y="57" rotation="0" id="0:22">
+          <Rectangle width="13" height="5" originX="0.5" originY="0.5" cornerRadiusTL="3" cornerRadiusTR="3" cornerRadiusBL="3" cornerRadiusBR="3"/>
+          <Fill><SolidColor colorValue="FF241C35"/></Fill>
+        </Shape>
+        <Shape name="Nose" x="50" y="50" rotation="0">
+          <Rectangle width="8" height="5" originX="0.5" originY="0.5" cornerRadiusTL="3" cornerRadiusTR="3" cornerRadiusBL="3" cornerRadiusBR="3"/>
+          <Fill><SolidColor colorValue="FFD48255"/></Fill>
+        </Shape>
+        <Shape name="Face" x="50" y="45" rotation="0">
+          <Rectangle width="52" height="49" originX="0.5" originY="0.5" cornerRadiusTL="19" cornerRadiusTR="19" cornerRadiusBL="19" cornerRadiusBR="19"/>
+          <Fill><SolidColor colorValue="FFBF7045"/></Fill>
+        </Shape>
+        <Shape name="Left ear" x="23" y="47" rotation="0">
+          <Rectangle width="11" height="14" originX="0.5" originY="0.5" cornerRadiusTL="5" cornerRadiusTR="5" cornerRadiusBL="5" cornerRadiusBR="5"/>
+          <Fill><SolidColor colorValue="FFBF7045"/></Fill>
+        </Shape>
+        <Shape name="Right ear" x="77" y="47" rotation="0">
+          <Rectangle width="11" height="14" originX="0.5" originY="0.5" cornerRadiusTL="5" cornerRadiusTR="5" cornerRadiusBL="5" cornerRadiusBR="5"/>
+          <Fill><SolidColor colorValue="FFBF7045"/></Fill>
+        </Shape>
+          <Shape name="Hood" x="50" y="31" rotation="0">
+            <Rectangle width="67" height="44" originX="0.5" originY="0.5" cornerRadiusTL="14.666666666666666" cornerRadiusTR="14.666666666666666" cornerRadiusBL="14.666666666666666" cornerRadiusBR="14.666666666666666"/>
+            <Fill><SolidColor colorValue="FF502647"/></Fill>
+          </Shape>
+          </Node>
+                  <Shape name="Chain left" x="42" y="81" rotation="0.55">
+            <Rectangle width="4" height="19" originX="0.5" originY="0.5" cornerRadiusTL="1.3333333333333333" cornerRadiusTR="1.3333333333333333" cornerRadiusBL="1.3333333333333333" cornerRadiusBR="1.3333333333333333"/>
+            <Fill><SolidColor colorValue="FFF5CC69"/></Fill>
+          </Shape>
+          <Shape name="Chain right" x="58" y="81" rotation="-0.55">
+            <Rectangle width="4" height="19" originX="0.5" originY="0.5" cornerRadiusTL="1.3333333333333333" cornerRadiusTR="1.3333333333333333" cornerRadiusBL="1.3333333333333333" cornerRadiusBR="1.3333333333333333"/>
+            <Fill><SolidColor colorValue="FFF5CC69"/></Fill>
+          </Shape>
+          <Shape name="Pendant" x="50" y="90" rotation="0">
+            <Rectangle width="9" height="9" originX="0.5" originY="0.5" cornerRadiusTL="3" cornerRadiusTR="3" cornerRadiusBL="3" cornerRadiusBR="3"/>
+            <Fill><SolidColor colorValue="FFF5CC69"/></Fill>
+          </Shape>
+            <Shape name="Zipper pull" x="51" y="82" rotation="0">
+          <Rectangle width="5" height="8" originX="0.5" originY="0.5" cornerRadiusTL="2" cornerRadiusTR="2" cornerRadiusBL="2" cornerRadiusBR="2"/>
+          <Fill><SolidColor colorValue="FFFFCF83"/></Fill>
+        </Shape>
+        <Shape name="Zipper" x="51" y="94" rotation="0">
+          <Rectangle width="2.5" height="34" originX="0.5" originY="0.5" cornerRadiusTL="1" cornerRadiusTR="1" cornerRadiusBL="1" cornerRadiusBR="1"/>
+          <Fill><SolidColor colorValue="FFF5CC69"/></Fill>
+        </Shape>
+        <Shape name="Left pocket" x="36" y="101" rotation="0.38">
+          <Rectangle width="15" height="4" originX="0.5" originY="0.5" cornerRadiusTL="2" cornerRadiusTR="2" cornerRadiusBL="2" cornerRadiusBR="2"/>
+          <Fill><SolidColor colorValue="FF9C421E"/></Fill>
+        </Shape>
+        <Shape name="Right pocket" x="66" y="101" rotation="-0.38">
+          <Rectangle width="15" height="4" originX="0.5" originY="0.5" cornerRadiusTL="2" cornerRadiusTR="2" cornerRadiusBL="2" cornerRadiusBR="2"/>
+          <Fill><SolidColor colorValue="FF9C421E"/></Fill>
+        </Shape>
+        <Shape name="Collar" x="51" y="75" rotation="0">
+          <Rectangle width="32" height="12" originX="0.5" originY="0.5" cornerRadiusTL="4" cornerRadiusTR="4" cornerRadiusBL="4" cornerRadiusBR="4"/>
+          <Fill><SolidColor colorValue="FF241C35"/></Fill>
+        </Shape>
+        <Shape name="Jacket" x="51" y="94" rotation="0">
+          <Rectangle width="61" height="40" originX="0.5" originY="0.5" cornerRadiusTL="12" cornerRadiusTR="12" cornerRadiusBL="12" cornerRadiusBR="12"/>
+          <Fill><SolidColor colorValue="FF7A2E63"/></Fill>
+        </Shape>
+        <Shape name="Left sleeve" x="22" y="94" rotation="0.2">
+          <Rectangle width="16" height="39" originX="0.5" originY="0.5" cornerRadiusTL="7" cornerRadiusTR="7" cornerRadiusBL="7" cornerRadiusBR="7"/>
+          <Fill><SolidColor colorValue="FF502647"/></Fill>
+        </Shape>
+        <Shape name="Right sleeve" x="79" y="94" rotation="-0.2">
+          <Rectangle width="16" height="39" originX="0.5" originY="0.5" cornerRadiusTL="7" cornerRadiusTR="7" cornerRadiusBL="7" cornerRadiusBR="7"/>
+          <Fill><SolidColor colorValue="FF502647"/></Fill>
+        </Shape>
+        <Shape name="Waistband" x="51" y="114" rotation="0">
+          <Rectangle width="50" height="9" originX="0.5" originY="0.5" cornerRadiusTL="4" cornerRadiusTR="4" cornerRadiusBL="4" cornerRadiusBR="4"/>
+          <Fill><SolidColor colorValue="FF241C35"/></Fill>
+        </Shape>
+        </Node>
+      </Node>
+    </Node>
+    <Shape name="Queued ring" id="0:24" x="50" y="66" opacity="0">
+      <Ellipse width="94" height="119" originX="0.5" originY="0.5"/>
+      <Stroke thickness="2"><SolidColor colorValue="FF7A2E63"/></Stroke>
+    </Shape>
+    <StateMachine name="Performance" id="0:4">
+      <StateMachineNumber name="level" id="0:30"/>
+      <StateMachineNumber name="beat" id="0:31"/>
+      <StateMachineNumber name="status" id="0:32"/>
+      <StateMachineBool name="muted" id="0:33"/>
+      <StateMachineLayer name="Meter">
+        <AnyState x="200" y="-120"/><ExitState x="400" y="-120"/>
+        <EntryState><StateTransition stateToId="0:50"/></EntryState>
+        <BlendState1DInput id="0:50" x="200" inputId="0:30">
+          <BlendAnimation1D value="0" animationId="0:40"/>
+          <BlendAnimation1D value="1" animationId="0:41"/>
+        </BlendState1DInput>
+      </StateMachineLayer>
+      <StateMachineLayer name="Beat">
+        <AnyState x="200" y="-120"/><ExitState x="400" y="-120"/>
+        <EntryState><StateTransition stateToId="0:51"/></EntryState>
+        <BlendState1DInput id="0:51" x="200" inputId="0:31">
+          <BlendAnimation1D value="0" animationId="0:43"/>
+          <BlendAnimation1D value="1" animationId="0:42"/>
+        </BlendState1DInput>
+      </StateMachineLayer>
+      <StateMachineLayer name="Status">
+        <AnyState x="200" y="-120"/><ExitState x="400" y="-120"/>
+        <EntryState><StateTransition stateToId="0:52"/></EntryState>
+        <BlendState1DInput id="0:52" x="200" inputId="0:32">
+          <BlendAnimation1D value="0" animationId="0:44"/>
+          <BlendAnimation1D value="1" animationId="0:45"/>
+          <BlendAnimation1D value="2" animationId="0:44"/>
+        </BlendState1DInput>
+      </StateMachineLayer>
+      <StateMachineLayer name="Mute">
+        <AnyState x="200" y="-120"/><ExitState x="400" y="-120"/>
+        <EntryState><StateTransition stateToId="0:53"/></EntryState>
+        <AnimationState id="0:53" x="200" animationId="0:47">
+          <StateTransition stateToId="0:54"><TransitionBoolCondition inputId="0:33" opValue="equal"/></StateTransition>
+        </AnimationState>
+        <AnimationState id="0:54" x="400" animationId="0:46">
+          <StateTransition stateToId="0:53"><TransitionBoolCondition inputId="0:33" opValue="notEqual"/></StateTransition>
+        </AnimationState>
+      </StateMachineLayer>
+    </StateMachine>
+    <LinearAnimation name="Rest" id="0:40" duration="1">
+      <KeyedObject objectId="0:21"><KeyedProperty property="scaleX"><KeyFrameDouble value="1"/></KeyedProperty></KeyedObject>
+      <KeyedObject objectId="0:21"><KeyedProperty property="scaleY"><KeyFrameDouble value="1"/></KeyedProperty></KeyedObject>
+      <KeyedObject objectId="0:22"><KeyedProperty property="scaleY"><KeyFrameDouble value="1"/></KeyedProperty></KeyedObject>
+    </LinearAnimation>
+    <LinearAnimation name="Hit" id="0:41" duration="1">
+      <KeyedObject objectId="0:21"><KeyedProperty property="scaleX"><KeyFrameDouble value="1.12"/></KeyedProperty></KeyedObject>
+      <KeyedObject objectId="0:21"><KeyedProperty property="scaleY"><KeyFrameDouble value="0.86"/></KeyedProperty></KeyedObject>
+      <KeyedObject objectId="0:22"><KeyedProperty property="scaleY"><KeyFrameDouble value="2.25"/></KeyedProperty></KeyedObject>
+    </LinearAnimation>
+    <LinearAnimation name="On the beat" id="0:42" duration="1">
+      <KeyedObject objectId="0:23"><KeyedProperty property="y"><KeyFrameDouble value="-5"/></KeyedProperty></KeyedObject>
+    </LinearAnimation>
+    <LinearAnimation name="Between beats" id="0:43" duration="1">
+      <KeyedObject objectId="0:23"><KeyedProperty property="y"><KeyFrameDouble value="0"/></KeyedProperty></KeyedObject>
+    </LinearAnimation>
+    <LinearAnimation name="Ready" id="0:44" duration="1">
+      <KeyedObject objectId="0:24"><KeyedProperty property="opacity"><KeyFrameDouble value="0"/></KeyedProperty></KeyedObject>
+    </LinearAnimation>
+    <LinearAnimation name="Queued" id="0:45" duration="1">
+      <KeyedObject objectId="0:24"><KeyedProperty property="opacity"><KeyFrameDouble value="0.85"/></KeyedProperty></KeyedObject>
+    </LinearAnimation>
+    <LinearAnimation name="Muted" id="0:46" duration="1">
+      <KeyedObject objectId="0:20"><KeyedProperty property="opacity"><KeyFrameDouble value="0.35"/></KeyedProperty></KeyedObject>
+    </LinearAnimation>
+    <LinearAnimation name="Audible" id="0:47" duration="1">
+      <KeyedObject objectId="0:20"><KeyedProperty property="opacity"><KeyFrameDouble value="1"/></KeyedProperty></KeyedObject>
+    </LinearAnimation>
+  </Artboard>
+</Rive>

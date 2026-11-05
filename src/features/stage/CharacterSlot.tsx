@@ -9,7 +9,8 @@ import { acceptsDrop } from '@/features/palette/dnd/resolveDrop'
 import { DROP_TARGET_ATTR, usePointerDrag } from '@/features/palette/dnd/usePointerDrag'
 import { useLocalizedText } from '@/i18n/useLocalizedText'
 import { usePrefersReducedMotion } from '@/ui/usePrefersReducedMotion'
-import { ActiveCharacterRenderer, readableInk } from '@/visuals'
+import { readableInk } from '@/visuals'
+import { PackCharacter } from '@/visuals/PackCharacter'
 import { compensateLatency } from '@/visuals/levels'
 
 /**
@@ -29,7 +30,9 @@ export function CharacterSlot({ character, color }: { character: CharacterDef; c
   const reducedMotion = usePrefersReducedMotion()
   const applyDrop = useApplyDrop()
 
+  const packId = useAppStore((s) => s.manifest?.id)
   const slot = useAppStore((s) => s.slots[character.id])
+  const hasSolo = useAppStore((s) => Object.values(s.slots).some((item) => item.solo))
   const clearSound = useAppStore((s) => s.clearSound)
   const toggleMute = useAppStore((s) => s.toggleMute)
   const toggleSolo = useAppStore((s) => s.toggleSolo)
@@ -54,11 +57,17 @@ export function CharacterSlot({ character, color }: { character: CharacterDef; c
   if (!slot) return null
 
   const name = localize(character.label)
-  const status = t(`character.status.${slot.status}`)
+  const excludedBySolo = hasSolo && !slot.solo
+  const muted = slot.muted || excludedBySolo
   // While stopping, the old sound is still audible until the bar line, so keep naming it.
   const shownSoundId = target ?? slot.playing
   const sound = character.sounds.find((s) => s.id === shownSoundId)
-  const singing = slot.status === 'playing' || slot.status === 'stopping'
+  const playing = slot.status === 'playing' || slot.status === 'stopping'
+  const singing = playing && !excludedBySolo
+  const status =
+    playing && excludedBySolo
+      ? t('character.status.excludedBySolo')
+      : t(`character.status.${slot.status}`)
   const onRole = readableInk(color)
 
   // Card edge tells the state at a glance: solid role color while singing, dashed while
@@ -67,7 +76,7 @@ export function CharacterSlot({ character, color }: { character: CharacterDef; c
     borderColor: singing || slot.status === 'queued' || accepts ? color : undefined,
     borderStyle: slot.status === 'queued' ? 'dashed' : 'solid',
     boxShadow:
-      singing && !slot.muted
+      singing && !muted
         ? `0 0 0 3px ${color}33, 0 10px 28px -8px ${color}99`
         : accepts && isOver
           ? `0 0 0 4px ${color}55`
@@ -94,12 +103,13 @@ export function CharacterSlot({ character, color }: { character: CharacterDef; c
           target ? 'cursor-grab touch-none active:cursor-grabbing' : ''
         }`}
       >
-        <ActiveCharacterRenderer
+        <PackCharacter
+          packId={packId}
           role={character.role}
           color={color}
           outline={theme.stage.outline}
           status={slot.status}
-          muted={slot.muted}
+          muted={muted}
           level={level}
           beat={beat}
           reducedMotion={reducedMotion}

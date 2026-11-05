@@ -14,8 +14,8 @@ Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editori
 ## 1. Próximo paso de código (en este orden)
 
 - [ ] **Fusionar `feat/editorial-themes` en `main`** cuando Daniel revise la interfaz (y hacer push para que la otra PC la tenga).
-- [ ] **Personajes en Rive:** un renderer `RiveCharacter` con el contrato de `CharacterRenderer` (inputs `level`, `beat`, `status`, `muted`). Referencia de arte: las hojas de 6 personajes de Stitch. Falta instalar el CLI de Rive (`irm https://releases.rive.app/cli/install.ps1 | iex`; el instalador ya se revisó).
-  - [ ] **Cargar el arte de cada temática solo cuando se usa:** que el `.riv` de cada pack se baje al abrir ese pack, no al iniciar la app. Hoy el único arte por temática son las portadas, y ya cargan con `loading="lazy"`; esto se hace junto con el renderer de Rive.
+- [ ] **Personajes en Rive:** un renderer `RiveCharacter` con el contrato de `CharacterRenderer` (inputs `level`, `beat`, `status`, `muted`). Referencia de arte: las hojas de 6 personajes de Stitch. CLI 1.9.0 instalado. Primera pasada de los seis personajes de Boom Bap y los seis de Trap integrada. Ambos escenarios comprobados en el navegador. Primera afinación de la respuesta al audio por rol. Pendiente personalizar el arte y probar la sincronía con Bluetooth.
+  - [x] **Cargar el arte de cada temática al abrir su pack.** El renderer mantiene el SVG como respaldo.
 - [ ] **Loop Station** (contratos en `src/extensions/loopStation.ts` y `userSounds.ts`, diseño en `docs/EXTENSIONS.md`). Conviene hacerla con la app ya publicada, para probar el micrófono en el celular.
 
 ## 2. Tareas de Daniel (no son código)
@@ -23,6 +23,7 @@ Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editori
 - [x] **Diseño en Stitch:** dirección elegida y 6 personajes por temática (2026-11-05). Stitch está conectado por MCP en la configuración de usuario de esta PC (en la otra PC hay que agregarlo de nuevo con `claude mcp add stitch …`).
 - [ ] **Rotar la API key de Stitch**: quedó escrita en una conversación.
 - [ ] **Revisar la interfaz nueva** con `npm run dev` (selector, escenario hip hop y trap, "Cambiar estilo") y decir qué ajustar. Primera mirada el 2026-11-05: le gustó; sigue probando.
+- [ ] **Generar más ritmos sintéticos** para ampliar la variedad de loops de prueba de Boom Bap y Trap.
 - [ ] **Grabar los samples reales del pack trap** (140 BPM, 2 compases). Los nombres de los sonidos están en `scripts/placeholders/trapRecipes.ts`; para regenerar los placeholders hace falta `ffmpeg` en el `PATH`.
 - [ ] **Animar los avatares en Rive** (o pedirle a Claude que lo haga con el CLI).
 - [ ] **Grabar los samples reales** del pack hip hop siguiendo `docs/SAMPLES.md` (90 BPM, 2 compases exactos, ~−18 LUFS). Basta reemplazar los archivos: el script de placeholders no los vuelve a pisar.
@@ -37,14 +38,15 @@ Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editori
 
 Detalle completo en `docs/QA.md`. Lo más importante:
 
-- [ ] **Escuchar con audífonos:** que no haya clics al repetirse el loop (Voice "Coro", Bass "Sub", FX "Vinilo") ni desfases en 5+ minutos.
+- [x] **Escuchar los loops con audífonos de cable.** Daniel confirmó que se escuchan bien.
+- [x] **Reproducción prolongada en Trap:** seis capas durante 5 min 40 s, sin desfase perceptible con audífonos de cable.
 - [ ] **Arrastre con el dedo en un celular real:** arrastrar hacia arriba asigna el sonido; deslizar en horizontal sobre la paleta hace scroll.
 - [ ] **FPS en un celular de gama media** (Chrome DevTools remoto): unos 60 fps con los 6 personajes sonando.
 - [ ] **Safari / iOS:**
   - [ ] Que el `.m4a` dure exacto (sin avisos de duración al cargar).
   - [ ] Que la exportación de audio funcione.
   - [ ] Que con el switch de silencio activado se siga escuchando.
-- [ ] **Link compartido** abierto en otro dispositivo o navegador: debe sonar idéntico.
+- [ ] **Link compartido** en otro dispositivo o navegador: debe sonar idéntico. Verificado en otra pestaña del navegador local: Trap restauró 808 Largo y Rápido y ambos entraron en reproducción.
 - [ ] **Bluetooth:** que los visuales caigan junto con el golpe que se escucha.
 - [ ] **PWA:** instalarla en Android e iOS y usarla en modo avión.
 

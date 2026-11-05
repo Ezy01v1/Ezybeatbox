@@ -39,6 +39,7 @@
       "empty": "En silencio",
       "queued": "En espera",
       "playing": "Cantando",
+      "excludedBySolo": "Fuera del solo",
       "stopping": "Se calla en el próximo compás"
     },
     "label": "{{name}}: {{status}}",
