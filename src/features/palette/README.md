@@ -1,3 +1,3 @@
 # features/palette
 
-Sound palette, drag & drop (pointer events) and keyboard/tap fallback. Implemented in Phase 2.
+Bottom sound palette and pointer-events drag & drop (`dnd/`). Tap/click/Enter on a sound is the accessible fallback.
