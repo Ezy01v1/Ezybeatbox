@@ -139,6 +139,10 @@ export class AudioEngine {
 
   /** Resumes the AudioContext. Must be called from a user gesture (tap/click/key). */
   async unlock(): Promise<void> {
+    // iOS 17+ (Audio Session API): "playback" keeps Web Audio audible with the silent switch
+    // on, like a music app. Other browsers do not expose it and ignore this.
+    const session = (navigator as Navigator & { audioSession?: { type: string } }).audioSession
+    if (session) session.type = 'playback'
     await Tone.start()
   }
 
