@@ -22,7 +22,7 @@ Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editori
 
 - [x] **Diseño en Stitch:** dirección elegida y 6 personajes por temática (2026-11-05). Stitch está conectado por MCP en la configuración de usuario de esta PC (en la otra PC hay que agregarlo de nuevo con `claude mcp add stitch …`).
 - [ ] **Rotar la API key de Stitch**: quedó escrita en una conversación.
-- [ ] **Revisar la interfaz nueva** con `npm run dev` (selector, escenario hip hop y trap, "Cambiar estilo") y decir qué ajustar.
+- [ ] **Revisar la interfaz nueva** con `npm run dev` (selector, escenario hip hop y trap, "Cambiar estilo") y decir qué ajustar. Primera mirada el 2026-11-05: le gustó; sigue probando.
 - [ ] **Grabar los samples reales del pack trap** (140 BPM, 2 compases). Los nombres de los sonidos están en `scripts/placeholders/trapRecipes.ts`; para regenerar los placeholders hace falta `ffmpeg` en el `PATH`.
 - [ ] **Animar los avatares en Rive** (o pedirle a Claude que lo haga con el CLI).
 - [ ] **Grabar los samples reales** del pack hip hop siguiendo `docs/SAMPLES.md` (90 BPM, 2 compases exactos, ~−18 LUFS). Basta reemplazar los archivos: el script de placeholders no los vuelve a pisar.
