@@ -20,8 +20,8 @@ function NoticeItem({ notice }: { notice: Notice }) {
     <li
       className={`pointer-events-auto flex items-start gap-3 rounded-xl border px-4 py-3 text-sm shadow-lg ${
         notice.tone === 'error'
-          ? 'border-rose-500/60 bg-rose-950/90 text-rose-100'
-          : 'border-neutral-700 bg-neutral-900/95 text-neutral-100'
+          ? 'border-danger/40 bg-danger-soft text-danger'
+          : 'border-line bg-card text-ink'
       }`}
     >
       <p className="flex-1">{t(`notices.${notice.key}`, notice.params ?? {})}</p>
@@ -29,7 +29,7 @@ function NoticeItem({ notice }: { notice: Notice }) {
         type="button"
         onClick={() => dismiss(notice.id)}
         aria-label={t('notices.dismiss')}
-        className="-m-1 grid size-7 place-items-center rounded-full text-neutral-400 hover:bg-neutral-800"
+        className="hover:bg-ink/5 -m-1 grid size-8 place-items-center rounded-full opacity-70 hover:opacity-100"
       >
         ✕
       </button>

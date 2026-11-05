@@ -1,6 +1,8 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import '@/i18n'
+// Bundled (not from a CDN) so the PWA keeps its typography offline.
+import '@fontsource-variable/plus-jakarta-sans'
 import './index.css'
 import { App } from '@/app/App'
 import { AppStoreProvider } from '@/app/store/AppStoreProvider'

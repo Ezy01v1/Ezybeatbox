@@ -13,6 +13,10 @@ import type { CharacterRole } from '@/core/packs/schema'
  */
 export interface CharacterRenderProps {
   role: CharacterRole
+  /** Role color from the pack theme (`#rrggbb`). */
+  color: string
+  /** Outline color from the pack theme (`#rrggbb`). */
+  outline: string
   status: SlotStatus
   muted: boolean
   /** Live 0–1 channel level, already latency-compensated. Read it in the animation loop only. */

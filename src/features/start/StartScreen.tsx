@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { useAppStore } from '@/app/store/AppStoreContext'
+import { Logo } from '@/ui/Logo'
 
 /** "Toca para empezar" → loading with progress → (stage) or a visible error with retry. */
 export function StartScreen() {
@@ -11,10 +12,12 @@ export function StartScreen() {
   const openingSharedMix = useAppStore((s) => s.openingSharedMix)
 
   return (
-    <main className="flex min-h-dvh flex-col items-center justify-center gap-6 p-4 text-center">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">{t('app.name')}</h1>
-        <p className="text-neutral-400">{t('app.tagline')}</p>
+    <main className="flex min-h-dvh flex-col items-center justify-center gap-8 p-6 text-center">
+      <div className="flex flex-col items-center gap-3">
+        <h1>
+          <Logo size="lg" />
+        </h1>
+        <p className="text-ink-muted text-lg sm:text-xl">{t('app.tagline')}</p>
       </div>
 
       {phase === 'start' && (
@@ -22,21 +25,25 @@ export function StartScreen() {
           <button
             type="button"
             onClick={() => void begin()}
-            className="rounded-full bg-amber-400 px-8 py-4 text-lg font-semibold text-neutral-950 shadow-lg shadow-amber-400/20 transition hover:bg-amber-300 active:scale-95 motion-reduce:transition-none"
+            className="bg-accent shadow-accent/20 hover:bg-accent-hover min-h-14 rounded-xl px-8 py-4 text-lg font-semibold text-white shadow-lg transition active:scale-95 motion-reduce:transition-none"
           >
             {t('start.tap')}
           </button>
-          <p className="text-sm text-neutral-500">{t('start.hint')}</p>
-          {openingSharedMix && <p className="text-sm text-amber-300">{t('start.shared')}</p>}
+          <p className="text-ink-muted text-sm">{t('start.hint')}</p>
+          {openingSharedMix && (
+            <p className="border-line bg-card text-accent rounded-full border px-3 py-1.5 text-sm font-medium">
+              {t('start.shared')}
+            </p>
+          )}
         </div>
       )}
 
       {phase === 'loading' && (
-        <div className="flex w-full max-w-xs flex-col gap-2" role="status">
+        <div className="flex w-full max-w-xs flex-col gap-2 text-sm font-medium" role="status">
           <span>{t('start.loading', { percent: Math.round(progress * 100) })}</span>
-          <div className="h-2 overflow-hidden rounded-full bg-neutral-800">
+          <div className="bg-line h-2 overflow-hidden rounded-full">
             <div
-              className="h-full rounded-full bg-amber-400 transition-[width] motion-reduce:transition-none"
+              className="bg-accent h-full rounded-full transition-[width] motion-reduce:transition-none"
               style={{ width: `${progress * 100}%` }}
             />
           </div>
@@ -46,9 +53,9 @@ export function StartScreen() {
       {phase === 'error' && error && (
         <div
           role="alert"
-          className="flex max-w-md flex-col items-center gap-3 rounded-xl border border-rose-500/60 bg-rose-950/30 p-4"
+          className="border-danger/40 bg-danger-soft flex max-w-md flex-col items-center gap-3 rounded-2xl border p-5"
         >
-          <h2 className="font-semibold text-rose-300">{t('errors.title')}</h2>
+          <h2 className="text-danger font-extrabold">{t('errors.title')}</h2>
           <p>
             {error.kind === 'pack'
               ? t('errors.pack')
@@ -57,7 +64,7 @@ export function StartScreen() {
                 : t('errors.unknown')}
           </p>
           {error.kind === 'pack' && error.details.length > 0 && (
-            <details className="w-full text-left text-xs text-neutral-400">
+            <details className="text-ink-muted w-full text-left text-xs">
               <summary className="cursor-pointer">{t('errors.details')}</summary>
               <ul className="mt-1 list-disc pl-5 font-mono break-all">
                 {error.details.map((detail) => (
@@ -69,7 +76,7 @@ export function StartScreen() {
           <button
             type="button"
             onClick={() => void begin()}
-            className="rounded-full bg-neutral-100 px-6 py-2 font-semibold text-neutral-950"
+            className="bg-ink text-paper min-h-11 rounded-xl px-6 py-2 font-semibold"
           >
             {t('errors.retry')}
           </button>

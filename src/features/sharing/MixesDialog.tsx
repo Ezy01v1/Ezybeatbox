@@ -27,7 +27,7 @@ export function MixesDialog({ onClose }: { onClose: () => void }) {
   return (
     <Modal title={t('mixes.title')} onClose={onClose}>
       <form onSubmit={(e) => void onSave(e)} className="flex flex-col gap-2">
-        <label htmlFor="mix-name" className="text-sm text-neutral-400">
+        <label htmlFor="mix-name" className="text-ink text-sm font-semibold">
           {t('mixes.nameLabel')}
         </label>
         <div className="flex gap-2">
@@ -37,27 +37,29 @@ export function MixesDialog({ onClose }: { onClose: () => void }) {
             maxLength={60}
             placeholder={t('mixes.namePlaceholder')}
             onChange={(e) => setName(e.target.value)}
-            className="min-w-0 flex-1 rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2"
+            className="border-line text-ink placeholder:text-ink-muted/70 min-h-11 min-w-0 flex-1 rounded-xl border bg-white px-3 py-2"
           />
           <button
             type="submit"
-            className="rounded-full bg-amber-400 px-4 py-2 font-semibold text-neutral-950 hover:bg-amber-300"
+            className="bg-accent hover:bg-accent-hover min-h-11 rounded-xl px-4 py-2 font-semibold text-white"
           >
             {t('mixes.save')}
           </button>
         </div>
-        <p className="text-xs text-neutral-500">{t('mixes.localOnly')}</p>
+        <p className="text-ink-muted text-xs">{t('mixes.localOnly')}</p>
       </form>
 
       {savedMixes.length === 0 ? (
-        <p className="text-sm text-neutral-400">{t('mixes.empty')}</p>
+        <p className="border-line-strong text-ink-muted rounded-xl border border-dashed p-4 text-center text-sm">
+          {t('mixes.empty')}
+        </p>
       ) : (
-        <ul className="flex flex-col divide-y divide-neutral-800">
+        <ul className="divide-line border-line flex flex-col divide-y rounded-xl border bg-white px-3">
           {savedMixes.map((saved) => (
             <li key={saved.id} className="flex items-center gap-2 py-2">
               <div className="min-w-0 flex-1">
-                <p className="truncate font-medium">{saved.name}</p>
-                <p className="text-xs text-neutral-500">
+                <p className="truncate font-semibold">{saved.name}</p>
+                <p className="text-ink-muted text-xs">
                   {t('mixes.savedAt', { date: formatDate(saved.updatedAt) })}
                 </p>
               </div>
@@ -68,7 +70,7 @@ export function MixesDialog({ onClose }: { onClose: () => void }) {
                   void loadSavedMix(saved.id)
                   onClose()
                 }}
-                className="rounded-full bg-neutral-800 px-3 py-1.5 text-sm hover:bg-neutral-700"
+                className="border-line bg-card hover:border-accent hover:text-accent min-h-10 rounded-xl border px-3 py-1.5 text-sm font-semibold"
               >
                 {t('mixes.load')}
               </button>
@@ -88,10 +90,10 @@ export function MixesDialog({ onClose }: { onClose: () => void }) {
                   }
                 }}
                 onBlur={() => setConfirmingId((id) => (id === saved.id ? null : id))}
-                className={`rounded-full px-3 py-1.5 text-sm ${
+                className={`min-h-10 rounded-xl px-3 py-1.5 text-sm font-semibold ${
                   confirmingId === saved.id
-                    ? 'bg-rose-500 text-neutral-950'
-                    : 'text-rose-300 hover:bg-neutral-800'
+                    ? 'bg-danger text-white'
+                    : 'text-danger hover:bg-danger-soft'
                 }`}
               >
                 {confirmingId === saved.id ? t('mixes.confirmDelete') : t('mixes.delete')}

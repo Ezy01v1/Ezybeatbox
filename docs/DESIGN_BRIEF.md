@@ -6,6 +6,50 @@ El rediseño solo cambia lo visual: estilos (Tailwind) y `src/visuals/` (persona
 
 ---
 
+## 0. Dirección elegida (2026-11-05)
+
+Se exploraron las 3 direcciones de la sección 1 (Street 90s, Neón, Casual). **Se descartaron las 3**: cada una traía su propio estilo de personajes (neón pintado, bolitas con cara, figuras 3D), que no combina con los personajes ilustrados de hip hop y trap.
+
+**Se eligió la pantalla "Inicio neutro" como base**: interfaz editorial clara, común a todas las temáticas. Solo el escenario cambia por temática. Proyecto de Stitch: "EzyBeatbox Web App"; design system "EzyBeatbox Editorial · Shell común".
+
+### Interfaz común
+
+| Token         | Valor                                                 |
+| ------------- | ----------------------------------------------------- |
+| `ui/bg`       | `#f5f3ee` (marfil)                                    |
+| `ui/card`     | `#fbfaf7`                                             |
+| `ui/text`     | `#202124`                                             |
+| `ui/text-sub` | `#5f6368`                                             |
+| `ui/border`   | `#e2ded5`                                             |
+| `ui/accent`   | `#1a56db` (cobalto; hover `#1545b3`), también el foco |
+| Tipografía    | Plus Jakarta Sans                                     |
+| Radios        | tarjetas 16 px, botones 12 px, chips redondos         |
+
+### Arte de personajes
+
+Ilustración vectorial plana con contorno oscuro grueso, estilo novela gráfica indie. Personas de la cintura para arriba haciendo beatbox. **Nada** de 3D, neón pintado, robots, aliens ni emojis. Los personajes se terminan en **Rive** (contrato de inputs en la sección de Rive, cuando se agregue).
+
+### Temáticas
+
+| Token         | `hip-hop` (90 BPM)                                 | `trap` (140 BPM)                                      |
+| ------------- | -------------------------------------------------- | ----------------------------------------------------- |
+| `stage/bg`    | `#e8a588` terracota + vinilos                      | `#2b303a` pizarra liso                                |
+| `stage/panel` | `#f3e6d3` crema, contorno `#2a3550`                | `#1c1f24`, contorno `#3d4350`                         |
+| `stage/ink`   | `#2a3550` (texto sobre escenario y tarjetas)       | `#ffffff`                                             |
+| `stage/glow`  | `#fbf1e4` crema (anillos del beat)                 | `#a8f04a` lima                                        |
+| `role/kick`   | `#e8702a` naranja · bomber + snapback              | `#7a2e63` ciruela · hoodie + cadenas                  |
+| `role/snare`  | `#2a9a8f` verde azulado · windbreaker + bucket hat | `#b49be0` lavanda · puffer vest + gorra               |
+| `role/hihat`  | `#f0b93a` mostaza · varsity + audífonos            | `#a8f04a` lima · techwear + beanie + lentes           |
+| `role/bass`   | `#2a3550` azul marino · hoodie + durag             | `#5b3fa8` violeta · chaqueta acolchada + pasamontañas |
+| `role/voice`  | `#b03a7a` magenta · chaleco utilitario + rastas    | `#cfd6e0` plata · windbreaker + trenzas               |
+| `role/fx`     | `#5b8fb9` azul vinilo · track jacket + disco       | `#ff5fa2` rosa · chaqueta corta + lentes shield       |
+
+Los colores se sacaron a ojo de las ilustraciones; se ajustan al pasar a Figma o Rive. Hip hop ya está en `public/packs/boom-bap-01/manifest.json` (campo `theme`); trap entra con su pack de prueba. El contorno de trap pasó de `#0f1114` a `#3d4350` porque el primero no se distinguía del panel.
+
+Hojas de personajes en Stitch: "6 personajes hip hop" (la versión con etiquetas) y "6 personajes trap" (ignorar la copia repetida del de FX). Son la referencia para Rive.
+
+---
+
 ## 1. Prompts para Stitch
 
 Copia el bloque **Base** y agrega **una** de las direcciones de estilo. Genera las 3 para comparar.

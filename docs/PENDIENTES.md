@@ -3,29 +3,31 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-04**, después de la PWA y el brief de diseño (commit `8950bf8`).
+> Última actualización: **2026-11-05**, después de la interfaz editorial y el tema por pack (rama `feat/editorial-themes`).
 
 ## Estado en una línea
 
-Las 6 fases del plan (0–5) y la PWA están terminadas y en `main`. El juego tiene audio, escena, drag & drop, visuales reactivos, guardar/compartir/exportar, contratos de extensiones, y se puede instalar y usar sin conexión. **Falta:** el diseño visual final, publicar la app, probar en dispositivos reales y las funciones nuevas.
+Las 6 fases del plan (0–5) y la PWA están terminadas. Ya está la interfaz editorial (marfil, Plus Jakarta Sans, cobalto) con el escenario temático de hip hop. **Falta:** elegir pack y el pack trap, los personajes en Rive, publicar la app, probar en dispositivos reales y las funciones nuevas.
 
 ---
 
 ## 1. Próximo paso de código (en este orden)
 
-- [ ] **Sistema multi-pack y temáticas** (ver `docs/DESIGN_BRIEF.md`, sección 3):
-  - [ ] Campo `theme` en el manifest (colores por rol, fondo, skin de personajes) y que `src/visuals/` lo use en lugar de los colores fijos de `theme.ts`.
-  - [ ] Pantalla para elegir el pack antes de "Toca para empezar".
-  - [ ] Cambiar de pack sin recargar. Hoy un link de otro pack con la app abierta muestra el aviso `mixOtherPack`.
-  - [ ] Segundo pack de prueba "Trap" (~140 BPM) con placeholders generados por script.
+- [ ] **Sistema multi-pack y temáticas, Fase B** (ver `docs/DESIGN_BRIEF.md`, secciones 0 y 3):
+  - [x] Campo `theme` en el manifest y la interfaz editorial común (Fase A, 2026-11-05).
+  - [ ] Pantalla para elegir el pack antes de "Toca para empezar", basada en "Inicio neutro · Elige tu sonido" de Stitch (tarjetas con la ilustración de cada temática).
+  - [ ] Cambiar de pack sin recargar, con un botón "Cambiar estilo" en la barra. Hoy un link de otro pack con la app abierta muestra el aviso `mixOtherPack`.
+  - [ ] Segundo pack de prueba "Trap" (~140 BPM) con placeholders generados por script y el tema trap del brief.
   - [ ] Cargar el arte de cada temática solo cuando se usa.
-- [ ] **Rediseño visual**: cuando llegue el Figma. Se implementa leyéndolo con el MCP de Figma; solo cambian los estilos y `src/visuals/`, el motor y la lógica no se tocan.
+- [ ] **Personajes en Rive:** un renderer `RiveCharacter` con el contrato de `CharacterRenderer` (inputs `level`, `beat`, `status`, `muted`). Referencia de arte: las hojas de 6 personajes de Stitch. Falta instalar el CLI de Rive (`irm https://releases.rive.app/cli/install.ps1 | iex`; el instalador ya se revisó).
 - [ ] **Loop Station** (contratos en `src/extensions/loopStation.ts` y `userSounds.ts`, diseño en `docs/EXTENSIONS.md`). Conviene hacerla con la app ya publicada, para probar el micrófono en el celular.
 
 ## 2. Tareas de Daniel (no son código)
 
-- [ ] **Diseño:** explorar en Google Stitch con los prompts de `docs/DESIGN_BRIEF.md` → diseño final en Figma (primero el rig base y la temática hip hop).
-- [ ] **Autorizar la integración de Figma** con `/mcp` en una terminal de `claude` y pasar el link del archivo.
+- [x] **Diseño en Stitch:** dirección elegida y 6 personajes por temática (2026-11-05). Stitch está conectado por MCP en la configuración de usuario de esta PC (en la otra PC hay que agregarlo de nuevo con `claude mcp add stitch …`).
+- [ ] **Rotar la API key de Stitch**: quedó escrita en una conversación.
+- [ ] **Revisar la interfaz nueva** con `npm run dev` y decir qué ajustar.
+- [ ] **Animar los avatares en Rive** (o pedirle a Claude que lo haga con el CLI).
 - [ ] **Grabar los samples reales** del pack hip hop siguiendo `docs/SAMPLES.md` (90 BPM, 2 compases exactos, ~−18 LUFS). Basta reemplazar los archivos: el script de placeholders no los vuelve a pisar.
 - [ ] **Publicar la app (deploy)** desde la otra cuenta/PC, en Vercel o Netlify conectado al repo de GitHub, para que cada push se publique solo.
   - Desbloquea la QA en el celular, la instalación de la PWA (necesita HTTPS) y, después, el micrófono de la Loop Station.
@@ -53,11 +55,11 @@ Detalle completo en `docs/QA.md`. Lo más importante:
 
 - [ ] **¿Un 7.º personaje "Tú" para los sonidos de la Loop Station?** Por ahora los sonidos de usuario van en uno de los 6 personajes; el número fijo de personajes es `CHARACTER_COUNT = 6` en `src/core/packs/schema.ts`.
 - [ ] **Hosting:** Vercel, Netlify o GitHub Pages (lo decide Daniel al hacer el deploy desde su otra cuenta).
-- [ ] **Estilo visual base:** cuál de las 3 direcciones de Stitch (street 90s, neón o casual).
 
 ## 5. Deuda técnica y mejoras menores
 
-- [ ] **Cargar Tone.js recién después de "Toca para empezar".** Hoy la app pesa 179 KB comprimida, casi todo es Tone.js.
+- [ ] **Cargar Tone.js recién después de "Toca para empezar".** Hoy la app pesa 193 KB comprimida, casi todo es Tone.js.
+- [ ] **Botones M/S/✕ de 32 px en celular** (44 px desde `lg`), para que entren tres tarjetas por fila. Revisar en QA táctil si alcanza o si conviene otro layout.
 - [ ] **Volver a TypeScript 7** cuando `typescript-eslint` lo soporte (hoy está fijado en 6.0 por eso).
 - [ ] **Alertas moderadas de `npm audit`:** solo en herramientas de desarrollo (ESLint/minimatch, workbox-build). Revisar cuando salgan versiones arregladas, sin forzar un downgrade.
 - [ ] **Safari no informa `outputLatency`:** ahí los visuales no compensan la latencia de Bluetooth.
@@ -78,6 +80,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-05:** interfaz editorial común y tema por pack (campo `theme` del manifest, solo `#rrggbb`). Escenario hip hop terracota con vinilos; Mis mixes y Compartir con el estilo nuevo. Se descartaron las 3 direcciones oscuras de Stitch.
 
 - **2026-11-04:** brief de diseño con prompts de Stitch, convenciones de Figma y temáticas (`docs/DESIGN_BRIEF.md`).
 - **2026-11-04:** PWA: instalable, sin conexión y aviso de actualización; sesión de audio de iOS.

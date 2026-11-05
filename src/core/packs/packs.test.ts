@@ -73,6 +73,52 @@ describe('parseManifest', () => {
     manifest.characters[0]!.label = { es: 'Bombo', en: 'Kick' }
     expect(() => parseManifest(manifest)).not.toThrow()
   })
+
+  describe('theme', () => {
+    const theme = {
+      id: 'hip-hop',
+      stage: {
+        background: '#e8a588',
+        panel: '#f3e6d3',
+        outline: '#2a3550',
+        ink: '#2a3550',
+        glow: '#fbf1e4',
+        pattern: 'vinyl' as const,
+      },
+      roles: {
+        kick: '#e8702a',
+        snare: '#2a9a8f',
+        hihat: '#f0b93a',
+        bass: '#2a3550',
+        voice: '#b03a7a',
+        fx: '#5b8fb9',
+      },
+    }
+
+    it('is optional', () => {
+      expect(parseManifest(makeTestManifest()).theme).toBeUndefined()
+    })
+
+    it('accepts a complete theme', () => {
+      expect(parseManifest(makeTestManifest({ theme })).theme).toEqual(theme)
+    })
+
+    it('rejects colors that are not #rrggbb, so no CSS can be injected', () => {
+      for (const bad of ['red', '#fff', 'url(x)', 'var(--x)', '#e8a588;color:red']) {
+        expectInvalid(
+          makeTestManifest({ theme: { ...theme, stage: { ...theme.stage, background: bad } } }),
+          /#rrggbb/,
+        )
+      }
+    })
+
+    it('requires a color for every role', () => {
+      const roles = Object.fromEntries(
+        Object.entries(theme.roles).filter(([role]) => role !== 'fx'),
+      )
+      expectInvalid({ ...makeTestManifest(), theme: { ...theme, roles } }, /roles/)
+    })
+  })
 })
 
 describe('fetchManifest', () => {

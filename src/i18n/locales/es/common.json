@@ -26,7 +26,8 @@
     "pause": "Pausar",
     "masterVolume": "Volumen general",
     "position": "Compás {{bar}}, tiempo {{beat}}",
-    "bar": "Compás {{bar}}"
+    "bar": "Compás {{bar}}",
+    "pack": "{{name}} · {{bpm}} BPM"
   },
   "stage": {
     "label": "Escenario",

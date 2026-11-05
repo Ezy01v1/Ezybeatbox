@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
-const BACKGROUND = '#0a0a0a'
+const BACKGROUND = '#f5f3ee'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -43,7 +43,7 @@ export default defineConfig({
       },
       workbox: {
         // App shell + the default pack (manifest and Ogg loops), so the app works offline.
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}', 'packs/**/*.{json,ogg}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest,woff2}', 'packs/**/*.{json,ogg}'],
         // The .m4a fallbacks are only fetched by browsers without Ogg (older Safari): cache them
         // on first use instead of making every device download both formats.
         runtimeCaching: [

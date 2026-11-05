@@ -25,6 +25,26 @@ const PACK = {
   bpm: 90,
   timeSignature: [4, 4],
   loopBars: 2,
+  // Keep in sync with docs/DESIGN_BRIEF.md (section 0, "Temáticas").
+  theme: {
+    id: 'hip-hop',
+    stage: {
+      background: '#e8a588',
+      panel: '#f3e6d3',
+      outline: '#2a3550',
+      ink: '#2a3550',
+      glow: '#fbf1e4',
+      pattern: 'vinyl',
+    },
+    roles: {
+      kick: '#e8702a',
+      snare: '#2a9a8f',
+      hihat: '#f0b93a',
+      bass: '#2a3550',
+      voice: '#b03a7a',
+      fx: '#5b8fb9',
+    },
+  },
 } satisfies Omit<PackManifest, 'characters'>
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')

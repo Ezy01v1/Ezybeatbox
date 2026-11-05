@@ -79,7 +79,7 @@ main.tsx ─ new AudioEngine() ─ createAppStore(engine) ─ <AppStoreProvider>
   - Cada `CharacterSlot` es un _drop target_ (`data-drop-character`) y se detecta con `elementFromPoint`.
   - `resolveDrop` (lógica pura, con pruebas) decide qué pasa al soltar. Un sonido de la paleta solo se asigna a **su** personaje. Arrastrar el sonido de un personaje fuera de él lo quita.
   - El fantasma sigue al puntero escribiendo `transform` directamente en el DOM (`dragStore.positionGhost`). React solo se entera del inicio, del fin y de cuando el puntero cruza el borde de un personaje.
-- **Render de personajes:** `visuals/CharacterRenderer.ts` define las props (`role`, `status`, `muted`, `level`, `reducedMotion`). `visuals/index.ts` exporta `ActiveCharacterRenderer = SvgCharacter`; para cambiar el arte basta cambiar esa línea. El renderer es solo visual (`aria-hidden`): el nombre accesible y los controles viven en `CharacterSlot`.
+- **Render de personajes:** `visuals/CharacterRenderer.ts` define las props (`role`, `color`, `outline`, `status`, `muted`, `level`, `beat`, `reducedMotion`). `color` y `outline` vienen del tema del pack, así el renderer no lee el store. `visuals/index.ts` exporta `ActiveCharacterRenderer = SvgCharacter`; para cambiar el arte basta cambiar esa línea. El renderer es solo visual (`aria-hidden`): el nombre accesible y los controles viven en `CharacterSlot`.
 - **i18n:** todos los textos de la UI están en `i18n/locales/es/common.json`, con claves tipadas. Los textos del pack (nombres, etiquetas) se resuelven con `useLocalizedText`.
 - **Movimiento reducido:** `usePrefersReducedMotion` desactiva el pulso del estado "en espera"; las transiciones CSS usan `motion-reduce:`.
 
@@ -126,6 +126,15 @@ animationLoop (un solo rAF) ──► SvgCharacter × 6: followLevel → compute
 - **Avisos:** el store emite `Notice` con claves independientes del idioma (`notices.<key>` en i18n). Los informativos se cierran solos a los 5 s; los errores se quedan hasta que el usuario los cierra.
 - **UI:** "Mis mixes", "Compartir" y "Exportar audio" en la barra superior. Los diálogos usan `ui/Modal` (accesible: foco inicial en el contenido, Tab no sale del diálogo, Escape lo cierra y el foco vuelve al botón que lo abrió).
 
+## Temáticas e interfaz editorial (2026-11-05)
+
+- **Interfaz común:** marfil, Plus Jakarta Sans (empaquetada con `@fontsource-variable`, entra en el precache para funcionar offline) y acento cobalto. Los tokens están en `@theme` de `src/index.css` (`paper`, `card`, `ink`, `ink-muted`, `line`, `accent`, `danger`…). No cambian por pack.
+- **Tema por pack:** campo opcional `theme` del manifest (`core/packs/schema.ts`): `stage.{background, panel, outline, ink, glow, pattern}` y un color por rol. Los colores solo aceptan `#rrggbb`, porque terminan en atributos `style` y así un manifest no puede inyectar CSS.
+- **Sin tema:** `DEFAULT_THEME` en `visuals/theme.ts`. `resolveTheme(manifest)` elige; el hook `app/useTheme` lo expone a los componentes.
+- **Solo el escenario es temático:** `StageScreen` publica el tema como variables CSS (`--stage-bg`, `--stage-panel`, `--stage-outline`, `--stage-ink`) y las clases las usan (`bg-(--stage-panel)`). Los colores por rol se pasan como props (tarjeta, chip de estado, ficha de sonido, fantasma del arrastre, personaje).
+- **Contraste:** `readableInk(color)` elige texto oscuro o blanco sobre un color de rol. Un test verifica 4.5:1 en todos los colores de los temas incluidos y que `stage.ink` se lea sobre el fondo y las tarjetas.
+- **Adornos:** `visuals/svg/StagePattern` dibuja el patrón del tema (`vinyl` para hip hop) detrás del canvas de anillos, cerca de los bordes.
+
 ## Puntos de extensión (Fase 5)
 
 `src/extensions/` contiene solo contratos tipados: `LoopRecorder`, `LatencyCalibrator`, `UserSound`/`UserSoundStore`/`UserSoundHost`, `BeatRecognizer`/`PatternQuantizer`/`PatternRenderer` y `MixOperation`/`MixSyncTransport`/`SharedClock`. Ningún módulo de la app los importa. Un sonido de usuario usa un id `user-<uuid>` y entra al modelo como cualquier sonido de pack, a través de `UserSoundHost`, que implementará `AudioEngine`. El diseño completo, la API del backend y las notas de móvil están en [`EXTENSIONS.md`](EXTENSIONS.md).
@@ -155,6 +164,7 @@ animationLoop (un solo rAF) ──► SvgCharacter × 6: followLevel → compute
 - **2026-11-02 — TypeScript 6.0** en lugar de 7.0 (el que trae la plantilla de Vite): `typescript-eslint` solo soporta `<6.1`. Revisar cuando agregue soporte para TS 7.
 - **2026-11-02 — ESLint + Prettier** en lugar de oxlint (que trae la plantilla), según el stack definido.
 - **2026-11-02 — Tailwind v4** con `@tailwindcss/vite`; configuración en CSS (`@theme`), sin `tailwind.config.js`.
+- **2026-11-05 — Interfaz editorial común + tema por pack** (ver "Temáticas"). Se descartaron las 3 direcciones oscuras de Stitch porque cada una traía otro estilo de personajes. En celular los botones M/S/✕ miden 32 px para que quepan tres tarjetas por fila; desde `lg` miden 44 px.
 - **2026-11-02 — Placeholders:** el script sintetiza WAV en TS puro y los convierte con `ffmpeg` (requisito de desarrollo). Si no hay `ffmpeg`, deja `.wav` y el manifest los referencia.
 - **2026-11-02 — Duración del loop fijada por BPM:** el motor siempre usa `loopStart = 0` y `loopEnd = loopBars × beatsPerBar × 60 / bpm`, nunca la duración del archivo, para evitar huecos o clics por el padding de los encoders (MP3/AAC). El formato de respaldo para Safari (`.m4a`/WAV en vez de `.mp3`) se evalúa en la Fase 1.
 - **2026-11-02 — Gestor de paquetes:** npm.

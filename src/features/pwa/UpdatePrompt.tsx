@@ -27,24 +27,24 @@ export function UpdatePrompt() {
   return (
     <div
       role="status"
-      className="fixed inset-x-0 top-2 z-50 mx-auto flex w-[calc(100%-1.5rem)] max-w-md flex-col gap-2 rounded-xl border border-neutral-700 bg-neutral-900/95 p-3 text-sm shadow-xl"
+      className="border-line bg-card text-ink fixed inset-x-0 top-2 z-50 mx-auto flex w-[calc(100%-1.5rem)] max-w-md flex-col gap-2 rounded-2xl border p-4 text-sm shadow-xl"
     >
       {needRefresh ? (
         <>
           <p className="font-medium">{t('pwa.updateAvailable')}</p>
-          <p className="text-xs text-neutral-400">{t('pwa.updateHint')}</p>
+          <p className="text-ink-muted text-xs">{t('pwa.updateHint')}</p>
           <div className="flex gap-2">
             <button
               type="button"
               onClick={() => void updateServiceWorker(true)}
-              className="rounded-full bg-amber-400 px-4 py-1.5 font-semibold text-neutral-950 hover:bg-amber-300"
+              className="bg-accent hover:bg-accent-hover min-h-10 rounded-xl px-4 py-1.5 font-semibold text-white"
             >
               {t('pwa.update')}
             </button>
             <button
               type="button"
               onClick={() => setNeedRefresh(false)}
-              className="rounded-full bg-neutral-800 px-4 py-1.5 hover:bg-neutral-700"
+              className="border-line hover:border-line-strong min-h-10 rounded-xl border px-4 py-1.5 font-semibold"
             >
               {t('pwa.later')}
             </button>

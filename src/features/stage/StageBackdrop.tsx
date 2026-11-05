@@ -6,16 +6,16 @@ import { VISUAL_CONFIG } from '@/visuals/config'
 import { compensateLatency, followLevel, normalizeLevel } from '@/visuals/levels'
 import { usePrefersReducedMotion } from '@/ui/usePrefersReducedMotion'
 
-const BACKDROP_COLOR = '#fbbf24'
-
 /** Canvas behind the characters: glow follows the master level, rings mark each beat. */
-export function StageBackdrop() {
+export function StageBackdrop({ color }: { color: string }) {
   const engine = useEngine()
   const reducedMotion = usePrefersReducedMotion()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const reducedMotionRef = useRef(reducedMotion)
+  const colorRef = useRef(color)
   useLayoutEffect(() => {
     reducedMotionRef.current = reducedMotion
+    colorRef.current = color
   })
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export function StageBackdrop() {
         pixelRatio,
         level,
         rings: reducedMotionRef.current ? [] : ringsAt(beat.getBeatPosition(), beat.beatsPerBar),
-        color: BACKDROP_COLOR,
+        color: colorRef.current,
       })
     })
 

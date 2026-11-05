@@ -47,6 +47,38 @@ export const characterSchema = z.object({
   sounds: z.array(soundSchema).min(1).max(12),
 })
 
+/**
+ * Strict `#rrggbb`. Theme colors end up in inline styles, so anything looser (named colors,
+ * `url(...)`, `var(...)`) is rejected to keep a manifest from injecting arbitrary CSS.
+ */
+export const hexColorSchema = z.string().regex(/^#[0-9a-fA-F]{6}$/, 'must be a #rrggbb color')
+
+export const STAGE_PATTERNS = ['none', 'vinyl'] as const
+
+/**
+ * Visual skin of a pack. Only the stage changes per theme; the app UI around it is shared.
+ * Optional: packs without a theme use the neutral default (see visuals/theme.ts).
+ */
+export const themeSchema = z.object({
+  id: idSchema,
+  stage: z.object({
+    /** Stage panel background. */
+    background: hexColorSchema,
+    /** Character cards. */
+    panel: hexColorSchema,
+    /** Card borders and character outlines. */
+    outline: hexColorSchema,
+    /** Text drawn on the stage and on the cards. Must contrast with `background` and `panel`. */
+    ink: hexColorSchema,
+    /** Beat rings and level glow behind the characters. */
+    glow: hexColorSchema,
+    /** Decorative shapes drawn on the stage background. */
+    pattern: z.enum(STAGE_PATTERNS).optional(),
+  }),
+  /** One color per role: characters, status chips and palette icons. */
+  roles: z.record(z.enum(CHARACTER_ROLES), hexColorSchema),
+})
+
 export const packManifestSchema = z
   .object({
     id: idSchema,
@@ -59,6 +91,7 @@ export const packManifestSchema = z
     ]),
     loopBars: z.number().int().min(1).max(16),
     characters: z.array(characterSchema).length(CHARACTER_COUNT),
+    theme: themeSchema.optional(),
   })
   .superRefine((pack, ctx) => {
     const characterIds = new Set<string>()
@@ -92,4 +125,6 @@ export type LocalizedText = z.infer<typeof localizedTextSchema>
 export type CharacterRole = (typeof CHARACTER_ROLES)[number]
 export type SoundDef = z.infer<typeof soundSchema>
 export type CharacterDef = z.infer<typeof characterSchema>
+export type PackTheme = z.infer<typeof themeSchema>
+export type StagePattern = (typeof STAGE_PATTERNS)[number]
 export type PackManifest = z.infer<typeof packManifestSchema>

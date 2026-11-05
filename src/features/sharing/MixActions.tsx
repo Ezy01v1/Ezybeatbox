@@ -5,8 +5,12 @@ import { downloadBlob, exportFileName } from './download'
 import { MixesDialog } from './MixesDialog'
 import { ShareDialog } from './ShareDialog'
 
-const buttonClass =
-  'flex items-center gap-1.5 rounded-full bg-neutral-800 px-3 py-1.5 text-sm hover:bg-neutral-700 disabled:opacity-60'
+/** Shared shape; color comes from `secondaryClass` or `primaryClass` so they never compete. */
+const baseClass =
+  'inline-flex min-h-10 items-center gap-1.5 rounded-xl border px-3 py-2 text-sm font-semibold shadow-xs transition-colors disabled:opacity-60 motion-reduce:transition-none'
+const secondaryClass = `${baseClass} border-line bg-card text-ink hover:border-line-strong`
+const recordingClass = `${baseClass} border-line bg-card text-danger`
+const primaryClass = `${baseClass} border-accent bg-accent text-white hover:border-accent-hover hover:bg-accent-hover`
 
 function Icon({ d }: { d: string }) {
   return (
@@ -45,11 +49,11 @@ export function MixActions() {
 
   return (
     <div className="flex flex-wrap gap-2">
-      <button type="button" onClick={() => setDialog('mixes')} className={buttonClass}>
+      <button type="button" onClick={() => setDialog('mixes')} className={secondaryClass}>
         <Icon d="M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6" />
         {t('mixes.button')}
       </button>
-      <button type="button" onClick={() => setDialog('share')} className={buttonClass}>
+      <button type="button" onClick={() => setDialog('share')} className={secondaryClass}>
         <Icon d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" />
         {t('share.button')}
       </button>
@@ -58,11 +62,11 @@ export function MixActions() {
         onClick={() => void onExport()}
         disabled={exportStatus.state !== 'idle'}
         aria-live="polite"
-        className={`${buttonClass} ${exportStatus.state === 'recording' ? 'text-rose-300' : ''}`}
+        className={exportStatus.state === 'recording' ? recordingClass : primaryClass}
       >
         {exportStatus.state === 'recording' ? (
           <span
-            className="size-2.5 animate-pulse rounded-full bg-rose-500 motion-reduce:animate-none"
+            className="bg-danger size-2.5 animate-pulse rounded-full motion-reduce:animate-none"
             aria-hidden
           />
         ) : (

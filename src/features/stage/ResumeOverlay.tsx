@@ -13,20 +13,20 @@ export function ResumeOverlay() {
   if (contextState === 'running') return null
 
   return (
-    <div className="fixed inset-0 z-40 grid place-items-center bg-neutral-950/80 p-4 backdrop-blur-sm">
+    <div className="bg-ink/40 fixed inset-0 z-40 grid place-items-center p-4 backdrop-blur-sm">
       <div
         role="alertdialog"
         aria-labelledby="resume-title"
-        className="flex flex-col items-center gap-4"
+        className="border-line bg-card text-ink flex flex-col items-center gap-4 rounded-2xl border p-6 shadow-2xl"
       >
-        <p id="resume-title" className="text-lg font-semibold">
+        <p id="resume-title" className="text-xl font-extrabold tracking-tight">
           {t('resume.title')}
         </p>
         <button
           type="button"
           autoFocus
           onClick={() => void resumeAudio()}
-          className="rounded-full bg-amber-400 px-8 py-4 text-lg font-semibold text-neutral-950"
+          className="bg-accent hover:bg-accent-hover rounded-xl px-8 py-4 text-lg font-semibold text-white"
         >
           {t('resume.action')}
         </button>

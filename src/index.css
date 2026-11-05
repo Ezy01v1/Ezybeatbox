@@ -1,7 +1,25 @@
 @import 'tailwindcss';
 
+/*
+ * Shared editorial UI (same for every pack). Only the stage is themed per pack, through the
+ * --stage-* variables set in StageScreen. Tokens documented in docs/DESIGN_BRIEF.md (section 0).
+ */
 @theme {
-  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-sans:
+    'Plus Jakarta Sans Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --color-paper: #f5f3ee;
+  --color-card: #fbfaf7;
+  --color-ink: #202124;
+  --color-ink-muted: #5f6368;
+  --color-line: #e2ded5;
+  --color-line-strong: #c9c3b6;
+  --color-accent: #1a56db;
+  --color-accent-hover: #1545b3;
+  --color-danger: #b3261e;
+  --color-danger-soft: #fce8e6;
+  --color-success: #137333;
+  --color-warning: #8a4b00;
 }
 
 @layer base {
@@ -12,13 +30,13 @@
   }
 
   body {
-    @apply bg-neutral-950 text-neutral-100 antialiased;
+    @apply bg-paper text-ink antialiased;
     /* Avoid browser gestures (pull-to-refresh, double-tap zoom) stealing drags on touch. */
     overscroll-behavior: none;
     touch-action: manipulation;
   }
 
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-amber-400;
+    @apply outline-accent outline-2 outline-offset-2;
   }
 }

@@ -91,7 +91,7 @@ export function EngineHarness() {
   }
 
   return (
-    <main className="mx-auto flex max-w-5xl flex-col gap-4 p-4">
+    <main className="mx-auto flex min-h-full max-w-5xl flex-col gap-4 bg-neutral-950 p-4 text-neutral-100">
       <header className="flex flex-wrap items-center gap-3">
         <h1 className="text-xl font-bold">Banco de pruebas del motor</h1>
         <span className="rounded bg-neutral-800 px-2 py-1 font-mono text-xs">

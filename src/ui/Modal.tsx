@@ -59,7 +59,7 @@ export function Modal({ title, onClose, children }: ModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-40 grid place-items-end bg-neutral-950/70 p-0 backdrop-blur-sm sm:place-items-center sm:p-4"
+      className="bg-ink/40 fixed inset-0 z-40 grid place-items-end p-0 backdrop-blur-sm sm:place-items-center sm:p-4"
       onClick={(event) => event.target === event.currentTarget && onClose()}
     >
       <div
@@ -68,17 +68,17 @@ export function Modal({ title, onClose, children }: ModalProps) {
         aria-modal="true"
         aria-labelledby={titleId}
         onKeyDown={onKeyDown}
-        className="flex max-h-[85dvh] w-full flex-col gap-4 overflow-y-auto rounded-t-2xl border border-neutral-800 bg-neutral-900 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-2xl sm:max-w-md sm:rounded-2xl"
+        className="border-line bg-card text-ink flex max-h-[85dvh] w-full flex-col gap-4 overflow-y-auto rounded-t-3xl border p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl sm:max-w-md sm:rounded-2xl"
       >
         <div className="flex items-center justify-between gap-2">
-          <h2 id={titleId} className="text-lg font-semibold">
+          <h2 id={titleId} className="text-xl font-extrabold tracking-tight">
             {title}
           </h2>
           <button
             type="button"
             onClick={onClose}
             aria-label={t('common.close')}
-            className="grid size-9 place-items-center rounded-full text-neutral-400 hover:bg-neutral-800"
+            className="text-ink-muted hover:bg-paper hover:text-ink grid size-10 place-items-center rounded-full"
           >
             ✕
           </button>

@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppStore, useEngine } from '@/app/store/AppStoreContext'
+import { useTheme } from '@/app/useTheme'
 import type { CharacterDef } from '@/core/packs/schema'
 import { useApplyDrop } from '@/features/palette/dnd/useApplyDrop'
 import { useDragState } from '@/features/palette/dnd/dragStore'
@@ -8,18 +9,23 @@ import { acceptsDrop } from '@/features/palette/dnd/resolveDrop'
 import { DROP_TARGET_ATTR, usePointerDrag } from '@/features/palette/dnd/usePointerDrag'
 import { useLocalizedText } from '@/i18n/useLocalizedText'
 import { usePrefersReducedMotion } from '@/ui/usePrefersReducedMotion'
-import { ActiveCharacterRenderer, ROLE_COLORS } from '@/visuals'
+import { ActiveCharacterRenderer, readableInk } from '@/visuals'
 import { compensateLatency } from '@/visuals/levels'
 
-const toggleClass = (on: boolean, onClass: string) =>
-  `min-w-9 rounded-md px-2 py-1 text-sm font-semibold transition-colors motion-reduce:transition-none ${
-    on ? onClass : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
-  }`
+/**
+ * Round M / S / ✕ controls: 44 px on wide screens. On phones three cards share a row, so they
+ * shrink to 32 px to fit (still separated, and the whole card is the drop target).
+ */
+const controlClass =
+  'grid size-8 place-items-center rounded-full text-sm font-bold transition-colors motion-reduce:transition-none sm:size-9 lg:size-11'
+const controlIdle =
+  'bg-(--stage-ink)/8 text-(--stage-ink) hover:bg-(--stage-ink)/15 disabled:opacity-30 disabled:hover:bg-(--stage-ink)/8'
 
-export function CharacterSlot({ character }: { character: CharacterDef }) {
+export function CharacterSlot({ character, color }: { character: CharacterDef; color: string }) {
   const { t } = useTranslation()
   const localize = useLocalizedText()
   const engine = useEngine()
+  const theme = useTheme()
   const reducedMotion = usePrefersReducedMotion()
   const applyDrop = useApplyDrop()
 
@@ -52,7 +58,21 @@ export function CharacterSlot({ character }: { character: CharacterDef }) {
   // While stopping, the old sound is still audible until the bar line, so keep naming it.
   const shownSoundId = target ?? slot.playing
   const sound = character.sounds.find((s) => s.id === shownSoundId)
-  const color = ROLE_COLORS[character.role]
+  const singing = slot.status === 'playing' || slot.status === 'stopping'
+  const onRole = readableInk(color)
+
+  // Card edge tells the state at a glance: solid role color while singing, dashed while
+  // waiting for the bar line, the theme outline otherwise.
+  const cardStyle: React.CSSProperties = {
+    borderColor: singing || slot.status === 'queued' || accepts ? color : undefined,
+    borderStyle: slot.status === 'queued' ? 'dashed' : 'solid',
+    boxShadow:
+      singing && !slot.muted
+        ? `0 0 0 3px ${color}33, 0 10px 28px -8px ${color}99`
+        : accepts && isOver
+          ? `0 0 0 4px ${color}55`
+          : undefined,
+  }
 
   return (
     <section
@@ -61,21 +81,23 @@ export function CharacterSlot({ character }: { character: CharacterDef }) {
           ? t('character.labelWithSound', { name, sound: localize(sound.label), status })
           : t('character.label', { name, status })
       }
-      className={`flex h-full min-h-0 flex-col items-center justify-end gap-1 transition-opacity motion-reduce:transition-none ${
+      className={`flex min-h-0 flex-col items-center gap-1.5 rounded-2xl border-2 border-(--stage-outline)/25 bg-(--stage-panel) p-1.5 transition-[opacity,box-shadow] motion-reduce:transition-none sm:p-2 ${
         dimmed ? 'opacity-40' : ''
       }`}
+      style={cardStyle}
     >
       <div
         {...{ [DROP_TARGET_ATTR]: character.id }}
         onPointerDown={drag.onPointerDown}
         title={target ? t('character.dragOutHint') : undefined}
-        className={`relative max-h-80 min-h-0 w-full flex-1 rounded-3xl p-1 select-none ${
+        className={`relative aspect-[100/130] max-h-[34dvh] w-full p-1 select-none ${
           target ? 'cursor-grab touch-none active:cursor-grabbing' : ''
-        } ${accepts ? 'ring-2 ring-offset-2 ring-offset-neutral-950' : ''}`}
-        style={accepts ? { ['--tw-ring-color' as string]: color } : undefined}
+        }`}
       >
         <ActiveCharacterRenderer
           role={character.role}
+          color={color}
+          outline={theme.stage.outline}
           status={slot.status}
           muted={slot.muted}
           level={level}
@@ -84,36 +106,39 @@ export function CharacterSlot({ character }: { character: CharacterDef }) {
         />
         {accepts && (
           <span
-            className={`absolute inset-x-0 bottom-2 mx-auto w-fit rounded-full px-2 py-0.5 text-xs font-semibold text-neutral-950 ${
-              isOver ? '' : 'opacity-70'
+            className={`absolute inset-x-0 bottom-2 mx-auto w-fit rounded-full px-2.5 py-0.5 text-xs font-bold shadow-sm ${
+              isOver ? '' : 'opacity-80'
             }`}
-            style={{ backgroundColor: color }}
+            style={{ backgroundColor: color, color: onRole }}
           >
             {t('character.dropHere')}
           </span>
         )}
       </div>
 
-      <p className="text-sm font-semibold" style={{ color }}>
-        {name}
-      </p>
+      <p className="text-sm font-extrabold tracking-tight">{name}</p>
       <p
-        className={`max-w-full truncate text-xs ${
-          slot.status === 'queued' || slot.status === 'stopping'
-            ? 'text-amber-300'
-            : 'text-neutral-400'
+        className={`max-w-full truncate rounded-full border px-2 py-0.5 text-[11px] font-semibold ${
+          singing
+            ? 'border-transparent'
+            : slot.status === 'empty'
+              ? 'border-transparent opacity-80'
+              : 'border-dashed border-current'
         }`}
+        style={singing ? { backgroundColor: color, color: onRole } : undefined}
       >
         {sound ? `${localize(sound.label)} · ${status}` : status}
       </p>
 
-      <div className="flex gap-1">
+      <div className="flex gap-0.5 sm:gap-1">
         <button
           type="button"
           aria-pressed={slot.muted}
           aria-label={t('character.mute', { name })}
           onClick={() => toggleMute(character.id)}
-          className={toggleClass(slot.muted, 'bg-rose-500 text-neutral-950')}
+          className={`${controlClass} ${
+            slot.muted ? 'bg-(--stage-ink) text-(--stage-panel)' : controlIdle
+          }`}
         >
           M
         </button>
@@ -122,7 +147,7 @@ export function CharacterSlot({ character }: { character: CharacterDef }) {
           aria-pressed={slot.solo}
           aria-label={t('character.solo', { name })}
           onClick={() => toggleSolo(character.id)}
-          className={toggleClass(slot.solo, 'bg-amber-400 text-neutral-950')}
+          className={`${controlClass} ${slot.solo ? 'bg-accent text-white' : controlIdle}`}
         >
           S
         </button>
@@ -131,7 +156,7 @@ export function CharacterSlot({ character }: { character: CharacterDef }) {
           aria-label={t('character.remove', { name })}
           disabled={!target}
           onClick={() => clearSound(character.id)}
-          className="min-w-9 rounded-md bg-neutral-800 px-2 py-1 text-sm text-neutral-300 hover:bg-neutral-700 disabled:opacity-30"
+          className={`${controlClass} ${controlIdle}`}
         >
           ✕
         </button>
