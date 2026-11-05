@@ -59,6 +59,30 @@ Player × 5 ─┐
 - Formato y reglas de los samples: [`SAMPLES.md`](SAMPLES.md).
 - Generador de placeholders: `scripts/generate-placeholders.ts` + `scripts/placeholders/`. Importa `timing.ts` y el esquema desde `src/core`, así la duración de los loops y la validación tienen una sola fuente de verdad.
 
+## Escena y drag & drop (Fase 2)
+
+```
+main.tsx ─ new AudioEngine() ─ createAppStore(engine) ─ <AppStoreProvider> ─ <App>
+                                                                  ├─ StartScreen  (start / loading / error)
+                                                                  └─ StageScreen  (ready)
+                                                                       ├─ TransportBar (play, compás, volumen)
+                                                                       ├─ CharacterSlot × 6 → ActiveCharacterRenderer
+                                                                       ├─ Palette → SoundIcon × 30
+                                                                       ├─ DragLayer (fantasma)
+                                                                       └─ ResumeOverlay
+```
+
+- **Store (`app/store/appStore.ts`):** Zustand _vanilla_ creado con `createAppStore({ engine, packUrl })`. Depende de `EngineLike`, una interfaz reducida del motor, así las pruebas usan `FakeEngine` (mismas reglas de cuantización, pero los compases avanzan a mano). El store escucha los eventos del motor y solo se actualiza por evento (como mucho una vez por tiempo de compás), nunca por frame.
+- **Fases de la app:** `start` → `loading` (progreso) → `ready`, o `error` (`pack`, `audio-blocked`, `unknown`) con botón de reintentar. Si el navegador suspende el `AudioContext` a mitad de la sesión, `ResumeOverlay` pide un toque para reanudarlo.
+- **Drag & drop (`features/palette/dnd/`):**
+  - `usePointerDrag` usa pointer events, así que funciona igual con mouse, touch y lápiz. Si el puntero se mueve menos de 8 px, cuenta como **tap**: se dispara el `click` normal, que es lo mismo que hace Enter/Espacio con el teclado. Esa es la alternativa accesible al arrastre.
+  - Cada `CharacterSlot` es un _drop target_ (`data-drop-character`) y se detecta con `elementFromPoint`.
+  - `resolveDrop` (lógica pura, con pruebas) decide qué pasa al soltar. Un sonido de la paleta solo se asigna a **su** personaje. Arrastrar el sonido de un personaje fuera de él lo quita.
+  - El fantasma sigue al puntero escribiendo `transform` directamente en el DOM (`dragStore.positionGhost`). React solo se entera del inicio, del fin y de cuando el puntero cruza el borde de un personaje.
+- **Render de personajes:** `visuals/CharacterRenderer.ts` define las props (`role`, `status`, `muted`, `level`, `reducedMotion`). `visuals/index.ts` exporta `ActiveCharacterRenderer = SvgCharacter`; para cambiar el arte basta cambiar esa línea. El renderer es solo visual (`aria-hidden`): el nombre accesible y los controles viven en `CharacterSlot`.
+- **i18n:** todos los textos de la UI están en `i18n/locales/es/common.json`, con claves tipadas. Los textos del pack (nombres, etiquetas) se resuelven con `useLocalizedText`.
+- **Movimiento reducido:** `usePrefersReducedMotion` desactiva el pulso del estado "en espera"; las transiciones CSS usan `motion-reduce:`.
+
 ## Principios
 
 1. **Motor de audio separado de la UI.** El motor es TS puro con eventos; React solo lo consume.
@@ -81,4 +105,7 @@ Player × 5 ─┐
 - **2026-11-03 — Respaldo de audio `.m4a` (AAC)** en lugar de `.mp3`: el MP3 agrega un silencio inicial que los navegadores no recortan y desalinea el loop. Verificado en Chrome: `.ogg` y `.m4a` decodifican a la cantidad exacta de muestras. Safari queda pendiente de verificar en un dispositivo.
 - **2026-11-03 — Los loops quedan alineados a la cuadrícula global** (ver "Fase de los loops"). Para que un sonido espere al inicio del siguiente ciclo completo en lugar del siguiente compás, el cambio se haría en `applyBarTransitions`.
 - **2026-11-03 — Sound ids únicos en todo el pack** (no solo por personaje), para que un `Mix` serializado sea inequívoco.
+- **2026-11-04 — Paleta en una barra inferior** con los 30 sonidos agrupados por personaje y scroll horizontal en el celular (`touch-action: pan-x`). Así el gesto vertical hacia arriba arrastra y el horizontal hace scroll.
+- **2026-11-04 — Un sonido solo cae en su personaje** (los roles son fijos). Mientras arrastras, el personaje correcto se resalta con "Suelta aquí" y los demás se atenúan.
+- **2026-11-04 — Pausa = detener y volver al compás 1.** Los sonidos elegidos se mantienen y vuelven a entrar en el compás 1 al reproducir. Con loops, retomar a mitad de compás no aporta nada.
 - **2026-11-03 — `tsconfig.node.json`** usa `moduleResolution: bundler` para que `scripts/` importe código de `src/core` sin extensiones.

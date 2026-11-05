@@ -47,8 +47,27 @@ El audio real no se puede validar con pruebas unitarias. Esta lista se recorre a
 - [ ] Bluetooth: la latencia es mayor (esperado). Anotar si visual y audio se ven desfasados; se compensa en la Fase 3.
 - [ ] Parlantes del celular: el bajo de los placeholders se sigue percibiendo.
 
+## Escena y drag & drop (Fase 2)
+
+`npm run dev` y abre la raíz (`/`). En el celular: `npm run dev -- --host`.
+
+- [ ] "Toca para empezar" desbloquea el audio y muestra el progreso de carga.
+- [ ] Sin red (o renombrando un `.ogg`): aparece el error con detalles y "Reintentar" funciona al restaurarlo.
+- [ ] **Touch real:** arrastrar un sonido hacia arriba hasta su personaje lo asigna. Deslizar en horizontal sobre la paleta hace scroll y **no** arrastra.
+- [ ] Mientras arrastras: el personaje correcto muestra "Suelta aquí" y los demás se atenúan. Soltar en otro personaje o en el vacío no hace nada.
+- [ ] Tocar un sonido sin arrastrar lo asigna (lo mismo que hace un clic).
+- [ ] Arrastrar desde un personaje que suena hasta fuera de él: "Se calla en el próximo compás" y luego "En silencio". Soltarlo sobre el mismo personaje no lo quita.
+- [ ] El botón ✕ quita el sonido. M y S funcionan y muestran su estado.
+- [ ] **Teclado:** Tab recorre la paleta y los controles con foco visible, y Enter/Espacio sobre un sonido lo asigna.
+- [ ] Lector de pantalla: cada personaje anuncia nombre, sonido y estado ("Kick: Doble, En espera").
+- [ ] Con "reducir movimiento" activado en el sistema, el anillo de "en espera" no pulsa.
+- [ ] El indicador de compás/tiempo avanza en sincronía con lo que suena.
+- [ ] Bloquear y desbloquear el celular con el audio sonando: aparece "Toca para reanudar" y funciona.
+- [ ] En el celular, la escena entra en pantalla sin scroll vertical (probar 375×667 y 390×844).
+
 ## Resultados registrados
 
-| Fecha      | Fase | Navegador / dispositivo           | Resultado                                                                                                                                                  |
-| ---------- | ---- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-11-03 | 1    | Chrome (panel de Claude), Windows | Pack carga sin avisos; entradas cuantizadas al compás; mute OK; `.ogg` y `.m4a` decodifican a 235 200 muestras exactas. Sin escucha (prueba automatizada). |
+| Fecha      | Fase | Navegador / dispositivo                                  | Resultado                                                                                                                                                                                                                                 |
+| ---------- | ---- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-03 | 1    | Chrome (panel de Claude), Windows                        | Pack carga sin avisos; entradas cuantizadas al compás; mute OK; `.ogg` y `.m4a` decodifican a 235 200 muestras exactas. Sin escucha (prueba automatizada).                                                                                |
+| 2026-11-04 | 2    | Chrome (panel de Claude), escritorio y emulación 375×812 | Arrastre real paleta → personaje OK; soltar en otro personaje se ignora; tap asigna; arrastrar fuera quita; play/pausa e indicador OK; foco visible; sin errores en consola. El touch real no se probó (el panel envía eventos de mouse). |

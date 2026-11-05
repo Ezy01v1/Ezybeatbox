@@ -15,7 +15,7 @@ App web de "6 personajes con loops cuantizados al compás" (juego casual de beat
 
 0. Scaffold ✅
 1. Motor de audio + packs ✅ (pendiente: QA manual en Safari/iOS y Android, ver `docs/QA.md`)
-2. Escena y drag & drop: pantalla "Toca para empezar", 6 personajes SVG, pointer events + fallback teclado/tap, controles, i18n.
+2. Escena y drag & drop ✅ (pendiente: QA con touch real en el celular, ver `docs/QA.md`)
 3. Visual reactivo: `CharacterRenderer` SVG ligado al nivel de cada canal; 60 fps sin re-renders por frame.
 4. Guardar y compartir: `MixRepository` (localStorage), link versionado, exportar audio con `Tone.Recorder`.
 5. Puntos de extensión: solo interfaces + `docs/EXTENSIONS.md` (Loop Station, BeatRecognizer, colaborativo, backend, móvil).
