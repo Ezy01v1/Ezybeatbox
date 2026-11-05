@@ -1,18 +1,14 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { PackLoadError } from '@/core/packs/loader'
-import { makeTestManifest } from '@/core/packs/testing'
 import { App } from './App'
 import { AppStoreProvider } from './store/AppStoreProvider'
-import { createAppStore } from './store/appStore'
-import { FakeEngine } from './store/fakeEngine'
+import type { FakeEngine } from './store/fakeEngine'
+import { createTestApp } from './store/testing'
 
 function renderApp(configure?: (engine: FakeEngine) => void) {
-  const engine = new FakeEngine()
+  const { engine, store } = createTestApp()
   configure?.(engine)
-  const manifest = makeTestManifest()
-  const fetchFn = vi.fn(async () => new Response(JSON.stringify(manifest)))
-  const store = createAppStore({ engine, packUrl: '/packs/test-pack/', fetchFn })
   render(
     <AppStoreProvider store={store} engine={engine}>
       <App />

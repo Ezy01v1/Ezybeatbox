@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useAppStore } from '@/app/store/AppStoreContext'
 import { AUDIO_CONFIG } from '@/core/audio/config'
+import { MixActions } from '@/features/sharing/MixActions'
 
 function PlayIcon({ playing }: { playing: boolean }) {
   return (
@@ -91,6 +92,8 @@ export function TransportBar({ beatsPerBar }: { beatsPerBar: number }) {
           className="w-28 accent-amber-400"
         />
       </label>
+
+      <MixActions />
     </header>
   )
 }

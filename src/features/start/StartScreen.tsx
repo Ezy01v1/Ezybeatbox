@@ -8,6 +8,7 @@ export function StartScreen() {
   const progress = useAppStore((s) => s.progress)
   const error = useAppStore((s) => s.error)
   const begin = useAppStore((s) => s.begin)
+  const openingSharedMix = useAppStore((s) => s.openingSharedMix)
 
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center gap-6 p-4 text-center">
@@ -26,6 +27,7 @@ export function StartScreen() {
             {t('start.tap')}
           </button>
           <p className="text-sm text-neutral-500">{t('start.hint')}</p>
+          {openingSharedMix && <p className="text-sm text-amber-300">{t('start.shared')}</p>}
         </div>
       )}
 

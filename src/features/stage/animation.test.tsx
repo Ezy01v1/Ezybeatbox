@@ -3,9 +3,7 @@ import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { App } from '@/app/App'
 import { AppStoreProvider } from '@/app/store/AppStoreProvider'
-import { createAppStore } from '@/app/store/appStore'
-import { FakeEngine } from '@/app/store/fakeEngine'
-import { makeTestManifest } from '@/core/packs/testing'
+import { createTestApp } from '@/app/store/testing'
 
 /**
  * Phase 3 acceptance: reactive animation must not re-render React per frame. Frames are driven
@@ -33,13 +31,7 @@ describe('reactive visuals', () => {
   }
 
   it('animates characters from the meter without any React commit per frame', async () => {
-    const engine = new FakeEngine()
-    const manifest = makeTestManifest()
-    const store = createAppStore({
-      engine,
-      packUrl: '/packs/test-pack/',
-      fetchFn: async () => new Response(JSON.stringify(manifest)),
-    })
+    const { engine, store } = createTestApp()
     let commits = 0
     render(
       <Profiler id="app" onRender={() => commits++}>

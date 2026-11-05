@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import type { PackManifest } from '@/core/packs/schema'
 import { DragLayer } from '@/features/palette/DragLayer'
 import { Palette } from '@/features/palette/Palette'
+import { Notices } from '@/features/sharing/Notices'
 import { TransportBar } from '@/features/transport/TransportBar'
 import { CharacterSlot } from './CharacterSlot'
 import { ResumeOverlay } from './ResumeOverlay'
@@ -29,6 +30,7 @@ export function StageScreen({ manifest }: { manifest: PackManifest }) {
 
       <Palette manifest={manifest} />
       <DragLayer manifest={manifest} />
+      <Notices />
       <ResumeOverlay />
     </div>
   )

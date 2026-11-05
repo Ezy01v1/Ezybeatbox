@@ -6,7 +6,8 @@
   "start": {
     "tap": "Toca para empezar",
     "hint": "Sube el volumen o ponte audífonos.",
-    "loading": "Cargando sonidos… {{percent}} %"
+    "loading": "Cargando sonidos… {{percent}} %",
+    "shared": "Vas a escuchar un mix que te compartieron."
   },
   "errors": {
     "title": "Algo salió mal",
@@ -50,5 +51,61 @@
     "label": "Sonidos",
     "sound": "{{sound}} para {{character}}",
     "selected": "{{sound}} para {{character}} (elegido)"
+  },
+  "common": {
+    "close": "Cerrar"
+  },
+  "mixes": {
+    "button": "Mis mixes",
+    "title": "Mis mixes",
+    "nameLabel": "Nombre del mix",
+    "namePlaceholder": "Mi beat",
+    "save": "Guardar mix actual",
+    "empty": "Todavía no guardaste ningún mix.",
+    "load": "Cargar",
+    "loadLabel": "Cargar «{{name}}»",
+    "delete": "Eliminar",
+    "deleteLabel": "Eliminar «{{name}}»",
+    "confirmDelete": "¿Seguro?",
+    "savedAt": "Guardado el {{date}}",
+    "localOnly": "Se guardan solo en este navegador."
+  },
+  "share": {
+    "button": "Compartir",
+    "title": "Compartir mix",
+    "hint": "Quien abra este link escucha exactamente tu mix. No se sube nada: el mix va dentro del link.",
+    "linkLabel": "Link del mix",
+    "copy": "Copiar link",
+    "copied": "¡Copiado!",
+    "copyFailed": "No se pudo copiar. Selecciona el link y cópialo a mano.",
+    "native": "Compartir…",
+    "nativeTitle": "Mi mix en EzyBeatbox",
+    "emptyWarning": "Tu mix todavía no tiene sonidos."
+  },
+  "export": {
+    "button": "Exportar audio",
+    "waiting": "Esperando el inicio del loop…",
+    "recording": "Grabando… {{done}}/{{total}}",
+    "recordingLabel": "Grabando el audio: compás {{done}} de {{total}}"
+  },
+  "notices": {
+    "dismiss": "Cerrar aviso",
+    "linkLoaded": "Mix compartido cargado. Dale play para escucharlo.",
+    "linkInvalid": "El link del mix no es válido. Empezamos con el escenario vacío.",
+    "linkNewerVersion": "Este link es de una versión más nueva de EzyBeatbox. Recarga la página para actualizar.",
+    "linkPackVersionChanged": "El mix se hizo con otra versión del pack: algunos sonidos pueden haber cambiado.",
+    "missingSounds_one": "{{count}} sonido ya no existe en el pack y se omitió.",
+    "missingSounds_other": "{{count}} sonidos ya no existen en el pack y se omitieron.",
+    "mixSaved": "Mix «{{name}}» guardado.",
+    "mixLoaded": "Mix «{{name}}» cargado. Los cambios entran en el próximo compás.",
+    "mixDeleted": "Mix eliminado.",
+    "mixOtherPack": "Ese mix usa otro pack ({{pack}}) que no está cargado.",
+    "mixNotFound": "No se encontró ese mix.",
+    "storageError": "No se pudo usar el almacenamiento de este navegador (lleno o bloqueado, por ejemplo en modo privado).",
+    "exportDone": "Audio exportado. Revisa tus descargas.",
+    "exportUnsupported": "Tu navegador no permite grabar audio. Prueba con Chrome o Firefox.",
+    "exportEmpty": "Agrega al menos un sonido antes de exportar.",
+    "exportFailed": "No se pudo exportar el audio.",
+    "exportCancelled": "Exportación cancelada porque se detuvo la reproducción."
   }
 }
