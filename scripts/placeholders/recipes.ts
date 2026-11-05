@@ -40,10 +40,10 @@ export interface CharacterRecipe {
   sounds: SoundRecipe[]
 }
 
-type Hit = number | readonly [step: number, velocity: number]
+export type Hit = number | readonly [step: number, velocity: number]
 
 /** Places `voice` on each 16th-note step (0-based, across the whole loop). */
-function play(ctx: RenderContext, voice: Voice, hits: readonly Hit[], gain = 1): void {
+export function play(ctx: RenderContext, voice: Voice, hits: readonly Hit[], gain = 1): void {
   for (const hit of hits) {
     const [step, velocity] = typeof hit === 'number' ? [hit, 1] : hit
     const generate = voice.create(ctx.buffer.sampleRate, ctx.rng)
@@ -52,7 +52,7 @@ function play(ctx: RenderContext, voice: Voice, hits: readonly Hit[], gain = 1):
 }
 
 /** Plays a monophonic line of [step, midi, lengthInSteps] notes. */
-function line(
+export function line(
   ctx: RenderContext,
   make: (midi: number, duration: number) => Voice,
   notes: readonly (readonly [number, number, number])[],
@@ -63,7 +63,7 @@ function line(
   }
 }
 
-const range = (from: number, to: number, every = 1) =>
+export const range = (from: number, to: number, every = 1) =>
   Array.from({ length: Math.ceil((to - from) / every) }, (_, i) => from + i * every)
 
 // D minor. MIDI: D2 = 38, D4 = 62.

@@ -43,7 +43,7 @@ export default defineConfig({
       },
       workbox: {
         // App shell + the default pack (manifest and Ogg loops), so the app works offline.
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest,woff2}', 'packs/**/*.{json,ogg}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest,woff2}', 'packs/**/*.{json,ogg,jpg}'],
         // The .m4a fallbacks are only fetched by browsers without Ogg (older Safari): cache them
         // on first use instead of making every device download both formats.
         runtimeCaching: [

@@ -25,6 +25,18 @@ const audioPathSchema = z
     `must be a relative path inside the pack ending in .${AUDIO_EXTENSIONS.join('/.')}`,
   )
 
+/** Image extensions a pack may reference (cover art). */
+export const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'] as const
+
+/** Pack-relative image path, with the same rules as audio paths. */
+const imagePathSchema = z
+  .string()
+  .max(256)
+  .regex(
+    new RegExp(`^(?:[a-zA-Z0-9_-]+/)*[a-zA-Z0-9_-]+\\.(?:${IMAGE_EXTENSIONS.join('|')})$`),
+    `must be a relative path inside the pack ending in .${IMAGE_EXTENSIONS.join('/.')}`,
+  )
+
 /** Plain string, or a map of language code → text (e.g. `{ "es": "Seco", "en": "Dry" }`). */
 export const localizedTextSchema = z.union([
   z.string().min(1),
@@ -92,6 +104,10 @@ export const packManifestSchema = z
     loopBars: z.number().int().min(1).max(16),
     characters: z.array(characterSchema).length(CHARACTER_COUNT),
     theme: themeSchema.optional(),
+    /** One line for the pack picker, e.g. "Groove cálido, bombos marcados y mucho flow." */
+    description: localizedTextSchema.optional(),
+    /** Pack-relative cover art for the pack picker (16:9 works best). */
+    cover: imagePathSchema.optional(),
   })
   .superRefine((pack, ctx) => {
     const characterIds = new Set<string>()

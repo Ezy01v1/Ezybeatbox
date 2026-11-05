@@ -8,6 +8,27 @@
     4
   ],
   "loopBars": 2,
+  "description": "Groove cálido, bombos marcados y mucho flow.",
+  "cover": "cover.jpg",
+  "theme": {
+    "id": "hip-hop",
+    "stage": {
+      "background": "#e8a588",
+      "panel": "#f3e6d3",
+      "outline": "#2a3550",
+      "ink": "#2a3550",
+      "glow": "#fbf1e4",
+      "pattern": "vinyl"
+    },
+    "roles": {
+      "kick": "#e8702a",
+      "snare": "#2a9a8f",
+      "hihat": "#f0b93a",
+      "bass": "#2a3550",
+      "voice": "#b03a7a",
+      "fx": "#5b8fb9"
+    }
+  },
   "characters": [
     {
       "id": "kick",
@@ -231,24 +252,5 @@
         }
       ]
     }
-  ],
-  "theme": {
-    "id": "hip-hop",
-    "stage": {
-      "background": "#e8a588",
-      "panel": "#f3e6d3",
-      "outline": "#2a3550",
-      "ink": "#2a3550",
-      "glow": "#fbf1e4",
-      "pattern": "vinyl"
-    },
-    "roles": {
-      "kick": "#e8702a",
-      "snare": "#2a9a8f",
-      "hihat": "#f0b93a",
-      "bass": "#2a3550",
-      "voice": "#b03a7a",
-      "fx": "#5b8fb9"
-    }
-  }
+  ]
 }

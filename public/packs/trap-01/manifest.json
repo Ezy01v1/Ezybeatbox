@@ -1,0 +1,256 @@
+{
+  "id": "trap-01",
+  "name": "Trap",
+  "version": 1,
+  "bpm": 140,
+  "timeSignature": [
+    4,
+    4
+  ],
+  "loopBars": 2,
+  "description": "Bajos profundos, hi-hats rápidos y tu propio estilo.",
+  "cover": "cover.jpg",
+  "theme": {
+    "id": "trap",
+    "stage": {
+      "background": "#2b303a",
+      "panel": "#1c1f24",
+      "outline": "#3d4350",
+      "ink": "#ffffff",
+      "glow": "#a8f04a",
+      "pattern": "none"
+    },
+    "roles": {
+      "kick": "#7a2e63",
+      "snare": "#b49be0",
+      "hihat": "#a8f04a",
+      "bass": "#5b3fa8",
+      "voice": "#cfd6e0",
+      "fx": "#ff5fa2"
+    }
+  },
+  "characters": [
+    {
+      "id": "kick",
+      "role": "kick",
+      "label": "Kick",
+      "sounds": [
+        {
+          "id": "trap-kick-1",
+          "label": "808 Largo",
+          "file": "kick/trap-kick-1.ogg",
+          "fallback": "kick/trap-kick-1.m4a"
+        },
+        {
+          "id": "trap-kick-2",
+          "label": "Corto",
+          "file": "kick/trap-kick-2.ogg",
+          "fallback": "kick/trap-kick-2.m4a"
+        },
+        {
+          "id": "trap-kick-3",
+          "label": "Doble",
+          "file": "kick/trap-kick-3.ogg",
+          "fallback": "kick/trap-kick-3.m4a"
+        },
+        {
+          "id": "trap-kick-4",
+          "label": "Distorsión",
+          "file": "kick/trap-kick-4.ogg",
+          "fallback": "kick/trap-kick-4.m4a"
+        },
+        {
+          "id": "trap-kick-5",
+          "label": "Rebote",
+          "file": "kick/trap-kick-5.ogg",
+          "fallback": "kick/trap-kick-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "snare",
+      "role": "snare",
+      "label": "Snare",
+      "sounds": [
+        {
+          "id": "trap-snare-1",
+          "label": "Clap",
+          "file": "snare/trap-snare-1.ogg",
+          "fallback": "snare/trap-snare-1.m4a"
+        },
+        {
+          "id": "trap-snare-2",
+          "label": "Caja",
+          "file": "snare/trap-snare-2.ogg",
+          "fallback": "snare/trap-snare-2.m4a"
+        },
+        {
+          "id": "trap-snare-3",
+          "label": "Rimshot",
+          "file": "snare/trap-snare-3.ogg",
+          "fallback": "snare/trap-snare-3.m4a"
+        },
+        {
+          "id": "trap-snare-4",
+          "label": "Chasquido",
+          "file": "snare/trap-snare-4.ogg",
+          "fallback": "snare/trap-snare-4.m4a"
+        },
+        {
+          "id": "trap-snare-5",
+          "label": "Redoble",
+          "file": "snare/trap-snare-5.ogg",
+          "fallback": "snare/trap-snare-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "hihat",
+      "role": "hihat",
+      "label": "Hi-hat",
+      "sounds": [
+        {
+          "id": "trap-hihat-1",
+          "label": "Rápido",
+          "file": "hihat/trap-hihat-1.ogg",
+          "fallback": "hihat/trap-hihat-1.m4a"
+        },
+        {
+          "id": "trap-hihat-2",
+          "label": "Tresillos",
+          "file": "hihat/trap-hihat-2.ogg",
+          "fallback": "hihat/trap-hihat-2.m4a"
+        },
+        {
+          "id": "trap-hihat-3",
+          "label": "Rodada",
+          "file": "hihat/trap-hihat-3.ogg",
+          "fallback": "hihat/trap-hihat-3.m4a"
+        },
+        {
+          "id": "trap-hihat-4",
+          "label": "Abierto",
+          "file": "hihat/trap-hihat-4.ogg",
+          "fallback": "hihat/trap-hihat-4.m4a"
+        },
+        {
+          "id": "trap-hihat-5",
+          "label": "Shaker",
+          "file": "hihat/trap-hihat-5.ogg",
+          "fallback": "hihat/trap-hihat-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "bass",
+      "role": "bass",
+      "label": "Bass",
+      "sounds": [
+        {
+          "id": "trap-bass-1",
+          "label": "Sub",
+          "file": "bass/trap-bass-1.ogg",
+          "fallback": "bass/trap-bass-1.m4a"
+        },
+        {
+          "id": "trap-bass-2",
+          "label": "Deslizado",
+          "file": "bass/trap-bass-2.ogg",
+          "fallback": "bass/trap-bass-2.m4a"
+        },
+        {
+          "id": "trap-bass-3",
+          "label": "Grave",
+          "file": "bass/trap-bass-3.ogg",
+          "fallback": "bass/trap-bass-3.m4a"
+        },
+        {
+          "id": "trap-bass-4",
+          "label": "Pulso",
+          "file": "bass/trap-bass-4.ogg",
+          "fallback": "bass/trap-bass-4.m4a"
+        },
+        {
+          "id": "trap-bass-5",
+          "label": "Caída",
+          "file": "bass/trap-bass-5.ogg",
+          "fallback": "bass/trap-bass-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "voice",
+      "role": "voice",
+      "label": "Voice",
+      "sounds": [
+        {
+          "id": "trap-voice-1",
+          "label": "Ad-lib",
+          "file": "voice/trap-voice-1.ogg",
+          "fallback": "voice/trap-voice-1.m4a"
+        },
+        {
+          "id": "trap-voice-2",
+          "label": "Coro",
+          "file": "voice/trap-voice-2.ogg",
+          "fallback": "voice/trap-voice-2.m4a"
+        },
+        {
+          "id": "trap-voice-3",
+          "label": "Eco",
+          "file": "voice/trap-voice-3.ogg",
+          "fallback": "voice/trap-voice-3.m4a"
+        },
+        {
+          "id": "trap-voice-4",
+          "label": "Grave",
+          "file": "voice/trap-voice-4.ogg",
+          "fallback": "voice/trap-voice-4.m4a"
+        },
+        {
+          "id": "trap-voice-5",
+          "label": "Agudo",
+          "file": "voice/trap-voice-5.ogg",
+          "fallback": "voice/trap-voice-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "fx",
+      "role": "fx",
+      "label": "FX",
+      "sounds": [
+        {
+          "id": "trap-fx-1",
+          "label": "Riser",
+          "file": "fx/trap-fx-1.ogg",
+          "fallback": "fx/trap-fx-1.m4a"
+        },
+        {
+          "id": "trap-fx-2",
+          "label": "Láser",
+          "file": "fx/trap-fx-2.ogg",
+          "fallback": "fx/trap-fx-2.m4a"
+        },
+        {
+          "id": "trap-fx-3",
+          "label": "Sirena",
+          "file": "fx/trap-fx-3.ogg",
+          "fallback": "fx/trap-fx-3.m4a"
+        },
+        {
+          "id": "trap-fx-4",
+          "label": "Barrido",
+          "file": "fx/trap-fx-4.ogg",
+          "fallback": "fx/trap-fx-4.m4a"
+        },
+        {
+          "id": "trap-fx-5",
+          "label": "Impacto",
+          "file": "fx/trap-fx-5.ogg",
+          "fallback": "fx/trap-fx-5.m4a"
+        }
+      ]
+    }
+  ]
+}
