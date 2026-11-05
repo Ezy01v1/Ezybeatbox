@@ -11,6 +11,7 @@ import {
   resolveSharedMix,
 } from '@/core/mix/shareLink'
 import { type Mix, fitMixToPack } from '@/core/mix/types'
+import { type PackSummary, fetchCatalog } from '@/core/packs/catalog'
 import { PackLoadError, fetchManifest } from '@/core/packs/loader'
 import type { PackManifest } from '@/core/packs/schema'
 
@@ -59,7 +60,7 @@ export type NoticeKey =
   | 'mixSaved'
   | 'mixLoaded'
   | 'mixDeleted'
-  | 'mixOtherPack'
+  | 'packUnavailable'
   | 'mixNotFound'
   | 'storageError'
   | 'exportDone'
@@ -80,12 +81,19 @@ export type ExportStatus =
   | { state: 'waiting' }
   | { state: 'recording'; barsDone: number; barsTotal: number }
 
+export interface CatalogState {
+  state: 'idle' | 'loading' | 'ready' | 'error'
+  packs: PackSummary[]
+}
+
 export interface AppState {
   phase: AppPhase
   /** 0–1 while `phase === 'loading'`. */
   progress: number
   error: AppError | null
   manifest: PackManifest | null
+  /** Packs offered by the picker (manifests only, no audio). */
+  catalog: CatalogState
   slots: Record<string, SlotSnapshot>
   playing: boolean
   /** Zero-based; updated once per beat (never per frame). */
@@ -100,8 +108,16 @@ export interface AppState {
 }
 
 export interface AppActions {
-  /** "Toca para empezar": unlocks audio and loads the pack. Call from a user gesture. */
-  begin(): Promise<void>
+  /**
+   * Unlocks audio and opens a pack (by default the shared link's, the last requested one, or the
+   * default). Opening the pack that is already loaded just returns to the stage. Call from a user
+   * gesture.
+   */
+  begin(packId?: string): Promise<void>
+  /** Loads the pack list for the picker. Safe to call repeatedly. */
+  loadCatalog(): Promise<void>
+  /** "Cambiar estilo": stops playback and shows the pack picker (the current pack stays loaded). */
+  openPackPicker(): void
   /** Resumes a suspended/interrupted AudioContext. Call from a user gesture. */
   resumeAudio(): Promise<void>
   togglePlay(): Promise<void>
@@ -153,6 +169,10 @@ export function createAppStore({
 }: AppStoreOptions) {
   let pendingShared: SharedMix | null = null
   let pendingLinkError: ShareLinkError | null = null
+  /** A saved mix from another pack, applied once that pack has loaded. */
+  let pendingSaved: { name: string; mix: Mix } | null = null
+  /** Last pack asked for, so "Reintentar" retries that one and not the default. */
+  let requestedPackId = defaultPackId
 
   /** Decodes a hash into the pending link. Returns false for an empty hash. */
   const receiveHash = (hash: string): boolean => {
@@ -221,8 +241,8 @@ export function createAppStore({
       if (pendingLinkError) {
         notify('error', pendingLinkError === 'newer-version' ? 'linkNewerVersion' : 'linkInvalid')
       } else if (pendingShared && pendingShared.packId !== manifest.id) {
-        // Only reachable from a link opened while running; switching packs live is not supported.
-        notify('error', 'mixOtherPack', { pack: pendingShared.packId })
+        // Defensive: openPack always loads the link's pack before calling this.
+        notify('error', 'packUnavailable', { pack: pendingShared.packId })
       } else if (pendingShared) {
         const { mix, packVersionChanged, missingCount } = resolveSharedMix(pendingShared, manifest)
         get().applyMix(mix)
@@ -238,11 +258,88 @@ export function createAppStore({
       onLinkConsumed?.()
     }
 
+    const applyPendingSaved = (manifest: PackManifest) => {
+      const saved = pendingSaved
+      pendingSaved = null
+      if (!saved || saved.mix.packId !== manifest.id) return
+      const { missingCount } = get().applyMix(saved.mix)
+      notify('info', 'mixLoaded', { name: saved.name })
+      if (missingCount > 0) notify('error', 'missingSounds', { count: missingCount })
+    }
+
+    /** Drops whatever was waiting for a pack that turned out to be unavailable. */
+    const dropPendingFor = (packId: string) => {
+      if (pendingShared?.packId === packId) {
+        pendingShared = null
+        set({ openingSharedMix: false })
+        onLinkConsumed?.()
+      }
+      if (pendingSaved?.mix.packId === packId) pendingSaved = null
+    }
+
+    /**
+     * Loads `packId` and shows its stage. The manifest is fetched before the engine is touched,
+     * so if another pack is already playing and the new one is missing, the user keeps the
+     * current stage and gets a notice instead of an error screen.
+     */
+    const openPack = async (packId: string) => {
+      requestedPackId = packId
+      const previous = get().manifest
+      set({ phase: 'loading', progress: 0, error: null, contextState: engine.contextState })
+      // Ids come from the catalog, a link or a saved mix; all are validated kebab-case (no paths).
+      const packUrl = `${packsBaseUrl}${packId}/`
+
+      let manifest: PackManifest
+      try {
+        manifest = await fetchManifest(packUrl, fetchFn)
+      } catch (error) {
+        if (previous) {
+          dropPendingFor(packId)
+          requestedPackId = previous.id
+          set({ phase: 'ready' })
+          notify('error', 'packUnavailable', { pack: packId })
+          return
+        }
+        set({
+          phase: 'error',
+          error:
+            error instanceof PackLoadError
+              ? { kind: 'pack', details: error.details }
+              : { kind: 'unknown' },
+        })
+        return
+      }
+
+      try {
+        await engine.loadPack(manifest, packUrl, {
+          onProgress: (progress) => set({ progress }),
+        })
+      } catch (error) {
+        // The engine dropped the previous pack before loading this one: nothing to go back to.
+        set({
+          manifest: null,
+          phase: 'error',
+          error:
+            error instanceof PackLoadError
+              ? { kind: 'pack', details: error.details }
+              : { kind: 'unknown' },
+        })
+        return
+      }
+
+      set({ manifest, phase: 'ready' })
+      refreshAllSlots()
+      applySharedLink(manifest)
+      applyPendingSaved(manifest)
+      void get().refreshSavedMixes()
+    }
+
     return {
       phase: 'start',
       progress: 0,
       error: null,
       manifest: null,
+      catalog: { state: 'idle', packs: [] },
       slots: {},
       playing: false,
       position: { bar: 0, beat: 0 },
@@ -256,39 +353,54 @@ export function createAppStore({
       openLink(hash) {
         if (!receiveHash(hash)) return
         const manifest = get().manifest
-        if (get().phase === 'ready' && manifest) applySharedLink(manifest)
-        else set({ openingSharedMix: pendingShared !== null })
+        if (get().phase !== 'ready' || !manifest) {
+          set({ openingSharedMix: pendingShared !== null })
+        } else if (pendingShared && pendingShared.packId !== manifest.id) {
+          // Audio is already unlocked, so switching packs needs no new gesture.
+          void openPack(pendingShared.packId)
+        } else {
+          applySharedLink(manifest)
+        }
       },
 
-      async begin() {
+      async begin(packId) {
         if (get().phase === 'loading') return
+        const id = packId ?? pendingShared?.packId ?? requestedPackId
+        const current = get().manifest
+        if (current && current.id === id) {
+          // Back from the picker to the pack that is still loaded: keep its mix.
+          requestedPackId = id
+          set({ phase: 'ready', error: null })
+          applySharedLink(current)
+          applyPendingSaved(current)
+          return
+        }
         try {
           await engine.unlock()
         } catch {
           set({ phase: 'error', error: { kind: 'audio-blocked' } })
           return
         }
-        set({ phase: 'loading', progress: 0, error: null, contextState: engine.contextState })
-        // A shared link may ask for another pack; its id is validated kebab-case (no paths).
-        const packUrl = `${packsBaseUrl}${pendingShared?.packId ?? defaultPackId}/`
+        await openPack(id)
+      },
+
+      async loadCatalog() {
+        const { state } = get().catalog
+        if (state === 'loading' || state === 'ready') return
+        set({ catalog: { state: 'loading', packs: [] } })
         try {
-          const manifest = await fetchManifest(packUrl, fetchFn)
-          await engine.loadPack(manifest, packUrl, {
-            onProgress: (progress) => set({ progress }),
-          })
-          set({ manifest, phase: 'ready' })
-          refreshAllSlots()
-          applySharedLink(manifest)
-          void get().refreshSavedMixes()
-        } catch (error) {
-          set({
-            phase: 'error',
-            error:
-              error instanceof PackLoadError
-                ? { kind: 'pack', details: error.details }
-                : { kind: 'unknown' },
-          })
+          const { packs } = await fetchCatalog(packsBaseUrl, fetchFn)
+          set({ catalog: { state: 'ready', packs } })
+        } catch {
+          set({ catalog: { state: 'error', packs: [] } })
         }
+      },
+
+      openPackPicker() {
+        if (get().phase !== 'ready') return
+        if (engine.isPlaying) engine.stop()
+        set({ phase: 'start' })
+        void get().loadCatalog()
       },
 
       async resumeAudio() {
@@ -379,7 +491,9 @@ export function createAppStore({
           return
         }
         if (saved.mix.packId !== manifest.id) {
-          notify('error', 'mixOtherPack', { pack: saved.mix.packId })
+          // Switch to the mix's pack first; it is applied once that pack has loaded.
+          pendingSaved = { name: saved.name, mix: saved.mix }
+          await get().begin(saved.mix.packId)
           return
         }
         const { missingCount } = get().applyMix(saved.mix)

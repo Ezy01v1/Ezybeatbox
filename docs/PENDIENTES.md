@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-05**, Fase B en curso: pack trap y catálogo listos; falta la pantalla para elegir pack y cambiar de pack (rama `feat/editorial-themes`).
+> Última actualización: **2026-11-05**, Fase B en curso: pack trap, catálogo y lógica de cambio de pack listos; falta la pantalla para elegir pack (rama `feat/editorial-themes`).
 
 ## Estado en una línea
 
@@ -16,7 +16,7 @@ Las 6 fases del plan (0–5) y la PWA están terminadas. Ya está la interfaz ed
 - [ ] **Sistema multi-pack y temáticas, Fase B** (ver `docs/DESIGN_BRIEF.md`, secciones 0 y 3):
   - [x] Campo `theme` en el manifest y la interfaz editorial común (Fase A, 2026-11-05).
   - [ ] Pantalla para elegir el pack antes de "Toca para empezar", basada en "Inicio neutro · Elige tu sonido" de Stitch (tarjetas con la ilustración de cada temática).
-  - [ ] Cambiar de pack sin recargar, con un botón "Cambiar estilo" en la barra. Hoy un link de otro pack con la app abierta muestra el aviso `mixOtherPack`.
+  - [ ] Cambiar de pack sin recargar, con un botón "Cambiar estilo" en la barra. **Lógica lista** (store: `begin(packId)`, `openPackPicker`, `loadCatalog`; un link o un mix guardado de otro pack cambia de pack solo). Falta la UI.
   - [x] Pack de prueba `trap-01` (140 BPM, half-time, rolls de hi-hat) con placeholders y el tema trap. Catálogo `public/packs/index.json`; `description` y `cover` en el manifest (2026-11-05).
   - [ ] Cargar el arte de cada temática solo cuando se usa.
 - [ ] **Personajes en Rive:** un renderer `RiveCharacter` con el contrato de `CharacterRenderer` (inputs `level`, `beat`, `status`, `muted`). Referencia de arte: las hojas de 6 personajes de Stitch. Falta instalar el CLI de Rive (`irm https://releases.rive.app/cli/install.ps1 | iex`; el instalador ya se revisó).

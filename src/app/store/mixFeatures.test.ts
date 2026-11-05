@@ -1,4 +1,4 @@
-import { createTestApp } from './testing'
+import { createTestApp, makeOtherPack } from './testing'
 
 const keys = (app: ReturnType<typeof createTestApp>) =>
   app.store.getState().notices.map((n) => n.key)
@@ -76,12 +76,32 @@ describe('share links', () => {
     expect(keys(app)).toEqual(['linkLoaded'])
     expect(app.onLinkConsumed).toHaveBeenCalledOnce()
 
-    app.store.getState().openLink('#v=1&p=other-pack&pv=1&s=fx.fx-1')
-    expect(app.store.getState().slots.fx?.target).toBe('fx-2')
-    expect(keys(app)).toEqual(['linkLoaded', 'mixOtherPack'])
-
     app.store.getState().openLink('')
-    expect(keys(app)).toHaveLength(2)
+    expect(keys(app)).toHaveLength(1)
+  })
+
+  it('a link to another pack while running switches to that pack and applies the mix', async () => {
+    const app = createTestApp({ extraPacks: [makeOtherPack()] })
+    await ready(app)
+    app.store.getState().openLink('#v=1&p=other-pack&pv=1&s=fx.other-fx-2')
+
+    await vi.waitFor(() => expect(app.store.getState().manifest?.id).toBe('other-pack'))
+    expect(app.engine.loadedPackUrls).toEqual(['/packs/test-pack/', '/packs/other-pack/'])
+    expect(app.store.getState().slots.fx?.target).toBe('other-fx-2')
+    expect(keys(app)).toEqual(['linkLoaded'])
+  })
+
+  it('a link to a missing pack while running keeps the current stage', async () => {
+    const app = createTestApp()
+    const state = await ready(app)
+    state.setSound('kick', 'kick-2')
+    app.store.getState().openLink('#v=1&p=no-such-pack&pv=1&s=fx.fx-1')
+
+    await vi.waitFor(() => expect(keys(app)).toEqual(['packUnavailable']))
+    expect(app.store.getState()).toMatchObject({ phase: 'ready', manifest: { id: 'test-pack' } })
+    expect(app.store.getState().slots.kick?.target).toBe('kick-2')
+    expect(app.engine.loadedPackUrls).toEqual(['/packs/test-pack/'])
+    expect(app.onLinkConsumed).toHaveBeenCalledOnce()
   })
 
   it('a link to a pack that does not exist shows the pack error screen', async () => {
@@ -110,15 +130,102 @@ describe('saved mixes', () => {
     expect(keys(app)).toEqual(['mixSaved', 'mixLoaded', 'mixDeleted'])
   })
 
-  it('refuses a saved mix from another pack', async () => {
+  it('loading a saved mix from another pack switches to that pack first', async () => {
+    const other = makeOtherPack()
+    const app = createTestApp({ extraPacks: [other] })
+    const state = await ready(app)
+    const mix = app.engine.getMix()
+    const saved = await app.repository.save({
+      name: 'Otro',
+      mix: {
+        ...mix,
+        packId: 'other-pack',
+        characters: {
+          ...mix.characters,
+          kick: { ...mix.characters.kick!, soundId: 'other-kick-1' },
+        },
+      },
+    })
+
+    await state.loadSavedMix(saved.id)
+    expect(app.store.getState().manifest?.id).toBe('other-pack')
+    expect(app.store.getState().slots.kick?.target).toBe('other-kick-1')
+    expect(keys(app)).toEqual(['mixLoaded'])
+  })
+
+  it('a saved mix whose pack is gone keeps the current stage', async () => {
     const app = createTestApp()
     const state = await ready(app)
     const saved = await app.repository.save({
-      name: 'Otro',
-      mix: { ...app.engine.getMix(), packId: 'other-pack' },
+      name: 'Viejo',
+      mix: { ...app.engine.getMix(), packId: 'gone-pack' },
     })
     await state.loadSavedMix(saved.id)
-    expect(keys(app)).toEqual(['mixOtherPack'])
+    expect(app.store.getState()).toMatchObject({ phase: 'ready', manifest: { id: 'test-pack' } })
+    expect(keys(app)).toEqual(['packUnavailable'])
+  })
+})
+
+describe('pack picker', () => {
+  it('loads the catalog once', async () => {
+    const app = createTestApp({
+      extraPacks: [makeOtherPack()],
+      catalog: ['test-pack', 'other-pack'],
+    })
+    await Promise.all([app.store.getState().loadCatalog(), app.store.getState().loadCatalog()])
+    expect(app.store.getState().catalog.state).toBe('ready')
+    expect(app.store.getState().catalog.packs.map((p) => p.id)).toEqual(['test-pack', 'other-pack'])
+    expect(app.fetchFn.mock.calls.filter(([url]) => url === '/packs/index.json')).toHaveLength(1)
+  })
+
+  it('reports a missing catalog so the picker can fall back to the default pack', async () => {
+    const app = createTestApp()
+    await app.store.getState().loadCatalog()
+    expect(app.store.getState().catalog.state).toBe('error')
+  })
+
+  it('opens the chosen pack', async () => {
+    const app = createTestApp({ extraPacks: [makeOtherPack()] })
+    await app.store.getState().begin('other-pack')
+    expect(app.store.getState()).toMatchObject({ phase: 'ready', manifest: { id: 'other-pack' } })
+  })
+
+  it('"Cambiar estilo" stops playback; picking the same pack keeps the mix without reloading', async () => {
+    const app = createTestApp()
+    const state = await ready(app)
+    await state.togglePlay()
+    state.setSound('kick', 'kick-2')
+
+    app.store.getState().openPackPicker()
+    expect(app.store.getState().phase).toBe('start')
+    expect(app.engine.isPlaying).toBe(false)
+
+    await app.store.getState().begin('test-pack')
+    expect(app.store.getState().phase).toBe('ready')
+    expect(app.store.getState().slots.kick?.target).toBe('kick-2')
+    expect(app.engine.loadedPackUrls).toEqual(['/packs/test-pack/'])
+  })
+
+  it('picking another pack loads it with an empty stage', async () => {
+    const app = createTestApp({ extraPacks: [makeOtherPack()] })
+    const state = await ready(app)
+    state.setSound('kick', 'kick-2')
+    app.store.getState().openPackPicker()
+
+    await app.store.getState().begin('other-pack')
+    expect(app.store.getState().manifest?.id).toBe('other-pack')
+    expect(Object.values(app.store.getState().slots).every((s) => s.target === null)).toBe(true)
+  })
+
+  it('"Reintentar" retries the pack that failed, not the default one', async () => {
+    const app = createTestApp()
+    await app.store.getState().begin('broken-pack')
+    expect(app.store.getState().phase).toBe('error')
+    await app.store.getState().begin()
+    expect(app.fetchFn.mock.calls.map(([url]) => url)).toEqual([
+      '/packs/broken-pack/manifest.json',
+      '/packs/broken-pack/manifest.json',
+    ])
   })
 })
 

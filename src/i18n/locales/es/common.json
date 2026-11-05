@@ -27,7 +27,8 @@
     "masterVolume": "Volumen general",
     "position": "Compás {{bar}}, tiempo {{beat}}",
     "bar": "Compás {{bar}}",
-    "pack": "{{name}} · {{bpm}} BPM"
+    "pack": "{{name}} · {{bpm}} BPM",
+    "changePack": "Cambiar estilo"
   },
   "stage": {
     "label": "Escenario",
@@ -107,13 +108,27 @@
     "mixSaved": "Mix «{{name}}» guardado.",
     "mixLoaded": "Mix «{{name}}» cargado. Los cambios entran en el próximo compás.",
     "mixDeleted": "Mix eliminado.",
-    "mixOtherPack": "Ese mix usa otro pack ({{pack}}) que no está cargado.",
     "mixNotFound": "No se encontró ese mix.",
     "storageError": "No se pudo usar el almacenamiento de este navegador (lleno o bloqueado, por ejemplo en modo privado).",
     "exportDone": "Audio exportado. Revisa tus descargas.",
     "exportUnsupported": "Tu navegador no permite grabar audio. Prueba con Chrome o Firefox.",
     "exportEmpty": "Agrega al menos un sonido antes de exportar.",
     "exportFailed": "No se pudo exportar el audio.",
-    "exportCancelled": "Exportación cancelada porque se detuvo la reproducción."
+    "exportCancelled": "Exportación cancelada porque se detuvo la reproducción.",
+    "packUnavailable": "No se pudo abrir el pack «{{pack}}». Sigues en el escenario actual."
+  },
+  "picker": {
+    "eyebrow": "Tu voz. Tu ritmo.",
+    "title": "¿Qué vas a crear hoy?",
+    "subtitle": "Elige un estilo y arma tu beat, capa por capa.",
+    "loading": "Cargando estilos…",
+    "error": "No se pudieron cargar los estilos. Puedes empezar con el pack por defecto.",
+    "details": "{{bpm}} BPM · {{count}} voces",
+    "choose": "Explorar {{name}}",
+    "current": "Estilo actual",
+    "backToStage": "Volver al escenario",
+    "coverAlt": "Ilustración de la temática {{name}}",
+    "footer": "Hecho con la boca. Creado por ti.",
+    "headphones": "Mejor con audífonos"
   }
 }
