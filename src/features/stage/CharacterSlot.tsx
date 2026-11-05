@@ -9,6 +9,7 @@ import { DROP_TARGET_ATTR, usePointerDrag } from '@/features/palette/dnd/usePoin
 import { useLocalizedText } from '@/i18n/useLocalizedText'
 import { usePrefersReducedMotion } from '@/ui/usePrefersReducedMotion'
 import { ActiveCharacterRenderer, ROLE_COLORS } from '@/visuals'
+import { compensateLatency } from '@/visuals/levels'
 
 const toggleClass = (on: boolean, onClass: string) =>
   `min-w-9 rounded-md px-2 py-1 text-sm font-semibold transition-colors motion-reduce:transition-none ${
@@ -32,7 +33,11 @@ export function CharacterSlot({ character }: { character: CharacterDef }) {
   const accepts = dragPayload !== null && acceptsDrop(dragPayload, character.id)
   const dimmed = dragPayload?.kind === 'sound' && !accepts
 
-  const level = useMemo(() => engine.getMeter(character.id), [engine, character.id])
+  const level = useMemo(
+    () => compensateLatency(engine.getMeter(character.id), () => engine.getOutputLatency()),
+    [engine, character.id],
+  )
+  const beat = useMemo(() => engine.getBeatClock(), [engine])
 
   const target = slot?.target ?? null
   const drag = usePointerDrag(
@@ -74,6 +79,7 @@ export function CharacterSlot({ character }: { character: CharacterDef }) {
           status={slot.status}
           muted={slot.muted}
           level={level}
+          beat={beat}
           reducedMotion={reducedMotion}
         />
         {accepts && (

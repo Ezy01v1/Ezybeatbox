@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react'
-import type { LevelReader } from '@/core/audio/AudioEngine'
+import type { BeatClock, LevelReader } from '@/core/audio/AudioEngine'
 import type { SlotStatus } from '@/core/audio/transitions'
 import type { CharacterRole } from '@/core/packs/schema'
 
@@ -8,13 +8,17 @@ import type { CharacterRole } from '@/core/packs/schema'
  * accessible name, controls and drop target live in the wrapper (features/stage).
  *
  * Swapping the art (SVG today, Rive later) means writing another component with this shape.
+ * `computePose` (visuals/pose.ts) turns level + beat into a renderer-agnostic pose any rig can
+ * reuse.
  */
 export interface CharacterRenderProps {
   role: CharacterRole
   status: SlotStatus
   muted: boolean
-  /** Live 0–1 channel level. Read it in `requestAnimationFrame`, never in React state. */
+  /** Live 0–1 channel level, already latency-compensated. Read it in the animation loop only. */
   level: LevelReader
+  /** Live beat position. Read it in the animation loop only. */
+  beat: BeatClock
   reducedMotion: boolean
 }
 
