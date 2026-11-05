@@ -14,7 +14,7 @@ async function renderStage(overrides: Partial<AppStoreOptions> = {}) {
     </AppStoreProvider>,
   )
   const user = userEvent.setup()
-  await user.click(screen.getByRole('button', { name: 'Toca para empezar' }))
+  await user.click(await screen.findByRole('button', { name: 'Toca para empezar' }))
   await screen.findByRole('main', { name: 'Escenario' })
   return { ...app, user }
 }
@@ -85,7 +85,7 @@ describe('opening a shared link', () => {
     )
     expect(screen.getByText('Vas a escuchar un mix que te compartieron.')).toBeInTheDocument()
 
-    await userEvent.setup().click(screen.getByRole('button', { name: 'Toca para empezar' }))
+    await userEvent.setup().click(await screen.findByRole('button', { name: 'Toca para empezar' }))
     expect(
       await screen.findByText('Mix compartido cargado. Dale play para escucharlo.'),
     ).toBeInTheDocument()

@@ -3,30 +3,27 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-05**, Fase B en curso: pack trap, catálogo y lógica de cambio de pack listos; falta la pantalla para elegir pack (rama `feat/editorial-themes`).
+> Última actualización: **2026-11-05**, Fases A y B de temáticas terminadas en la rama `feat/editorial-themes` (sin push ni merge a `main`: falta que Daniel la revise).
 
 ## Estado en una línea
 
-Las 6 fases del plan (0–5) y la PWA están terminadas. Ya está la interfaz editorial (marfil, Plus Jakarta Sans, cobalto) con el escenario temático de hip hop. **Falta:** elegir pack y el pack trap, los personajes en Rive, publicar la app, probar en dispositivos reales y las funciones nuevas.
+Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editorial, selector de packs (Boom Bap y Trap, cada uno con su escenario temático) y cambio de pack sin recargar. **Falta:** revisar y fusionar la rama, los personajes en Rive, publicar la app, probar en dispositivos reales y las funciones nuevas.
 
 ---
 
 ## 1. Próximo paso de código (en este orden)
 
-- [ ] **Sistema multi-pack y temáticas, Fase B** (ver `docs/DESIGN_BRIEF.md`, secciones 0 y 3):
-  - [x] Campo `theme` en el manifest y la interfaz editorial común (Fase A, 2026-11-05).
-  - [ ] Pantalla para elegir el pack antes de "Toca para empezar", basada en "Inicio neutro · Elige tu sonido" de Stitch (tarjetas con la ilustración de cada temática).
-  - [ ] Cambiar de pack sin recargar, con un botón "Cambiar estilo" en la barra. **Lógica lista** (store: `begin(packId)`, `openPackPicker`, `loadCatalog`; un link o un mix guardado de otro pack cambia de pack solo). Falta la UI.
-  - [x] Pack de prueba `trap-01` (140 BPM, half-time, rolls de hi-hat) con placeholders y el tema trap. Catálogo `public/packs/index.json`; `description` y `cover` en el manifest (2026-11-05).
-  - [ ] Cargar el arte de cada temática solo cuando se usa.
+- [ ] **Fusionar `feat/editorial-themes` en `main`** cuando Daniel revise la interfaz (y hacer push para que la otra PC la tenga).
 - [ ] **Personajes en Rive:** un renderer `RiveCharacter` con el contrato de `CharacterRenderer` (inputs `level`, `beat`, `status`, `muted`). Referencia de arte: las hojas de 6 personajes de Stitch. Falta instalar el CLI de Rive (`irm https://releases.rive.app/cli/install.ps1 | iex`; el instalador ya se revisó).
+  - [ ] **Cargar el arte de cada temática solo cuando se usa:** que el `.riv` de cada pack se baje al abrir ese pack, no al iniciar la app. Hoy el único arte por temática son las portadas, y ya cargan con `loading="lazy"`; esto se hace junto con el renderer de Rive.
 - [ ] **Loop Station** (contratos en `src/extensions/loopStation.ts` y `userSounds.ts`, diseño en `docs/EXTENSIONS.md`). Conviene hacerla con la app ya publicada, para probar el micrófono en el celular.
 
 ## 2. Tareas de Daniel (no son código)
 
 - [x] **Diseño en Stitch:** dirección elegida y 6 personajes por temática (2026-11-05). Stitch está conectado por MCP en la configuración de usuario de esta PC (en la otra PC hay que agregarlo de nuevo con `claude mcp add stitch …`).
 - [ ] **Rotar la API key de Stitch**: quedó escrita en una conversación.
-- [ ] **Revisar la interfaz nueva** con `npm run dev` y decir qué ajustar.
+- [ ] **Revisar la interfaz nueva** con `npm run dev` (selector, escenario hip hop y trap, "Cambiar estilo") y decir qué ajustar.
+- [ ] **Grabar los samples reales del pack trap** (140 BPM, 2 compases). Los nombres de los sonidos están en `scripts/placeholders/trapRecipes.ts`; para regenerar los placeholders hace falta `ffmpeg` en el `PATH`.
 - [ ] **Animar los avatares en Rive** (o pedirle a Claude que lo haga con el CLI).
 - [ ] **Grabar los samples reales** del pack hip hop siguiendo `docs/SAMPLES.md` (90 BPM, 2 compases exactos, ~−18 LUFS). Basta reemplazar los archivos: el script de placeholders no los vuelve a pisar.
 - [ ] **Publicar la app (deploy)** desde la otra cuenta/PC, en Vercel o Netlify conectado al repo de GitHub, para que cada push se publique solo.
@@ -80,6 +77,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-05:** Fase B de temáticas: selector de packs como portada (basado en "Inicio neutro" de Stitch), pack `trap-01` a 140 BPM con su tema, catálogo `packs/index.json`, chip "Cambiar estilo" en la barra, y cambio de pack sin recargar (también desde un link o un mix guardado de otro pack). Si un pack no existe, se queda el escenario actual con un aviso.
 
 - **2026-11-05:** interfaz editorial común y tema por pack (campo `theme` del manifest, solo `#rrggbb`). Escenario hip hop terracota con vinilos; Mis mixes y Compartir con el estilo nuevo. Se descartaron las 3 direcciones oscuras de Stitch.
 

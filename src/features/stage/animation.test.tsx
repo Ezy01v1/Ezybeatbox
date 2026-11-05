@@ -42,7 +42,7 @@ describe('reactive visuals', () => {
     )
 
     const user = userEvent.setup()
-    await user.click(screen.getByRole('button', { name: 'Toca para empezar' }))
+    await user.click(await screen.findByRole('button', { name: 'Toca para empezar' }))
     await screen.findByRole('main', { name: 'Escenario' })
     await user.click(screen.getByRole('button', { name: 'Reproducir' }))
     await user.click(screen.getByRole('button', { name: 'kick 1 para kick' }))

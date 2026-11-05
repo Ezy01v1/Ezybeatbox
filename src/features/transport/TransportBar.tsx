@@ -49,20 +49,42 @@ function BeatIndicator({ beatsPerBar }: { beatsPerBar: number }) {
 }
 
 /** Which pack is loaded: name, tempo and the theme's stage color as a dot. */
+/** Loaded pack (name, tempo, theme dot). Tapping it opens the picker: "Cambiar estilo". */
 function PackChip({ manifest }: { manifest: PackManifest }) {
   const { t } = useTranslation()
   const localize = useLocalizedText()
   const theme = useTheme()
+  const openPackPicker = useAppStore((s) => s.openPackPicker)
+  const pack = t('transport.pack', { name: localize(manifest.name), bpm: manifest.bpm })
 
   return (
-    <span className="border-line bg-card text-ink hidden items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold sm:inline-flex">
+    <button
+      type="button"
+      onClick={openPackPicker}
+      title={t('transport.changePack')}
+      aria-label={`${t('transport.changePack')}: ${pack}`}
+      className="border-line bg-card text-ink hover:border-accent hover:text-accent inline-flex min-h-9 items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold transition-colors motion-reduce:transition-none"
+    >
       <span
         aria-hidden
         className="size-2 rounded-full"
         style={{ backgroundColor: theme.roles.kick }}
       />
-      {t('transport.pack', { name: localize(manifest.name), bpm: manifest.bpm })}
-    </span>
+      <span className="hidden sm:inline">{pack}</span>
+      <span className="sm:hidden">{localize(manifest.name)}</span>
+      <svg
+        viewBox="0 0 24 24"
+        className="size-3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden
+      >
+        <path d="M7 4L3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7" />
+      </svg>
+    </button>
   )
 }
 

@@ -113,3 +113,14 @@ Con `npm run build` y luego `npm run preview` (el service worker no existe en `d
 | 2026-11-04 | 3    | Chrome (panel de Claude), escritorio Windows, pantalla de 75 Hz | 6 personajes + fondo: 75 fps estables, p99 13,5 ms, peor frame 13,6 ms, 0 frames > 20 ms. Las bocas siguen el nivel de su canal. Falta probar en un celular real.                                                                                                                                                      |
 | 2026-11-04 | 4    | Chrome (panel de Claude), escritorio, dos pestañas              | El link reconstruyó el mix exacto (3 sonidos, mute, solo) en una pestaña nueva. Exportación: `.webm` de 10,62 s (esperado 10,67 s), con audio. Encontrados y corregidos: **el solo silenciaba todo** (master como `Tone.Channel`) y **un canal en mute rompía el link** (`-Infinity`). Mis mixes: guardar y listar OK. |
 | 2026-11-04 | PWA  | Chrome (panel de Claude), build + `vite preview`                | SW activo; manifest con 4 íconos; precache con la app, el manifest del pack y los 30 `.ogg`. **Con el servidor detenido:** la app cargó, el pack se decodificó desde el caché y Kick sonó (boca hasta 7,5). Aviso de actualización probado solo en tests (requiere un segundo deploy).                                 |
+
+## Selector de packs y temáticas (2026-11-05)
+
+- [ ] La portada muestra Boom Bap y Trap con su ilustración, BPM y descripción. En el celular las tarjetas se apilan.
+- [ ] Tocar una tarjeta (o su botón "Explorar…") desbloquea el audio y abre ese pack. En iOS, comprobar que suena después de ese primer toque.
+- [ ] El chip del pack en la barra ("Trap · 140 BPM ⇄") detiene la música y vuelve al selector, con "Estilo actual" en el pack cargado.
+- [ ] "Volver al escenario" conserva el mix; elegir el otro pack lo abre con el escenario vacío.
+- [ ] Trap: el escenario es gris pizarra con anillos lima, y los sonidos van a 140 BPM sin desfase con el compás.
+- [ ] Abrir un link compartido de Trap con la app en Boom Bap: cambia de pack solo y suena el mix.
+- [ ] Cargar desde "Mis mixes" un mix guardado en el otro pack: cambia de pack y lo aplica.
+- [ ] Modo avión después de haber abierto la app una vez: el selector muestra las dos portadas y ambos packs suenan.

@@ -4,10 +4,13 @@ import { PackLoadError } from '@/core/packs/loader'
 import { App } from './App'
 import { AppStoreProvider } from './store/AppStoreProvider'
 import type { FakeEngine } from './store/fakeEngine'
-import { createTestApp } from './store/testing'
+import { createTestApp, makeOtherPack } from './store/testing'
 
-function renderApp(configure?: (engine: FakeEngine) => void) {
-  const { engine, store } = createTestApp()
+function renderApp(
+  configure?: (engine: FakeEngine) => void,
+  options?: Parameters<typeof createTestApp>[0],
+) {
+  const { engine, store } = createTestApp(options)
   configure?.(engine)
   render(
     <AppStoreProvider store={store} engine={engine}>
@@ -18,18 +21,52 @@ function renderApp(configure?: (engine: FakeEngine) => void) {
 }
 
 async function enterStage(user: ReturnType<typeof userEvent.setup>) {
-  await user.click(screen.getByRole('button', { name: 'Toca para empezar' }))
+  await user.click(await screen.findByRole('button', { name: 'Toca para empezar' }))
   return screen.findByRole('main', { name: 'Escenario' })
 }
 
 const characterRegion = (name: RegExp) => screen.getByRole('region', { name })
 
 describe('App', () => {
-  it('shows the start screen with translated texts', () => {
+  it('without a pack catalog, falls back to the classic start screen', async () => {
     renderApp()
+    expect(await screen.findByRole('button', { name: 'Toca para empezar' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 1, name: 'EzyBeatbox' })).toBeInTheDocument()
     expect(screen.getByText('Arma tu beat, capa por capa.')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Toca para empezar' })).toBeInTheDocument()
+    expect(screen.getByText(/No se pudieron cargar los estilos/)).toBeInTheDocument()
+  })
+
+  describe('pack picker', () => {
+    const withCatalog = { extraPacks: [makeOtherPack()], catalog: ['test-pack', 'other-pack'] }
+
+    it('lists the packs and opens the one you choose', async () => {
+      const { user, store } = renderApp(undefined, withCatalog)
+      expect(
+        screen.getByRole('heading', { level: 1, name: '¿Qué vas a crear hoy?' }),
+      ).toBeInTheDocument()
+      const heading = await screen.findByRole('heading', { level: 2, name: 'Other Pack' })
+      const card = heading.closest('article')
+      expect(card).not.toBeNull()
+      expect(within(card as HTMLElement).getByText('140 BPM · 6 voces')).toBeInTheDocument()
+
+      await user.click(screen.getByRole('button', { name: 'Explorar Other Pack' }))
+      await screen.findByRole('main', { name: 'Escenario' })
+      expect(store.getState().manifest?.id).toBe('other-pack')
+    })
+
+    it('"Cambiar estilo" opens the picker and you can go back to the same stage', async () => {
+      const { user } = renderApp(undefined, withCatalog)
+      await user.click(await screen.findByRole('button', { name: 'Explorar Test Pack' }))
+      await screen.findByRole('main', { name: 'Escenario' })
+      await user.click(screen.getByRole('button', { name: 'kick 1 para kick' }))
+
+      await user.click(screen.getByRole('button', { name: /^Cambiar estilo: Test Pack · 90 BPM/ }))
+      expect(await screen.findByText('Estilo actual')).toBeInTheDocument()
+
+      await user.click(screen.getByRole('button', { name: 'Volver al escenario' }))
+      await screen.findByRole('main', { name: 'Escenario' })
+      expect(screen.getByRole('button', { name: 'kick 1 para kick (elegido)' })).toBeInTheDocument()
+    })
   })
 
   it('enters the stage with 6 silent characters and a palette', async () => {
@@ -119,7 +156,7 @@ describe('App', () => {
     const { user } = renderApp((engine) => {
       engine.failLoad = new PackLoadError('audio', 'boom', ['/packs/x/kick.ogg'])
     })
-    await user.click(screen.getByRole('button', { name: 'Toca para empezar' }))
+    await user.click(await screen.findByRole('button', { name: 'Toca para empezar' }))
 
     const alert = await screen.findByRole('alert')
     expect(within(alert).getByText(/No se pudo cargar el pack/)).toBeInTheDocument()

@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useAppStore } from '@/app/store/AppStoreContext'
 import { Logo } from '@/ui/Logo'
+import { PackPicker } from './PackPicker'
 
 /** "Toca para empezar" → loading with progress → (stage) or a visible error with retry. */
 export function StartScreen() {
@@ -10,6 +11,11 @@ export function StartScreen() {
   const error = useAppStore((s) => s.error)
   const begin = useAppStore((s) => s.begin)
   const openingSharedMix = useAppStore((s) => s.openingSharedMix)
+  const catalogFailed = useAppStore((s) => s.catalog.state === 'error')
+
+  // The pack picker is the home; a shared link skips it (the link already names its pack), and
+  // without a catalog the classic "Toca para empezar" opens the default pack.
+  if (phase === 'start' && !openingSharedMix && !catalogFailed) return <PackPicker />
 
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center gap-8 p-6 text-center">
@@ -30,6 +36,9 @@ export function StartScreen() {
             {t('start.tap')}
           </button>
           <p className="text-ink-muted text-sm">{t('start.hint')}</p>
+          {catalogFailed && !openingSharedMix && (
+            <p className="text-ink-muted max-w-sm text-sm">{t('picker.error')}</p>
+          )}
           {openingSharedMix && (
             <p className="border-line bg-card text-accent rounded-full border px-3 py-1.5 text-sm font-medium">
               {t('start.shared')}

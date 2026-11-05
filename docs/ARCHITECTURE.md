@@ -135,6 +135,15 @@ animationLoop (un solo rAF) ──► SvgCharacter × 6: followLevel → compute
 - **Contraste:** `readableInk(color)` elige texto oscuro o blanco sobre un color de rol. Un test verifica 4.5:1 en todos los colores de los temas incluidos y que `stage.ink` se lea sobre el fondo y las tarjetas.
 - **Adornos:** `visuals/svg/StagePattern` dibuja el patrón del tema (`vinyl` para hip hop) detrás del canvas de anillos, cerca de los bordes.
 
+### Varios packs y selector
+
+- **Catálogo:** `public/packs/index.json` (`{ version: 1, packs: [ids] }`) da el orden. `core/packs/catalog.ts` → `fetchCatalog` baja solo los manifests (sin audio), deja fuera los packs rotos o cuyo `id` no coincide con su carpeta, y arma la URL de la portada (`cover`, ruta relativa al pack). La descripción va en `description`.
+- **Selector** (`features/start/PackPicker`): es la portada de la app. Elegir un pack es el gesto que desbloquea el audio (`begin(packId)`). Si llega un link compartido se salta el selector, porque el link ya dice qué pack usar. Si el catálogo no carga, queda el clásico "Toca para empezar" con el pack por defecto.
+- **Cambiar estilo:** el chip del pack en la barra llama a `openPackPicker` (detiene la música y vuelve al selector con el pack todavía cargado). Elegir el mismo pack vuelve al escenario con el mix intacto; elegir otro carga ese pack con el escenario vacío.
+- **Cambio de pack en vivo** (`openPack` en el store): primero baja el manifest y recién después toca el motor. Si el pack no existe y ya había uno sonando, se queda el escenario actual con el aviso `packUnavailable`. Un link o un mix guardado de otro pack cambia de pack solo y después se aplica.
+- **"Reintentar"** reintenta el último pack pedido, no el de por defecto.
+- **Placeholders:** `scripts/placeholders/packs.ts` define cada pack (datos, tema, recetas). `npm run generate:placeholders -- --pack trap-01` genera uno solo.
+
 ## Puntos de extensión (Fase 5)
 
 `src/extensions/` contiene solo contratos tipados: `LoopRecorder`, `LatencyCalibrator`, `UserSound`/`UserSoundStore`/`UserSoundHost`, `BeatRecognizer`/`PatternQuantizer`/`PatternRenderer` y `MixOperation`/`MixSyncTransport`/`SharedClock`. Ningún módulo de la app los importa. Un sonido de usuario usa un id `user-<uuid>` y entra al modelo como cualquier sonido de pack, a través de `UserSoundHost`, que implementará `AudioEngine`. El diseño completo, la API del backend y las notas de móvil están en [`EXTENSIONS.md`](EXTENSIONS.md).
