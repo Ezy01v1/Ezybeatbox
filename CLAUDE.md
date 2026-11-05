@@ -20,6 +20,8 @@ App web de "6 personajes con loops cuantizados al compás" (juego casual de beat
 4. Guardar y compartir ✅ (pendiente: QA del link en otro dispositivo y exportación en Safari; decisión abierta sobre exportar a WAV con render offline)
 5. Puntos de extensión ✅ (contratos en `src/extensions/`, diseño en `docs/EXTENSIONS.md`; la app no los importa)
 
+Después de las fases (orden en `docs/EXTENSIONS.md`): PWA ✅ → Loop Station → backend → reconocimiento → colaborativo.
+
 ## Reglas de audio (no negociables)
 
 - Todo el scheduling con `Tone.Transport`; nunca `setTimeout`/`setInterval` para audio.

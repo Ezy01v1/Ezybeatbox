@@ -126,7 +126,7 @@ La persistencia ya pasa por el puerto `MixRepository` (`core/mix/repository.ts`)
 
 ## Orden sugerido
 
-1. **PWA:** poco esfuerzo y mejora la experiencia en el celular de inmediato.
+1. **PWA** ✅ (hecha: instalable, offline y aviso de actualización).
 2. **Loop Station** con `UserSoundHost` e IndexedDB: es el diferencial para beatboxers.
 3. **Backend** (`HttpMixRepository`, links cortos, subida de sonidos de usuario).
 4. **Reconocimiento:** necesita juntar datos de entrenamiento antes.

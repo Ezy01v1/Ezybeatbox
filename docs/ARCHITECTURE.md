@@ -130,6 +130,16 @@ animationLoop (un solo rAF) ──► SvgCharacter × 6: followLevel → compute
 
 `src/extensions/` contiene solo contratos tipados: `LoopRecorder`, `LatencyCalibrator`, `UserSound`/`UserSoundStore`/`UserSoundHost`, `BeatRecognizer`/`PatternQuantizer`/`PatternRenderer` y `MixOperation`/`MixSyncTransport`/`SharedClock`. Ningún módulo de la app los importa. Un sonido de usuario usa un id `user-<uuid>` y entra al modelo como cualquier sonido de pack, a través de `UserSoundHost`, que implementará `AudioEngine`. El diseño completo, la API del backend y las notas de móvil están en [`EXTENSIONS.md`](EXTENSIONS.md).
 
+## PWA (después de las fases)
+
+- **`vite-plugin-pwa` (Workbox)**, configurado en `vite.config.ts`.
+- **Manifest:** `standalone`, en español, con íconos generados desde `public/icon.svg` (`npm run generate:icons`, preset 2023: 64/192/512, maskable y apple-touch).
+- **Precache:** la app (JS, CSS, HTML, íconos), más `packs/**/manifest.json` y los `.ogg` del pack (unos 1,5 MB). Así funciona offline.
+- **Runtime cache** (`CacheFirst`): los `.m4a` de respaldo. Solo los pide Safari antiguo, así que no hace falta que los descarguen todos los dispositivos.
+- **Actualizaciones** con `registerType: 'prompt'`: `features/pwa/UpdatePrompt` muestra "Hay una versión nueva" con **Actualizar / Después**. Actualizar recarga la página, por eso nunca se hace sola en medio de un beat. También avisa una vez cuando la app ya funciona sin conexión.
+- **iOS:** `AudioEngine.unlock()` fija `navigator.audioSession.type = 'playback'` donde existe (Safari 17+). Así el switch de silencio no calla la música, como en una app de música nativa.
+- **Pruebas:** `virtual:pwa-register/react` se reemplaza por un mock controlable en `src/test/setup.ts`. El service worker se verifica en el build con `npm run preview` (ver QA).
+
 ## Principios
 
 1. **Motor de audio separado de la UI.** El motor es TS puro con eventos; React solo lo consume.

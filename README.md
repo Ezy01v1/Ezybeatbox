@@ -35,6 +35,27 @@ Abre la URL que imprime Vite (por defecto http://localhost:5173). Para probar en
 | `npm run format`                | Formatea con Prettier                                                                             |
 | `npm run generate:placeholders` | Genera los samples placeholder del pack `boom-bap-01` (`--force` sobrescribe, `--wav` sin ffmpeg) |
 
+## App instalable (PWA)
+
+EzyBeatbox es una PWA: se puede instalar desde el navegador (en el celular, "Agregar a la pantalla de inicio") y **funciona sin conexión** después de la primera visita, porque precachea la app y el pack `boom-bap-01`.
+
+- El service worker solo existe en el build de producción. Para probarlo:
+
+  ```bash
+  npm run build
+  ```
+
+  ```bash
+  npm run preview
+  ```
+
+- Cuando hay una versión nueva, la app pregunta antes de recargar, para no cortar el beat.
+- Los íconos se generan desde `public/icon.svg`:
+
+  ```bash
+  npm run generate:icons
+  ```
+
 ## Stack
 
 Vite · React 19 · TypeScript (strict) · Tailwind CSS v4 · Tone.js · Zustand · Zod · react-i18next · Vitest · ESLint + Prettier.

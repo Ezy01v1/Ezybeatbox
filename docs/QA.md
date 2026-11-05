@@ -92,6 +92,18 @@ El audio real no se puede validar con pruebas unitarias. Esta lista se recorre a
 - [ ] Safari: la exportación descarga `.m4a`/MP4 y se reproduce. Si Safari no soporta MediaRecorder, aparece el aviso de "no permite grabar".
 - [ ] Teclado: los diálogos se abren y cierran con Enter y Escape, y el foco vuelve al botón que los abrió.
 
+## PWA
+
+Con `npm run build` y luego `npm run preview` (el service worker no existe en `dev`). Para el celular: `npm run preview -- --host`. Ojo: fuera de `localhost`, el service worker necesita HTTPS, así que en el celular pruébalo con el deploy o con un túnel HTTPS.
+
+- [ ] Chrome escritorio: aparece el ícono de "Instalar" en la barra de direcciones; la app instalada abre en ventana propia con el ícono correcto.
+- [ ] Android: "Agregar a la pantalla de inicio" muestra el ícono adaptable (maskable) sin recortes raros.
+- [ ] iOS: "Compartir → Agregar a inicio" usa el apple-touch-icon y abre a pantalla completa.
+- [ ] Primera visita: aparece "EzyBeatbox ya funciona sin conexión" y se cierra solo.
+- [ ] **Offline:** modo avión, abrir la app instalada → "Toca para empezar" → el pack carga y suena.
+- [ ] **Actualización:** con la app abierta, publicar un build nuevo y recargar → "Hay una versión nueva…". "Después" la cierra; "Actualizar" recarga con la nueva versión.
+- [ ] **iOS, switch de silencio activado:** la música se escucha (Safari 17+).
+
 ## Resultados registrados
 
 | Fecha      | Fase | Navegador / dispositivo                                         | Resultado                                                                                                                                                                                                                                                                                                              |
@@ -100,3 +112,4 @@ El audio real no se puede validar con pruebas unitarias. Esta lista se recorre a
 | 2026-11-04 | 2    | Chrome (panel de Claude), escritorio y emulación 375×812        | Arrastre real paleta → personaje OK; soltar en otro personaje se ignora; tap asigna; arrastrar fuera quita; play/pausa e indicador OK; foco visible; sin errores en consola. El touch real no se probó (el panel envía eventos de mouse).                                                                              |
 | 2026-11-04 | 3    | Chrome (panel de Claude), escritorio Windows, pantalla de 75 Hz | 6 personajes + fondo: 75 fps estables, p99 13,5 ms, peor frame 13,6 ms, 0 frames > 20 ms. Las bocas siguen el nivel de su canal. Falta probar en un celular real.                                                                                                                                                      |
 | 2026-11-04 | 4    | Chrome (panel de Claude), escritorio, dos pestañas              | El link reconstruyó el mix exacto (3 sonidos, mute, solo) en una pestaña nueva. Exportación: `.webm` de 10,62 s (esperado 10,67 s), con audio. Encontrados y corregidos: **el solo silenciaba todo** (master como `Tone.Channel`) y **un canal en mute rompía el link** (`-Infinity`). Mis mixes: guardar y listar OK. |
+| 2026-11-04 | PWA  | Chrome (panel de Claude), build + `vite preview`                | SW activo; manifest con 4 íconos; precache con la app, el manifest del pack y los 30 `.ogg`. **Con el servidor detenido:** la app cargó, el pack se decodificó desde el caché y Kick sonó (boca hasta 7,5). Aviso de actualización probado solo en tests (requiere un segundo deploy).                                 |
