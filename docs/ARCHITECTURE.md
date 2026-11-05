@@ -126,6 +126,10 @@ animationLoop (un solo rAF) ──► SvgCharacter × 6: followLevel → compute
 - **Avisos:** el store emite `Notice` con claves independientes del idioma (`notices.<key>` en i18n). Los informativos se cierran solos a los 5 s; los errores se quedan hasta que el usuario los cierra.
 - **UI:** "Mis mixes", "Compartir" y "Exportar audio" en la barra superior. Los diálogos usan `ui/Modal` (accesible: foco inicial en el contenido, Tab no sale del diálogo, Escape lo cierra y el foco vuelve al botón que lo abrió).
 
+## Puntos de extensión (Fase 5)
+
+`src/extensions/` contiene solo contratos tipados: `LoopRecorder`, `LatencyCalibrator`, `UserSound`/`UserSoundStore`/`UserSoundHost`, `BeatRecognizer`/`PatternQuantizer`/`PatternRenderer` y `MixOperation`/`MixSyncTransport`/`SharedClock`. Ningún módulo de la app los importa. Un sonido de usuario usa un id `user-<uuid>` y entra al modelo como cualquier sonido de pack, a través de `UserSoundHost`, que implementará `AudioEngine`. El diseño completo, la API del backend y las notas de móvil están en [`EXTENSIONS.md`](EXTENSIONS.md).
+
 ## Principios
 
 1. **Motor de audio separado de la UI.** El motor es TS puro con eventos; React solo lo consume.

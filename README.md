@@ -2,7 +2,7 @@
 
 App web de música/beatbox: 6 personajes que "cantan" loops sincronizados al compás. Arrastras un sonido sobre un personaje y armas un beat por capas. Más adelante tendrá una _loop station_ y reconocimiento de beatbox.
 
-> Estado: **Fase 4 — guardar, compartir y exportar.** Plan de fases en [`CLAUDE.md`](CLAUDE.md), arquitectura en [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), formato de samples en [`docs/SAMPLES.md`](docs/SAMPLES.md) y pruebas manuales en [`docs/QA.md`](docs/QA.md).
+> Estado: **Fases 0–5 completas** (juego tipo Incredibox + puntos de extensión). Plan de fases en [`CLAUDE.md`](CLAUDE.md), arquitectura en [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), extensiones futuras en [`docs/EXTENSIONS.md`](docs/EXTENSIONS.md), formato de samples en [`docs/SAMPLES.md`](docs/SAMPLES.md) y pruebas manuales en [`docs/QA.md`](docs/QA.md).
 >
 > **Banco de pruebas del motor:** con `npm run dev`, abre `/harness.html`.
 

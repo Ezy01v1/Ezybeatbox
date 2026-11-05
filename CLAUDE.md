@@ -18,7 +18,7 @@ App web de "6 personajes con loops cuantizados al compás" (juego casual de beat
 2. Escena y drag & drop ✅ (pendiente: QA con touch real en el celular, ver `docs/QA.md`)
 3. Visual reactivo ✅ (pendiente: medir fps en un celular de gama media, ver `docs/QA.md`)
 4. Guardar y compartir ✅ (pendiente: QA del link en otro dispositivo y exportación en Safari; decisión abierta sobre exportar a WAV con render offline)
-5. Puntos de extensión: solo interfaces + `docs/EXTENSIONS.md` (Loop Station, BeatRecognizer, colaborativo, backend, móvil).
+5. Puntos de extensión ✅ (contratos en `src/extensions/`, diseño en `docs/EXTENSIONS.md`; la app no los importa)
 
 ## Reglas de audio (no negociables)
 
