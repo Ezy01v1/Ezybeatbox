@@ -98,6 +98,42 @@ function statusKeys(state: keyof typeof EXPRESSIONS, ring: number): [string, str
   ]
 }
 
+/**
+ * Staggered blinking: each role loops on its own period (frames at 60 fps) and blinks at its own
+ * offset, so the band never blinks in unison. Only visible while the eyes are open.
+ */
+const BLINK: Record<CharacterRole, { period: number; at: number }> = {
+  kick: { period: 252, at: 40 },
+  snare: { period: 300, at: 150 },
+  hihat: { period: 228, at: 95 },
+  bass: { period: 336, at: 210 },
+  voice: { period: 276, at: 15 },
+  fx: { period: 312, at: 120 },
+}
+/** Vertical center of the eyes in artwork space: the squash keeps it fixed. */
+const EYES_CENTER_Y = 41
+const BLINK_SQUASH = 0.1
+
+/** Squashes the eyes around their center by keying scaleY and y together (linear in both). */
+export function blinkAnimation(role: CharacterRole): string {
+  const { period, at } = BLINK[role]
+  const frames: [number, number][] = [
+    [0, 1],
+    [at, 1],
+    [at + 3, BLINK_SQUASH],
+    [at + 7, 1],
+    [period, 1],
+  ]
+  const track = (property: string, value: (scale: number) => number) =>
+    `<KeyedProperty property="${property}">${frames
+      .map(
+        ([frame, scale]) =>
+          `<KeyFrameDouble value="${+value(scale).toFixed(3)}" frame="${frame}"/>`,
+      )
+      .join('')}</KeyedProperty>`
+  return `<LinearAnimation name="Blink" id="0:49" fps="60" duration="${period}" loopValue="loop"><KeyedObject objectId="${ID.eyes}">${track('scaleY', (scale) => scale)}${track('y', (scale) => EYES_CENTER_Y * (1 - scale))}</KeyedObject></LinearAnimation>`
+}
+
 /** Starts the scene in a given state, over a solid background: only for preview renders. */
 export interface PreviewState {
   status: number
@@ -184,6 +220,11 @@ ${
           <BlendAnimation1D value="2" animationId="0:48"/>
         </BlendState1DInput>
       </StateMachineLayer>
+      <StateMachineLayer name="Blink">
+        <AnyState x="200" y="-120"/><ExitState x="400" y="-120"/>
+        <EntryState><StateTransition stateToId="0:55"/></EntryState>
+        <AnimationState id="0:55" x="200" animationId="0:49"/>
+      </StateMachineLayer>
       <StateMachineLayer name="Mute">
         <AnyState x="200" y="-120"/><ExitState x="400" y="-120"/>
         <EntryState><StateTransition stateToId="0:53"/></EntryState>
@@ -214,6 +255,7 @@ ${
     ${animation('Resting', '0:44', statusKeys('resting', 0))}
     ${animation('Queued', '0:45', statusKeys('queued', 0.85))}
     ${animation('Singing', '0:48', statusKeys('singing', 0))}
+    ${blinkAnimation(role)}
     ${animation('Muted', '0:46', [[ID.avatar, 'opacity', 0.35]])}
     ${animation('Audible', '0:47', [[ID.avatar, 'opacity', 1]])}
   </Artboard>

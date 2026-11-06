@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-06**, respaldo SVG streetwear para Boom Bap y CLI de Rive en la PC2. En la PC1 se rescataron las referencias de diseño de una sesión anterior (ver "Ideas rescatadas").
+> Última actualización: **2026-11-06**, respaldo SVG streetwear y parpadeo escalonado en Boom Bap; CLI de Rive en la PC2. En la PC1 se rescataron las referencias de diseño de una sesión anterior (ver "Ideas rescatadas").
 
 ## Estado en una línea
 
@@ -19,7 +19,8 @@ Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editori
   - [x] **Personajes más grandes y sin tarjetas** (2026-11-05): de la cadera hacia arriba, uno al lado del otro sobre el piso del escenario, estilo banda en vivo.
   - [ ] **Probar el arrastre con el dedo** en el escenario nuevo: el destino ya no es una tarjeta, sino el área del personaje.
   - [x] **Respaldo SVG streetwear en Boom Bap** (2026-11-06): mientras carga Rive, o si falla, se ve `StreetwearCharacter` (mismo arte, boca que sigue el audio). Trap sigue con el `SvgCharacter` clásico hasta que tenga su propio arte.
-  - [ ] **Parpadeo escalonado** en Rive (la versión SVG anterior lo tenía).
+  - [x] **Parpadeo escalonado en Boom Bap** (2026-11-06): capa `Blink` en bucle, con periodo y desfase propios por rol (`BLINK` en `scripts/rive/build-streetwear.ts`). Trap no lo tiene: su rig no se genera con este script.
+  - [ ] **Marca de agua de Rive:** al publicar, el CLI avisa "watermarked": con el plan gratuito, los `.riv` incluyen la pantalla de presentación de Rive. Los de la PC1 salieron igual (misma cuenta). Revisar si se nota en la app; para quitarla hace falta un plan pago (y `rive push` para vincular cada proyecto).
 - [ ] **Loop Station** (contratos en `src/extensions/loopStation.ts` y `userSounds.ts`, diseño en `docs/EXTENSIONS.md`). Conviene hacerla con la app ya publicada, para probar el micrófono en el celular.
 
 ### Ideas rescatadas de la PC1 (sesión del 2026-11-04, sin implementar todavía)
@@ -98,6 +99,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-06:** parpadeo escalonado en los seis personajes de Boom Bap (Rive). Cada uno parpadea a su ritmo; comprobado renderizando el cuadro a mitad del parpadeo. `.riv` republicados.
 
 - **2026-11-06:** respaldo SVG streetwear para Boom Bap. El arte se movió a `src/visuals/streetwear/art.ts` y lo comparten el generador de Rive (las escenas salen idénticas) y la app. Comprobado en el navegador con los `.riv` bloqueados.
 
