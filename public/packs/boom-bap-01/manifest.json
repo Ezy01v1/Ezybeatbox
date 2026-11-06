@@ -22,11 +22,11 @@
     },
     "roles": {
       "kick": "#e8702a",
-      "snare": "#2a9a8f",
+      "snare": "#c2307e",
       "hihat": "#f0b93a",
-      "bass": "#2a3550",
-      "voice": "#b03a7a",
-      "fx": "#5b8fb9"
+      "bass": "#7a5bc4",
+      "voice": "#36b066",
+      "fx": "#27b6d3"
     }
   },
   "characters": [

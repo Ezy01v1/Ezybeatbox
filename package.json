@@ -14,7 +14,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "generate:placeholders": "tsx scripts/generate-placeholders.ts",
-    "generate:icons": "pwa-assets-generator"
+    "generate:icons": "pwa-assets-generator",
+    "rive:streetwear": "tsx scripts/rive/build-streetwear.ts"
   },
   "dependencies": {
     "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
