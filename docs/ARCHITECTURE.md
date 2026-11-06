@@ -34,7 +34,7 @@ Las dependencias solo apuntan "hacia abajo":
 | Modelo `Mix`        | `core/mix`        | 1–4  | Serializable y versionado. Base para guardar, compartir por link y colaborativo.                       |
 | `MixRepository`     | `core/mix`        | 4    | Puerto; adaptador `LocalStorage` hoy, HTTP mañana.                                                     |
 | Store de UI         | `app/` / features | 2    | Zustand. Refleja el estado del mix; no guarda nada por frame.                                          |
-| `CharacterRenderer` | `visuals/`        | 2–3  | Recibe estado (inactivo / en espera / cantando) y nivel de audio. SVG por defecto y Rive por pack.                |
+| `CharacterRenderer` | `visuals/`        | 2–3  | Recibe estado (inactivo / en espera / cantando) y nivel de audio. SVG por defecto y Rive por pack.     |
 
 ## Motor de audio (Fase 1)
 
