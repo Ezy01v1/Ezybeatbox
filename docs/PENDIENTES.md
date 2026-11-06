@@ -3,45 +3,49 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-06**, 4 géneros nuevos (Reggaetón, House, Drum & Bass, Afrobeat); Boom Bap en SVG propio (sin marca de agua de Rive), inicio sin perder el beat, respaldo SVG streetwear y parpadeo escalonado en Boom Bap; CLI de Rive en la PC2. En la PC1 se rescataron las referencias de diseño de una sesión anterior (ver "Ideas rescatadas").
+> Última actualización: **2026-11-06 (PC2, trabajo)**. Seis géneros con paleta sonora propia, cualquier sonido en cualquier personaje, bases, animaciones al compás, y todo en SVG (ya no hay Rive). Daniel sigue desde la PC1 en casa.
 
 ## Estado en una línea
 
-Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editorial, selector de packs (Boom Bap, Trap, Reggaetón, House, Drum & Bass y Afrobeat; cada uno con su escenario temático) y cambio de pack sin recargar. Los doce personajes de Boom Bap y Trap ya están integrados en Rive. **Falta:** personalizar los avatares, publicar la app, probar en dispositivos reales y avanzar con las funciones nuevas.
+Las 6 fases del plan (0–5) y la PWA están terminadas. Hay seis géneros: Boom Bap 90, Trap 140, Reggaetón 95, House 124, Drum & Bass 174 y Afrobeat 105. Cada uno tiene:
+- sus colores, su escenario con patrón que late al compás y su portada;
+- tres bases prearmadas;
+- 7 sonidos por sección (5 propios más swing y ½);
+- su paleta sonora propia.
+
+Cualquier personaje toca cualquier sonido, uno por personaje. **Falta:** que Daniel escuche y ajuste los sonidos, más combinaciones, las funcionalidades nuevas, publicar la app y la QA en el celular.
 
 ---
 
 ## 1. Próximo paso de código (en este orden)
 
-- [x] **Cualquier sonido en cualquier personaje** (2026-11-06). Un mismo sonido no puede estar en dos personajes; si se suelta en otro, se mueve. Cada personaje conserva su aspecto, y el color viene del sonido.
-- [x] **Paleta sonora propia: Trap, House y Reggaetón** (2026-11-06).
-- [x] **Paleta sonora propia: Boom Bap, Drum & Bass y Afrobeat** (2026-11-06).
-- [ ] **Escuchar y ajustar** las paletas de los seis géneros (Daniel).
-- Referencia: Voz: chops con cambio de vocal, talkbox/vocoder, armonías y frases. FX por género: vinilo/scratch, tape stop, sirena/bocina, barridos de filtro, rewind, silbato/talking drum. Más adelante, golpes CC0 de Freesound o grabados por Daniel.
-- [ ] **Más combinaciones por género:** de 10 a 12 sonidos por sección, con fills.
-- [ ] **Nombres de los personajes:** hoy se llaman "Kick", "Snare"…, aunque ya pueden tocar cualquier cosa. Decidir si llevan nombres propios.
-- [ ] **Teclado:** al tocar un sonido, la app elige el personaje (`placeSound`). Para poner dos bombos con teclado hay que mover el primero; falta una forma de elegir el personaje con teclado.
+**Para retomar en la otra PC:** `git pull`, `npm install` (se agregaron `ffmpeg-static` y `sharp` como dependencias de desarrollo) y `npm run dev`.
 
-Foco de Daniel (2026-11-06): **diseño, animaciones, funcionalidades, variedad de ritmo y de géneros**. "Mis mixes" queda para después.
+1. [ ] **Ajustar los sonidos según lo que escuche Daniel.** Le gustaron en general (2026-11-06), pero falta su lista concreta.
+   - Los sonidos de cada género están en `scripts/placeholders/palettes.ts`, los instrumentos en `voices.ts` e `instruments.ts`, y el color de mezcla en `finish.ts`.
+   - Para regenerar un pack: `npx tsx scripts/generate-placeholders.ts --force --pack <id>`. Después, `git checkout` de los `.ogg`/`.m4a` de los packs que no se tocaron, porque `--force` vuelve a codificar todo y cambia los bytes.
+2. [ ] **Más combinaciones por género:** pasar de 7 a 10–12 sonidos por sección y agregar **fills**, es decir redobles o remates al final del loop, escritos a mano. Agregar ids nuevos al final de cada sección, sin cambiar los existentes, para no romper las mezclas guardadas.
+3. [ ] **Funcionalidades** (recomendado en este orden):
+   - **"Sorpréndeme":** una mezcla al azar que suene bien. Por ejemplo, un sonido por sección, con algo de variedad.
+   - **Drops:** solo bombo y bajo durante un compás, y luego vuelven todos.
+   - **BPM en vivo:** cuantizado al compás. Es delicado porque toca el `loopEnd` y el `Transport` del motor.
+4. [ ] **Nombres de los personajes:** siguen llamándose "Kick", "Snare"…, aunque ya pueden tocar cualquier cosa. Preguntarle a Daniel si quiere nombres propios.
+5. [ ] **Teclado:** al tocar un sonido, la app elige el personaje (`placeSound`). Falta una forma de elegir el personaje con teclado, por ejemplo para poner dos bombos.
+6. [ ] **Ropa o accesorios por género:** hoy todos los géneros comparten el personaje streetwear y solo cambian los colores.
+7. [ ] **Golpes CC0 o grabados por Daniel** para las voces y los FX (como beatboxer), y algunos golpes de batería. Solo con licencia CC0 (por ejemplo, Freesound filtrado por "Creative Commons 0"), porque la app redistribuye los sonidos. Los ritmos los compone Claude.
 
-- [x] **Variedad de géneros:** Reggaetón/Dembow (95), House (124), Drum & Bass (174) y Afrobeat (105), con sonidos sintéticos propios.
-- [x] **Portadas y escenarios de los 4 géneros nuevos:** personajes streetwear en SVG, un patrón de escenario por género (`sun`, `lights`, `speed`, `kente`) y portadas generadas con `scripts/covers/build-covers.ts`.
-- [x] **Bases por género:** tres bases por pack y "Desde cero" en el escenario (campo `bases` del manifest).
-- [x] **Más variaciones por rol:** swing y ½ tiempo derivados (7 por personaje).
-- [ ] **Fills** (redobles o remates al final del loop): necesitan recetas a mano, no se derivan.
-- [x] **Animaciones de entrada y salida + fondo al compás.**
-- [x] **Trap a SVG streetwear:** ningún pack usa Rive ya, así que no queda marca de agua.
-- [ ] **Funcionalidades:** BPM en vivo (cuantizado), botón "Sorpréndeme", drops.
+Foco de Daniel (2026-11-06): **diseño, animaciones, funcionalidades, variedad de ritmo y de géneros**. "Mis mixes" desde la portada queda para después.
 
-- [ ] **Personajes en Rive:** un renderer `RiveCharacter` con el contrato de `CharacterRenderer` (inputs `level`, `beat`, `status`, `muted`). Referencia de arte: las hojas de 6 personajes de Stitch. CLI 1.9.0 instalado. Primera pasada de los seis personajes de Boom Bap y los seis de Trap integrada. Ambos escenarios comprobados en el navegador. Primera afinación de la respuesta al audio por rol. Pendiente personalizar el arte y probar la sincronía con Bluetooth.
-  - [x] **Cargar el arte de cada temática al abrir su pack.** El renderer mantiene el SVG como respaldo.
-  - [x] **Boom Bap con los personajes streetwear** (2026-11-05), generados por script desde los conceptos aprobados: `npm run rive:streetwear`. Ver `docs/ARCHITECTURE.md`.
-  - [x] **Personajes más grandes y sin tarjetas** (2026-11-05): de la cadera hacia arriba, uno al lado del otro sobre el piso del escenario, estilo banda en vivo.
-  - [ ] **Probar el arrastre con el dedo** en el escenario nuevo: el destino ya no es una tarjeta, sino el área del personaje.
-  - [x] **Respaldo SVG streetwear en Boom Bap** (2026-11-06): mientras carga Rive, o si falla, se ve `StreetwearCharacter` (mismo arte, boca que sigue el audio). Trap sigue con el `SvgCharacter` clásico hasta que tenga su propio arte.
-  - [x] **Parpadeo escalonado en Boom Bap** (2026-11-06): capa `Blink` en bucle, con periodo y desfase propios por rol (`BLINK` en `scripts/rive/build-streetwear.ts`). Trap no lo tiene: su rig no se genera con este script.
-  - [x] **Marca de agua de Rive en Boom Bap** (2026-11-06): Boom Bap ya no usa Rive; se dibuja con SVG propio (`StreetwearCharacter`), con el mismo arte, movimiento y parpadeo. Taparla un tiempo fijo no servía: la presentación empieza a correr cuando el canvas se ve.
-  - [ ] **Trap sigue en Rive con marca de agua.** Opciones: pasarlo también a SVG (hace falta su arte streetwear en `art.ts`) o pagar un plan de Rive y volver a publicar.
+### Hecho en la sesión del 2026-11-06 (PC2)
+
+- [x] Cuatro géneros nuevos: Reggaetón/Dembow, House, Drum & Bass y Afrobeat.
+- [x] Portadas y escenarios propios (`sun`, `lights`, `speed`, `kente`), personajes streetwear SVG en todos los packs (Rive desactivado, sin marca de agua).
+- [x] Bases por género (3 + "Desde cero"), con el campo `bases` del manifest.
+- [x] Variaciones swing y ½ (7 sonidos por sección).
+- [x] Animaciones al compás: salto al entrar, hundimiento al salir, fondo que late con el beat.
+- [x] Cualquier sonido en cualquier personaje, uno por personaje. El color viene del sonido; el aspecto es el del personaje.
+- [x] Paleta sonora propia en los seis géneros: voces con formantes, talkbox, 808, 909, caja de break, scratch, rewind, tape stop, bocina, shekere, log drum y color de mezcla por género.
+
 - [ ] **Loop Station** (contratos en `src/extensions/loopStation.ts` y `userSounds.ts`, diseño en `docs/EXTENSIONS.md`). Conviene hacerla con la app ya publicada, para probar el micrófono en el celular.
 
 ### Ideas rescatadas de la PC1 (sesión del 2026-11-04, sin implementar todavía)
@@ -93,7 +97,7 @@ Detalle completo en `docs/QA.md`. Lo más importante:
 
 - [ ] **¿Un 7.º personaje "Tú" para los sonidos de la Loop Station?** Por ahora los sonidos de usuario van en uno de los 6 personajes; el número fijo de personajes es `CHARACTER_COUNT = 6` en `src/core/packs/schema.ts`.
 - [ ] **Hosting:** Vercel, Netlify o GitHub Pages (lo decide Daniel al hacer el deploy desde su otra cuenta).
-- [ ] **¿2D o 3D para los personajes?** Daniel tiene cuenta de Meshy y preguntó por 3D. Recomendación: mantener 2D con Rive, que ya está integrado. El 3D no es necesario para la calidad, y sumaría peso y otro pipeline de animación.
+- [ ] **¿2D o 3D para los personajes?** Daniel tiene cuenta de Meshy y preguntó por 3D. Recomendación: mantener 2D en SVG propio (desde el 2026-11-06 ya no se usa Rive). El 3D sumaría peso y otro pipeline de animación.
 - [ ] **¿Borrar la rama local `respaldo/portada-neutra-pc1`** de la PC1, una vez que esté claro que no se necesita más su código?
 
 ## 5. Deuda técnica y mejoras menores
