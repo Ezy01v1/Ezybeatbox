@@ -10,6 +10,7 @@
  * Real recordings can replace the files at any time: without --force nothing is overwritten.
  */
 import { spawnSync } from 'node:child_process'
+import ffmpegStatic from 'ffmpeg-static'
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -26,7 +27,11 @@ const args = new Set(argv)
 const force = args.has('--force')
 const packFlag = argv.indexOf('--pack')
 const onlyPack = packFlag >= 0 ? argv[packFlag + 1] : undefined
-const hasFfmpeg = !args.has('--wav') && spawnSync('ffmpeg', ['-version']).status === 0
+// Prefer an ffmpeg on the PATH; fall back to the binary bundled by the ffmpeg-static dev dependency.
+const ffmpegBin = [process.env.FFMPEG ?? 'ffmpeg', ffmpegStatic].find(
+  (bin): bin is string => !!bin && spawnSync(bin, ['-version']).status === 0,
+)
+const hasFfmpeg = !args.has('--wav') && ffmpegBin !== undefined
 
 if (!hasFfmpeg && !args.has('--wav')) {
   console.warn('ffmpeg not found in PATH: writing .wav files instead of .ogg/.m4a.')
@@ -34,7 +39,7 @@ if (!hasFfmpeg && !args.has('--wav')) {
 
 function ffmpeg(input: string, output: string, codecArgs: string[]): void {
   const result = spawnSync(
-    'ffmpeg',
+    ffmpegBin ?? 'ffmpeg',
     ['-y', '-hide_banner', '-loglevel', 'error', '-i', input, ...codecArgs, output],
     { encoding: 'utf8' },
   )

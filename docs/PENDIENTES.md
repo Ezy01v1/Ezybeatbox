@@ -3,15 +3,23 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-06**, Boom Bap en SVG propio (sin marca de agua de Rive), inicio sin perder el beat, respaldo SVG streetwear y parpadeo escalonado en Boom Bap; CLI de Rive en la PC2. En la PC1 se rescataron las referencias de diseño de una sesión anterior (ver "Ideas rescatadas").
+> Última actualización: **2026-11-06**, 4 géneros nuevos (Reggaetón, House, Drum & Bass, Afrobeat); Boom Bap en SVG propio (sin marca de agua de Rive), inicio sin perder el beat, respaldo SVG streetwear y parpadeo escalonado en Boom Bap; CLI de Rive en la PC2. En la PC1 se rescataron las referencias de diseño de una sesión anterior (ver "Ideas rescatadas").
 
 ## Estado en una línea
 
-Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editorial, selector de packs (Boom Bap y Trap, cada uno con su escenario temático) y cambio de pack sin recargar. Los doce personajes de Boom Bap y Trap ya están integrados en Rive. **Falta:** personalizar los avatares, publicar la app, probar en dispositivos reales y avanzar con las funciones nuevas.
+Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editorial, selector de packs (Boom Bap, Trap, Reggaetón, House, Drum & Bass y Afrobeat; cada uno con su escenario temático) y cambio de pack sin recargar. Los doce personajes de Boom Bap y Trap ya están integrados en Rive. **Falta:** personalizar los avatares, publicar la app, probar en dispositivos reales y avanzar con las funciones nuevas.
 
 ---
 
 ## 1. Próximo paso de código (en este orden)
+
+Foco de Daniel (2026-11-06): **diseño, animaciones, funcionalidades, variedad de ritmo y de géneros**. "Mis mixes" queda para después.
+
+- [x] **Variedad de géneros:** Reggaetón/Dembow (95), House (124), Drum & Bass (174) y Afrobeat (105), con sonidos sintéticos propios.
+- [ ] **Portadas de los 4 géneros nuevos:** hoy el selector muestra un bloque de color plano en su lugar. Usar ilustraciones propias del mismo estilo que las de Boom Bap y Trap.
+- [ ] **Variedad de ritmo:** más variaciones por rol (fills, medio tiempo, swing) y bases prearmadas por género (ver "Bases por temática").
+- [ ] **Diseño y animaciones:** Trap a SVG streetwear y un escenario con identidad por género (patrones de fondo, luces al compás). Cuando un sonido entra o sale en el compás, que el personaje lo muestre con su animación.
+- [ ] **Funcionalidades:** BPM en vivo (cuantizado), botón "Sorpréndeme", drops.
 
 - [ ] **Personajes en Rive:** un renderer `RiveCharacter` con el contrato de `CharacterRenderer` (inputs `level`, `beat`, `status`, `muted`). Referencia de arte: las hojas de 6 personajes de Stitch. CLI 1.9.0 instalado. Primera pasada de los seis personajes de Boom Bap y los seis de Trap integrada. Ambos escenarios comprobados en el navegador. Primera afinación de la respuesta al audio por rol. Pendiente personalizar el arte y probar la sincronía con Bluetooth.
   - [x] **Cargar el arte de cada temática al abrir su pack.** El renderer mantiene el SVG como respaldo.
@@ -100,6 +108,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-06:** cuatro géneros nuevos con 30 loops sintéticos cada uno: `reggaeton-01`, `house-01`, `dnb-01` y `afrobeat-01`. Se agregaron instrumentos nuevos (`tom`, `cowbell`, `pluck`, `chord`, `reese`) en `scripts/placeholders/instruments.ts`. El generador usa `ffmpeg-static` si `ffmpeg` no está en el `PATH`. Los personajes usan el SVG clásico con la paleta de cada género. Faltan las portadas.
 
 - **2026-11-06:** Boom Bap pasó de Rive a SVG propio para quitar la marca de agua del plan gratuito. Mismos valores de movimiento que el rig (aplaste a la cadera, rebote, boca, brillo, parpadeo escalonado compartido en `BLINK`). Se quitaron los `.riv` de Boom Bap de `public/`; el generador de Rive queda para las vistas previas.
 

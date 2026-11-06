@@ -1,4 +1,11 @@
 {
   "version": 1,
-  "packs": ["boom-bap-01", "trap-01"]
+  "packs": [
+    "boom-bap-01",
+    "trap-01",
+    "reggaeton-01",
+    "house-01",
+    "dnb-01",
+    "afrobeat-01"
+  ]
 }

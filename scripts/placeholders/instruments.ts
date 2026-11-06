@@ -235,3 +235,89 @@ function releaseEnv(t: number, duration: number, release: number): number {
   const remaining = duration - t
   return remaining < release ? Math.max(0, remaining / release) : 1
 }
+
+/** Tuned hand drum (conga, tom, talking drum): sine with a short pitch drop and a slap of noise. */
+export function tom(opts: { hz?: number; tau?: number; bend?: number; slap?: number } = {}): Voice {
+  const { hz = 200, tau = 0.12, bend = 1.4, slap = 0.25 } = opts
+  return {
+    duration: tau * 5,
+    create: (sr, rng) => {
+      const hp = onePoleHighpass(2500, sr)
+      return (t) =>
+        Math.sin(sweepPhase(t, hz * bend, hz, 0.02)) * Math.exp(-t / tau) +
+        slap * hp(noise(rng)) * Math.exp(-t / 0.008)
+    },
+  }
+}
+
+/** Two detuned square-ish partials, like an 808 cowbell / agogô. */
+export function cowbell(opts: { hz?: number; tau?: number } = {}): Voice {
+  const { hz = 560, tau = 0.09 } = opts
+  return {
+    duration: tau * 5,
+    create: (sr) => {
+      const lp = onePoleLowpass(4000, sr)
+      const sq = (f: number, t: number) => Math.tanh(4 * Math.sin(TWO_PI * f * t))
+      return (t) => lp(0.5 * sq(hz, t) + 0.5 * sq(hz * 1.48, t)) * Math.exp(-t / tau)
+    },
+  }
+}
+
+/** Plucked mallet / guitar-like note: harmonics that die faster the higher they are. */
+export function pluck(midi: number, duration: number, opts: { tau?: number } = {}): Voice {
+  const f0 = midiToHz(midi)
+  const tau = opts.tau ?? 0.35
+  return {
+    duration,
+    create: () => (t) => {
+      let sum = 0
+      for (let h = 1; h <= 6; h++)
+        sum += (Math.sin(TWO_PI * f0 * h * t) * Math.exp(-(t * h) / tau)) / h
+      return sum * Math.min(1, t / 0.002) * releaseEnv(t, duration, 0.03) * 0.8
+    },
+  }
+}
+
+/** Chord stab (house piano / organ / synth pad): saw-like notes through a lowpass. */
+export function chord(
+  midis: readonly number[],
+  duration: number,
+  opts: { cutoffHz?: number; tau?: number; attack?: number } = {},
+): Voice {
+  const { cutoffHz = 2200, tau = 0.25, attack = 0.004 } = opts
+  const freqs = midis.map(midiToHz)
+  return {
+    duration,
+    create: (sr) => {
+      const lp1 = onePoleLowpass(cutoffHz, sr)
+      const lp2 = onePoleLowpass(cutoffHz, sr)
+      return (t) => {
+        let sum = 0
+        for (const f of freqs) {
+          for (let h = 1; h <= 5; h++) sum += Math.sin(TWO_PI * f * h * t) / h
+        }
+        const env = Math.min(1, t / attack) * Math.exp(-t / tau) * releaseEnv(t, duration, 0.03)
+        return lp2(lp1(sum / freqs.length)) * env
+      }
+    },
+  }
+}
+
+/** Drum & bass "reese": two detuned saws, saturated and lowpassed. */
+export function reese(midi: number, duration: number, opts: { cutoffHz?: number } = {}): Voice {
+  const f0 = midiToHz(midi)
+  return {
+    duration,
+    create: (sr) => {
+      const lp1 = onePoleLowpass(opts.cutoffHz ?? 900, sr)
+      const lp2 = onePoleLowpass(opts.cutoffHz ?? 900, sr)
+      const saw = (f: number, t: number) => 2 * ((f * t) % 1) - 1
+      return (t) => {
+        const raw =
+          0.5 * saw(f0 * 0.996, t) + 0.5 * saw(f0 * 1.004, t) + 0.6 * Math.sin(TWO_PI * f0 * t)
+        const env = Math.min(1, t / 0.01) * releaseEnv(t, duration, 0.05)
+        return Math.tanh(lp2(lp1(raw)) * 1.8) * env
+      }
+    },
+  }
+}

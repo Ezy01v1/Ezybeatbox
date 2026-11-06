@@ -63,6 +63,12 @@ export function line(
   }
 }
 
+/** Repeats a one-bar pattern (16th steps 0–15) across a two-bar loop. */
+export const twoBars = (hits: readonly Hit[]): Hit[] =>
+  [0, 16].flatMap((offset) =>
+    hits.map((hit): Hit => (typeof hit === 'number' ? hit + offset : [hit[0] + offset, hit[1]])),
+  )
+
 export const range = (from: number, to: number, every = 1) =>
   Array.from({ length: Math.ceil((to - from) / every) }, (_, i) => from + i * every)
 

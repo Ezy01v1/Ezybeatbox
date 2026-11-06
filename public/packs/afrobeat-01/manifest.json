@@ -1,0 +1,255 @@
+{
+  "id": "afrobeat-01",
+  "name": "Afrobeat",
+  "version": 1,
+  "bpm": 105,
+  "timeSignature": [
+    4,
+    4
+  ],
+  "loopBars": 2,
+  "description": "Percusión que se mueve, guitarras y sol.",
+  "theme": {
+    "id": "afrobeat",
+    "stage": {
+      "background": "#2e7d4f",
+      "panel": "#f5ead0",
+      "outline": "#1d3b2a",
+      "ink": "#1d3b2a",
+      "glow": "#ffe08a",
+      "pattern": "none"
+    },
+    "roles": {
+      "kick": "#d9480f",
+      "snare": "#f2b705",
+      "hihat": "#1b998b",
+      "bass": "#7b2d8b",
+      "voice": "#e05780",
+      "fx": "#2f6fd6"
+    }
+  },
+  "characters": [
+    {
+      "id": "kick",
+      "role": "kick",
+      "label": "Kick",
+      "sounds": [
+        {
+          "id": "afrobeat-kick-1",
+          "label": "Tresillo",
+          "file": "kick/afrobeat-kick-1.ogg",
+          "fallback": "kick/afrobeat-kick-1.m4a"
+        },
+        {
+          "id": "afrobeat-kick-2",
+          "label": "Suave",
+          "file": "kick/afrobeat-kick-2.ogg",
+          "fallback": "kick/afrobeat-kick-2.m4a"
+        },
+        {
+          "id": "afrobeat-kick-3",
+          "label": "Amapiano",
+          "file": "kick/afrobeat-kick-3.ogg",
+          "fallback": "kick/afrobeat-kick-3.m4a"
+        },
+        {
+          "id": "afrobeat-kick-4",
+          "label": "Saltado",
+          "file": "kick/afrobeat-kick-4.ogg",
+          "fallback": "kick/afrobeat-kick-4.m4a"
+        },
+        {
+          "id": "afrobeat-kick-5",
+          "label": "Profundo",
+          "file": "kick/afrobeat-kick-5.ogg",
+          "fallback": "kick/afrobeat-kick-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "snare",
+      "role": "snare",
+      "label": "Snare",
+      "sounds": [
+        {
+          "id": "afrobeat-snare-1",
+          "label": "Aro",
+          "file": "snare/afrobeat-snare-1.ogg",
+          "fallback": "snare/afrobeat-snare-1.m4a"
+        },
+        {
+          "id": "afrobeat-snare-2",
+          "label": "Palmas",
+          "file": "snare/afrobeat-snare-2.ogg",
+          "fallback": "snare/afrobeat-snare-2.m4a"
+        },
+        {
+          "id": "afrobeat-snare-3",
+          "label": "Caja",
+          "file": "snare/afrobeat-snare-3.ogg",
+          "fallback": "snare/afrobeat-snare-3.m4a"
+        },
+        {
+          "id": "afrobeat-snare-4",
+          "label": "Clave",
+          "file": "snare/afrobeat-snare-4.ogg",
+          "fallback": "snare/afrobeat-snare-4.m4a"
+        },
+        {
+          "id": "afrobeat-snare-5",
+          "label": "Capas",
+          "file": "snare/afrobeat-snare-5.ogg",
+          "fallback": "snare/afrobeat-snare-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "hihat",
+      "role": "hihat",
+      "label": "Shaker",
+      "sounds": [
+        {
+          "id": "afrobeat-hihat-1",
+          "label": "Shaker",
+          "file": "hihat/afrobeat-hihat-1.ogg",
+          "fallback": "hihat/afrobeat-hihat-1.m4a"
+        },
+        {
+          "id": "afrobeat-hihat-2",
+          "label": "Cencerro",
+          "file": "hihat/afrobeat-hihat-2.ogg",
+          "fallback": "hihat/afrobeat-hihat-2.m4a"
+        },
+        {
+          "id": "afrobeat-hihat-3",
+          "label": "Hi-hat",
+          "file": "hihat/afrobeat-hihat-3.ogg",
+          "fallback": "hihat/afrobeat-hihat-3.m4a"
+        },
+        {
+          "id": "afrobeat-hihat-4",
+          "label": "Congas",
+          "file": "hihat/afrobeat-hihat-4.ogg",
+          "fallback": "hihat/afrobeat-hihat-4.m4a"
+        },
+        {
+          "id": "afrobeat-hihat-5",
+          "label": "Abierto",
+          "file": "hihat/afrobeat-hihat-5.ogg",
+          "fallback": "hihat/afrobeat-hihat-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "bass",
+      "role": "bass",
+      "label": "Bass",
+      "sounds": [
+        {
+          "id": "afrobeat-bass-1",
+          "label": "Groove",
+          "file": "bass/afrobeat-bass-1.ogg",
+          "fallback": "bass/afrobeat-bass-1.m4a"
+        },
+        {
+          "id": "afrobeat-bass-2",
+          "label": "Log drum",
+          "file": "bass/afrobeat-bass-2.ogg",
+          "fallback": "bass/afrobeat-bass-2.m4a"
+        },
+        {
+          "id": "afrobeat-bass-3",
+          "label": "Sub",
+          "file": "bass/afrobeat-bass-3.ogg",
+          "fallback": "bass/afrobeat-bass-3.m4a"
+        },
+        {
+          "id": "afrobeat-bass-4",
+          "label": "Saltón",
+          "file": "bass/afrobeat-bass-4.ogg",
+          "fallback": "bass/afrobeat-bass-4.m4a"
+        },
+        {
+          "id": "afrobeat-bass-5",
+          "label": "Deslizado",
+          "file": "bass/afrobeat-bass-5.ogg",
+          "fallback": "bass/afrobeat-bass-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "voice",
+      "role": "voice",
+      "label": "Voice",
+      "sounds": [
+        {
+          "id": "afrobeat-voice-1",
+          "label": "Guitarra",
+          "file": "voice/afrobeat-voice-1.ogg",
+          "fallback": "voice/afrobeat-voice-1.m4a"
+        },
+        {
+          "id": "afrobeat-voice-2",
+          "label": "Coro",
+          "file": "voice/afrobeat-voice-2.ogg",
+          "fallback": "voice/afrobeat-voice-2.m4a"
+        },
+        {
+          "id": "afrobeat-voice-3",
+          "label": "Piano",
+          "file": "voice/afrobeat-voice-3.ogg",
+          "fallback": "voice/afrobeat-voice-3.m4a"
+        },
+        {
+          "id": "afrobeat-voice-4",
+          "label": "Ad-lib",
+          "file": "voice/afrobeat-voice-4.ogg",
+          "fallback": "voice/afrobeat-voice-4.m4a"
+        },
+        {
+          "id": "afrobeat-voice-5",
+          "label": "Marimba",
+          "file": "voice/afrobeat-voice-5.ogg",
+          "fallback": "voice/afrobeat-voice-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "fx",
+      "role": "fx",
+      "label": "FX",
+      "sounds": [
+        {
+          "id": "afrobeat-fx-1",
+          "label": "Subida",
+          "file": "fx/afrobeat-fx-1.ogg",
+          "fallback": "fx/afrobeat-fx-1.m4a"
+        },
+        {
+          "id": "afrobeat-fx-2",
+          "label": "Tambor",
+          "file": "fx/afrobeat-fx-2.ogg",
+          "fallback": "fx/afrobeat-fx-2.m4a"
+        },
+        {
+          "id": "afrobeat-fx-3",
+          "label": "Silbato",
+          "file": "fx/afrobeat-fx-3.ogg",
+          "fallback": "fx/afrobeat-fx-3.m4a"
+        },
+        {
+          "id": "afrobeat-fx-4",
+          "label": "Bajón",
+          "file": "fx/afrobeat-fx-4.ogg",
+          "fallback": "fx/afrobeat-fx-4.m4a"
+        },
+        {
+          "id": "afrobeat-fx-5",
+          "label": "Barrido",
+          "file": "fx/afrobeat-fx-5.ogg",
+          "fallback": "fx/afrobeat-fx-5.m4a"
+        }
+      ]
+    }
+  ]
+}

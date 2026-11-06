@@ -1,5 +1,9 @@
 import type { PackManifest } from '../../src/core/packs/schema'
 import { BOOM_BAP_RECIPES, type CharacterRecipe } from './recipes'
+import { AFROBEAT_RECIPES } from './afrobeatRecipes'
+import { DNB_RECIPES } from './dnbRecipes'
+import { HOUSE_RECIPES } from './houseRecipes'
+import { REGGAETON_RECIPES } from './reggaetonRecipes'
 import { TRAP_RECIPES } from './trapRecipes'
 
 export interface PlaceholderPack {
@@ -74,5 +78,129 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
       },
     },
     recipes: TRAP_RECIPES,
+  },
+  {
+    meta: {
+      id: 'reggaeton-01',
+      name: 'Reggaetón',
+      version: 1,
+      bpm: 95,
+      timeSignature: [4, 4],
+      loopBars: 2,
+      description: 'Dembow, perreo y calor de la calle.',
+      theme: {
+        id: 'reggaeton',
+        stage: {
+          background: '#ffcf4a',
+          panel: '#fff4d6',
+          outline: '#3a1d4a',
+          ink: '#3a1d4a',
+          glow: '#fff8e6',
+          pattern: 'none',
+        },
+        roles: {
+          kick: '#e8432a',
+          snare: '#c2307e',
+          hihat: '#1f9e8f',
+          bass: '#6a2fb0',
+          voice: '#f07a1a',
+          fx: '#2a7de1',
+        },
+      },
+    },
+    recipes: REGGAETON_RECIPES,
+  },
+  {
+    meta: {
+      id: 'house-01',
+      name: 'House',
+      version: 1,
+      bpm: 124,
+      timeSignature: [4, 4],
+      loopBars: 2,
+      description: 'Cuatro en el piso, pianos y mucha pista.',
+      theme: {
+        id: 'house',
+        stage: {
+          background: '#1d2a5c',
+          panel: '#14193a',
+          outline: '#3b4c8f',
+          ink: '#ffffff',
+          glow: '#5ce1ff',
+          pattern: 'none',
+        },
+        roles: {
+          kick: '#ff4fa3',
+          snare: '#ffd23f',
+          hihat: '#5ce1ff',
+          bass: '#8b6bff',
+          voice: '#ff9a3c',
+          fx: '#6bffb0',
+        },
+      },
+    },
+    recipes: HOUSE_RECIPES,
+  },
+  {
+    meta: {
+      id: 'dnb-01',
+      name: 'Drum & Bass',
+      version: 1,
+      bpm: 174,
+      timeSignature: [4, 4],
+      loopBars: 2,
+      description: 'Breaks a toda velocidad y bajos que rugen.',
+      theme: {
+        id: 'dnb',
+        stage: {
+          background: '#101a17',
+          panel: '#0a100e',
+          outline: '#2b3f37',
+          ink: '#e9fff4',
+          glow: '#38ff9c',
+          pattern: 'none',
+        },
+        roles: {
+          kick: '#38ff9c',
+          snare: '#ff3d5a',
+          hihat: '#d6f75a',
+          bass: '#4a7dff',
+          voice: '#c79bff',
+          fx: '#ff9f1c',
+        },
+      },
+    },
+    recipes: DNB_RECIPES,
+  },
+  {
+    meta: {
+      id: 'afrobeat-01',
+      name: 'Afrobeat',
+      version: 1,
+      bpm: 105,
+      timeSignature: [4, 4],
+      loopBars: 2,
+      description: 'Percusión que se mueve, guitarras y sol.',
+      theme: {
+        id: 'afrobeat',
+        stage: {
+          background: '#2e7d4f',
+          panel: '#f5ead0',
+          outline: '#1d3b2a',
+          ink: '#1d3b2a',
+          glow: '#ffe08a',
+          pattern: 'none',
+        },
+        roles: {
+          kick: '#d9480f',
+          snare: '#f2b705',
+          hihat: '#1b998b',
+          bass: '#7b2d8b',
+          voice: '#e05780',
+          fx: '#2f6fd6',
+        },
+      },
+    },
+    recipes: AFROBEAT_RECIPES,
   },
 ]

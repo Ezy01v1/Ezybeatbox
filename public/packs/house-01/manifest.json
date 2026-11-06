@@ -1,0 +1,255 @@
+{
+  "id": "house-01",
+  "name": "House",
+  "version": 1,
+  "bpm": 124,
+  "timeSignature": [
+    4,
+    4
+  ],
+  "loopBars": 2,
+  "description": "Cuatro en el piso, pianos y mucha pista.",
+  "theme": {
+    "id": "house",
+    "stage": {
+      "background": "#1d2a5c",
+      "panel": "#14193a",
+      "outline": "#3b4c8f",
+      "ink": "#ffffff",
+      "glow": "#5ce1ff",
+      "pattern": "none"
+    },
+    "roles": {
+      "kick": "#ff4fa3",
+      "snare": "#ffd23f",
+      "hihat": "#5ce1ff",
+      "bass": "#8b6bff",
+      "voice": "#ff9a3c",
+      "fx": "#6bffb0"
+    }
+  },
+  "characters": [
+    {
+      "id": "kick",
+      "role": "kick",
+      "label": "Kick",
+      "sounds": [
+        {
+          "id": "house-kick-1",
+          "label": "Four",
+          "file": "kick/house-kick-1.ogg",
+          "fallback": "kick/house-kick-1.m4a"
+        },
+        {
+          "id": "house-kick-2",
+          "label": "Profundo",
+          "file": "kick/house-kick-2.ogg",
+          "fallback": "kick/house-kick-2.m4a"
+        },
+        {
+          "id": "house-kick-3",
+          "label": "Golpe",
+          "file": "kick/house-kick-3.ogg",
+          "fallback": "kick/house-kick-3.m4a"
+        },
+        {
+          "id": "house-kick-4",
+          "label": "Saltado",
+          "file": "kick/house-kick-4.ogg",
+          "fallback": "kick/house-kick-4.m4a"
+        },
+        {
+          "id": "house-kick-5",
+          "label": "Garage",
+          "file": "kick/house-kick-5.ogg",
+          "fallback": "kick/house-kick-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "snare",
+      "role": "snare",
+      "label": "Snare",
+      "sounds": [
+        {
+          "id": "house-snare-1",
+          "label": "Clap",
+          "file": "snare/house-snare-1.ogg",
+          "fallback": "snare/house-snare-1.m4a"
+        },
+        {
+          "id": "house-snare-2",
+          "label": "Caja",
+          "file": "snare/house-snare-2.ogg",
+          "fallback": "snare/house-snare-2.m4a"
+        },
+        {
+          "id": "house-snare-3",
+          "label": "Doble",
+          "file": "snare/house-snare-3.ogg",
+          "fallback": "snare/house-snare-3.m4a"
+        },
+        {
+          "id": "house-snare-4",
+          "label": "Rim",
+          "file": "snare/house-snare-4.ogg",
+          "fallback": "snare/house-snare-4.m4a"
+        },
+        {
+          "id": "house-snare-5",
+          "label": "Capas",
+          "file": "snare/house-snare-5.ogg",
+          "fallback": "snare/house-snare-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "hihat",
+      "role": "hihat",
+      "label": "Hi-hat",
+      "sounds": [
+        {
+          "id": "house-hihat-1",
+          "label": "Abierto",
+          "file": "hihat/house-hihat-1.ogg",
+          "fallback": "hihat/house-hihat-1.m4a"
+        },
+        {
+          "id": "house-hihat-2",
+          "label": "Cerrado",
+          "file": "hihat/house-hihat-2.ogg",
+          "fallback": "hihat/house-hihat-2.m4a"
+        },
+        {
+          "id": "house-hihat-3",
+          "label": "Shaker",
+          "file": "hihat/house-hihat-3.ogg",
+          "fallback": "hihat/house-hihat-3.m4a"
+        },
+        {
+          "id": "house-hihat-4",
+          "label": "Swing",
+          "file": "hihat/house-hihat-4.ogg",
+          "fallback": "hihat/house-hihat-4.m4a"
+        },
+        {
+          "id": "house-hihat-5",
+          "label": "Ride",
+          "file": "hihat/house-hihat-5.ogg",
+          "fallback": "hihat/house-hihat-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "bass",
+      "role": "bass",
+      "label": "Bass",
+      "sounds": [
+        {
+          "id": "house-bass-1",
+          "label": "Contra",
+          "file": "bass/house-bass-1.ogg",
+          "fallback": "bass/house-bass-1.m4a"
+        },
+        {
+          "id": "house-bass-2",
+          "label": "Octavas",
+          "file": "bass/house-bass-2.ogg",
+          "fallback": "bass/house-bass-2.m4a"
+        },
+        {
+          "id": "house-bass-3",
+          "label": "Rodante",
+          "file": "bass/house-bass-3.ogg",
+          "fallback": "bass/house-bass-3.m4a"
+        },
+        {
+          "id": "house-bass-4",
+          "label": "Sub",
+          "file": "bass/house-bass-4.ogg",
+          "fallback": "bass/house-bass-4.m4a"
+        },
+        {
+          "id": "house-bass-5",
+          "label": "Órgano",
+          "file": "bass/house-bass-5.ogg",
+          "fallback": "bass/house-bass-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "voice",
+      "role": "voice",
+      "label": "Voice",
+      "sounds": [
+        {
+          "id": "house-voice-1",
+          "label": "Piano",
+          "file": "voice/house-voice-1.ogg",
+          "fallback": "voice/house-voice-1.m4a"
+        },
+        {
+          "id": "house-voice-2",
+          "label": "Diva",
+          "file": "voice/house-voice-2.ogg",
+          "fallback": "voice/house-voice-2.m4a"
+        },
+        {
+          "id": "house-voice-3",
+          "label": "Pad",
+          "file": "voice/house-voice-3.ogg",
+          "fallback": "voice/house-voice-3.m4a"
+        },
+        {
+          "id": "house-voice-4",
+          "label": "Grito",
+          "file": "voice/house-voice-4.ogg",
+          "fallback": "voice/house-voice-4.m4a"
+        },
+        {
+          "id": "house-voice-5",
+          "label": "Arpegio",
+          "file": "voice/house-voice-5.ogg",
+          "fallback": "voice/house-voice-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "fx",
+      "role": "fx",
+      "label": "FX",
+      "sounds": [
+        {
+          "id": "house-fx-1",
+          "label": "Subida",
+          "file": "fx/house-fx-1.ogg",
+          "fallback": "fx/house-fx-1.m4a"
+        },
+        {
+          "id": "house-fx-2",
+          "label": "Barrido",
+          "file": "fx/house-fx-2.ogg",
+          "fallback": "fx/house-fx-2.m4a"
+        },
+        {
+          "id": "house-fx-3",
+          "label": "Zap",
+          "file": "fx/house-fx-3.ogg",
+          "fallback": "fx/house-fx-3.m4a"
+        },
+        {
+          "id": "house-fx-4",
+          "label": "Caída",
+          "file": "fx/house-fx-4.ogg",
+          "fallback": "fx/house-fx-4.m4a"
+        },
+        {
+          "id": "house-fx-5",
+          "label": "Redoble",
+          "file": "fx/house-fx-5.ogg",
+          "fallback": "fx/house-fx-5.m4a"
+        }
+      ]
+    }
+  ]
+}

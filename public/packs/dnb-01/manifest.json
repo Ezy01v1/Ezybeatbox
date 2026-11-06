@@ -1,0 +1,255 @@
+{
+  "id": "dnb-01",
+  "name": "Drum & Bass",
+  "version": 1,
+  "bpm": 174,
+  "timeSignature": [
+    4,
+    4
+  ],
+  "loopBars": 2,
+  "description": "Breaks a toda velocidad y bajos que rugen.",
+  "theme": {
+    "id": "dnb",
+    "stage": {
+      "background": "#101a17",
+      "panel": "#0a100e",
+      "outline": "#2b3f37",
+      "ink": "#e9fff4",
+      "glow": "#38ff9c",
+      "pattern": "none"
+    },
+    "roles": {
+      "kick": "#38ff9c",
+      "snare": "#ff3d5a",
+      "hihat": "#d6f75a",
+      "bass": "#4a7dff",
+      "voice": "#c79bff",
+      "fx": "#ff9f1c"
+    }
+  },
+  "characters": [
+    {
+      "id": "kick",
+      "role": "kick",
+      "label": "Kick",
+      "sounds": [
+        {
+          "id": "dnb-kick-1",
+          "label": "Two-step",
+          "file": "kick/dnb-kick-1.ogg",
+          "fallback": "kick/dnb-kick-1.m4a"
+        },
+        {
+          "id": "dnb-kick-2",
+          "label": "Rodante",
+          "file": "kick/dnb-kick-2.ogg",
+          "fallback": "kick/dnb-kick-2.m4a"
+        },
+        {
+          "id": "dnb-kick-3",
+          "label": "Jungla",
+          "file": "kick/dnb-kick-3.ogg",
+          "fallback": "kick/dnb-kick-3.m4a"
+        },
+        {
+          "id": "dnb-kick-4",
+          "label": "Pesado",
+          "file": "kick/dnb-kick-4.ogg",
+          "fallback": "kick/dnb-kick-4.m4a"
+        },
+        {
+          "id": "dnb-kick-5",
+          "label": "Medio tiempo",
+          "file": "kick/dnb-kick-5.ogg",
+          "fallback": "kick/dnb-kick-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "snare",
+      "role": "snare",
+      "label": "Snare",
+      "sounds": [
+        {
+          "id": "dnb-snare-1",
+          "label": "Golpe",
+          "file": "snare/dnb-snare-1.ogg",
+          "fallback": "snare/dnb-snare-1.m4a"
+        },
+        {
+          "id": "dnb-snare-2",
+          "label": "Fantasma",
+          "file": "snare/dnb-snare-2.ogg",
+          "fallback": "snare/dnb-snare-2.m4a"
+        },
+        {
+          "id": "dnb-snare-3",
+          "label": "Amen",
+          "file": "snare/dnb-snare-3.ogg",
+          "fallback": "snare/dnb-snare-3.m4a"
+        },
+        {
+          "id": "dnb-snare-4",
+          "label": "Clap",
+          "file": "snare/dnb-snare-4.ogg",
+          "fallback": "snare/dnb-snare-4.m4a"
+        },
+        {
+          "id": "dnb-snare-5",
+          "label": "Medio tiempo",
+          "file": "snare/dnb-snare-5.ogg",
+          "fallback": "snare/dnb-snare-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "hihat",
+      "role": "hihat",
+      "label": "Hi-hat",
+      "sounds": [
+        {
+          "id": "dnb-hihat-1",
+          "label": "Corcheas",
+          "file": "hihat/dnb-hihat-1.ogg",
+          "fallback": "hihat/dnb-hihat-1.m4a"
+        },
+        {
+          "id": "dnb-hihat-2",
+          "label": "Rápido",
+          "file": "hihat/dnb-hihat-2.ogg",
+          "fallback": "hihat/dnb-hihat-2.m4a"
+        },
+        {
+          "id": "dnb-hihat-3",
+          "label": "Ride",
+          "file": "hihat/dnb-hihat-3.ogg",
+          "fallback": "hihat/dnb-hihat-3.m4a"
+        },
+        {
+          "id": "dnb-hihat-4",
+          "label": "Shaker",
+          "file": "hihat/dnb-hihat-4.ogg",
+          "fallback": "hihat/dnb-hihat-4.m4a"
+        },
+        {
+          "id": "dnb-hihat-5",
+          "label": "Abierto",
+          "file": "hihat/dnb-hihat-5.ogg",
+          "fallback": "hihat/dnb-hihat-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "bass",
+      "role": "bass",
+      "label": "Bass",
+      "sounds": [
+        {
+          "id": "dnb-bass-1",
+          "label": "Reese",
+          "file": "bass/dnb-bass-1.ogg",
+          "fallback": "bass/dnb-bass-1.m4a"
+        },
+        {
+          "id": "dnb-bass-2",
+          "label": "Sub",
+          "file": "bass/dnb-bass-2.ogg",
+          "fallback": "bass/dnb-bass-2.m4a"
+        },
+        {
+          "id": "dnb-bass-3",
+          "label": "Rodante",
+          "file": "bass/dnb-bass-3.ogg",
+          "fallback": "bass/dnb-bass-3.m4a"
+        },
+        {
+          "id": "dnb-bass-4",
+          "label": "Gruñido",
+          "file": "bass/dnb-bass-4.ogg",
+          "fallback": "bass/dnb-bass-4.m4a"
+        },
+        {
+          "id": "dnb-bass-5",
+          "label": "Deslizado",
+          "file": "bass/dnb-bass-5.ogg",
+          "fallback": "bass/dnb-bass-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "voice",
+      "role": "voice",
+      "label": "Voice",
+      "sounds": [
+        {
+          "id": "dnb-voice-1",
+          "label": "Pad",
+          "file": "voice/dnb-voice-1.ogg",
+          "fallback": "voice/dnb-voice-1.m4a"
+        },
+        {
+          "id": "dnb-voice-2",
+          "label": "MC",
+          "file": "voice/dnb-voice-2.ogg",
+          "fallback": "voice/dnb-voice-2.m4a"
+        },
+        {
+          "id": "dnb-voice-3",
+          "label": "Etéreo",
+          "file": "voice/dnb-voice-3.ogg",
+          "fallback": "voice/dnb-voice-3.m4a"
+        },
+        {
+          "id": "dnb-voice-4",
+          "label": "Stab",
+          "file": "voice/dnb-voice-4.ogg",
+          "fallback": "voice/dnb-voice-4.m4a"
+        },
+        {
+          "id": "dnb-voice-5",
+          "label": "Grave",
+          "file": "voice/dnb-voice-5.ogg",
+          "fallback": "voice/dnb-voice-5.m4a"
+        }
+      ]
+    },
+    {
+      "id": "fx",
+      "role": "fx",
+      "label": "FX",
+      "sounds": [
+        {
+          "id": "dnb-fx-1",
+          "label": "Subida",
+          "file": "fx/dnb-fx-1.ogg",
+          "fallback": "fx/dnb-fx-1.m4a"
+        },
+        {
+          "id": "dnb-fx-2",
+          "label": "Láser",
+          "file": "fx/dnb-fx-2.ogg",
+          "fallback": "fx/dnb-fx-2.m4a"
+        },
+        {
+          "id": "dnb-fx-3",
+          "label": "Bajón",
+          "file": "fx/dnb-fx-3.ogg",
+          "fallback": "fx/dnb-fx-3.m4a"
+        },
+        {
+          "id": "dnb-fx-4",
+          "label": "Barrido",
+          "file": "fx/dnb-fx-4.ogg",
+          "fallback": "fx/dnb-fx-4.m4a"
+        },
+        {
+          "id": "dnb-fx-5",
+          "label": "Sirena",
+          "file": "fx/dnb-fx-5.ogg",
+          "fallback": "fx/dnb-fx-5.m4a"
+        }
+      ]
+    }
+  ]
+}
