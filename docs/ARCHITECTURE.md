@@ -154,9 +154,10 @@ animationLoop (un solo rAF) ──► SvgCharacter × 6: followLevel → compute
 - **Lo nuevo del rig:**
   - Estados de expresión por `status`: en reposo (ojos cerrados, sonrisa, figura atenuada), en espera (boca "o" y anillo punteado) y cantando (boca que sigue al nivel).
   - Brillo del color del rol que sigue al nivel.
-  - Lienzo de cuerpo entero de 120 × 226 (antes eran bustos de 100 × 130).
+  - Lienzo de 120 × 158 **de la cadera hacia arriba** (`clip` del artboard), con el pivote del "aplaste" en la cadera.
 - **Colores:** la ropa usa los colores de rol del tema del pack, y los tonos (oscuro, más oscuro, claro y suave) se derivan de cada uno. Boom Bap pasó a los colores de los conceptos (magenta, violeta, verde y cian), que también pasan la prueba de contraste.
 - **Trap** sigue con sus escenas originales en `assets/rive/trap/`.
+- **Escenario sin tarjetas:** los personajes quedan uno al lado del otro, grandes y alineados abajo (`Alignment.BottomCenter` en `RiveCharacter`). El corte a la cadera coincide con el **piso del escenario**: una franja de alto `--floor` con una línea de borde, dibujada como fondo de la grilla en `StageScreen`. Las filas no tienen espacio entre ellas, así que el fondo coincide con cada fila (una en escritorio, dos en el celular). Nombre, estado y M/S/✕ van sobre esa franja. Al arrastrar, el destino se ilumina con un degradado del color del rol detrás del personaje.
 
 ## Puntos de extensión (Fase 5)
 

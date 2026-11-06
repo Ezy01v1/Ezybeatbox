@@ -61,7 +61,12 @@ export function SvgCharacter(props: CharacterRenderProps) {
   const stroke = { stroke: outline, strokeWidth: 3, strokeLinejoin: 'round' as const }
 
   return (
-    <svg viewBox="0 0 100 130" className="h-full w-full overflow-visible" aria-hidden>
+    <svg
+      viewBox="0 0 100 130"
+      preserveAspectRatio="xMidYMax meet"
+      className="h-full w-full overflow-visible"
+      aria-hidden
+    >
       <defs>
         <radialGradient id={glowId}>
           <stop offset="0%" stopColor={roleColor} stopOpacity="0.9" />

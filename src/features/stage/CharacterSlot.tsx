@@ -14,8 +14,8 @@ import { PackCharacter } from '@/visuals/PackCharacter'
 import { compensateLatency } from '@/visuals/levels'
 
 /**
- * Round M / S / ✕ controls: 44 px on wide screens. On phones three cards share a row, so they
- * shrink to 32 px to fit (still separated, and the whole card is the drop target).
+ * Round M / S / ✕ controls: 44 px on wide screens. On phones three characters share a row, so
+ * they shrink to 32 px to fit (still separated, and the whole figure is the drop target).
  */
 const controlClass =
   'grid size-8 place-items-center rounded-full text-sm font-bold transition-colors motion-reduce:transition-none sm:size-9 lg:size-11'
@@ -70,18 +70,12 @@ export function CharacterSlot({ character, color }: { character: CharacterDef; c
       : t(`character.status.${slot.status}`)
   const onRole = readableInk(color)
 
-  // Card edge tells the state at a glance: solid role color while singing, dashed while
-  // waiting for the bar line, the theme outline otherwise.
-  const cardStyle: React.CSSProperties = {
-    borderColor: singing || slot.status === 'queued' || accepts ? color : undefined,
-    borderStyle: slot.status === 'queued' ? 'dashed' : 'solid',
-    boxShadow:
-      singing && !muted
-        ? `0 0 0 3px ${color}33, 0 10px 28px -8px ${color}99`
-        : accepts && isOver
-          ? `0 0 0 4px ${color}55`
-          : undefined,
-  }
+  // No card: while dragging, the drop target lights up behind the character instead.
+  const figureStyle: React.CSSProperties | undefined = accepts
+    ? {
+        backgroundImage: `radial-gradient(ellipse at 50% 85%, ${color}${isOver ? '66' : '33'}, transparent 70%)`,
+      }
+    : undefined
 
   return (
     <section
@@ -90,18 +84,18 @@ export function CharacterSlot({ character, color }: { character: CharacterDef; c
           ? t('character.labelWithSound', { name, sound: localize(sound.label), status })
           : t('character.label', { name, status })
       }
-      className={`flex min-h-0 flex-col items-center gap-1.5 rounded-2xl border-2 border-(--stage-outline)/25 bg-(--stage-panel) p-1.5 transition-[opacity,box-shadow] motion-reduce:transition-none sm:p-2 ${
+      className={`flex min-h-0 flex-col items-center transition-opacity motion-reduce:transition-none ${
         dimmed ? 'opacity-40' : ''
       }`}
-      style={cardStyle}
     >
       <div
         {...{ [DROP_TARGET_ATTR]: character.id }}
         onPointerDown={drag.onPointerDown}
         title={target ? t('character.dragOutHint') : undefined}
-        className={`relative aspect-[100/130] max-h-[34dvh] w-full p-1 select-none ${
+        className={`relative min-h-0 w-full flex-1 rounded-t-3xl pt-2 select-none ${
           target ? 'cursor-grab touch-none active:cursor-grabbing' : ''
         }`}
+        style={figureStyle}
       >
         <PackCharacter
           packId={packId}
@@ -126,50 +120,53 @@ export function CharacterSlot({ character, color }: { character: CharacterDef; c
         )}
       </div>
 
-      <p className="text-sm font-extrabold tracking-tight">{name}</p>
-      <p
-        className={`max-w-full truncate rounded-full border px-2 py-0.5 text-[11px] font-semibold ${
-          singing
-            ? 'border-transparent'
-            : slot.status === 'empty'
-              ? 'border-transparent opacity-80'
-              : 'border-dashed border-current'
-        }`}
-        style={singing ? { backgroundColor: color, color: onRole } : undefined}
-      >
-        {sound ? `${localize(sound.label)} · ${status}` : status}
-      </p>
-
-      <div className="flex gap-0.5 sm:gap-1">
-        <button
-          type="button"
-          aria-pressed={slot.muted}
-          aria-label={t('character.mute', { name })}
-          onClick={() => toggleMute(character.id)}
-          className={`${controlClass} ${
-            slot.muted ? 'bg-(--stage-ink) text-(--stage-panel)' : controlIdle
+      {/* Sits on the stage floor strip drawn by StageScreen (height: --floor). */}
+      <div className="flex h-(--floor) w-full shrink-0 flex-col items-center justify-center gap-1 px-0.5">
+        <p className="text-sm font-extrabold tracking-tight">{name}</p>
+        <p
+          className={`max-w-full truncate rounded-full border px-2 py-0.5 text-[11px] font-semibold ${
+            singing
+              ? 'border-transparent'
+              : slot.status === 'empty'
+                ? 'border-transparent opacity-80'
+                : 'border-dashed border-current'
           }`}
+          style={singing ? { backgroundColor: color, color: onRole } : undefined}
         >
-          M
-        </button>
-        <button
-          type="button"
-          aria-pressed={slot.solo}
-          aria-label={t('character.solo', { name })}
-          onClick={() => toggleSolo(character.id)}
-          className={`${controlClass} ${slot.solo ? 'bg-accent text-white' : controlIdle}`}
-        >
-          S
-        </button>
-        <button
-          type="button"
-          aria-label={t('character.remove', { name })}
-          disabled={!target}
-          onClick={() => clearSound(character.id)}
-          className={`${controlClass} ${controlIdle}`}
-        >
-          ✕
-        </button>
+          {sound ? `${localize(sound.label)} · ${status}` : status}
+        </p>
+
+        <div className="flex gap-0.5 sm:gap-1">
+          <button
+            type="button"
+            aria-pressed={slot.muted}
+            aria-label={t('character.mute', { name })}
+            onClick={() => toggleMute(character.id)}
+            className={`${controlClass} ${
+              slot.muted ? 'bg-(--stage-ink) text-(--stage-panel)' : controlIdle
+            }`}
+          >
+            M
+          </button>
+          <button
+            type="button"
+            aria-pressed={slot.solo}
+            aria-label={t('character.solo', { name })}
+            onClick={() => toggleSolo(character.id)}
+            className={`${controlClass} ${slot.solo ? 'bg-accent text-white' : controlIdle}`}
+          >
+            S
+          </button>
+          <button
+            type="button"
+            aria-label={t('character.remove', { name })}
+            disabled={!target}
+            onClick={() => clearSound(character.id)}
+            className={`${controlClass} ${controlIdle}`}
+          >
+            ✕
+          </button>
+        </div>
       </div>
     </section>
   )

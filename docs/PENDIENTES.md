@@ -16,7 +16,8 @@ Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editori
 - [ ] **Personajes en Rive:** un renderer `RiveCharacter` con el contrato de `CharacterRenderer` (inputs `level`, `beat`, `status`, `muted`). Referencia de arte: las hojas de 6 personajes de Stitch. CLI 1.9.0 instalado. Primera pasada de los seis personajes de Boom Bap y los seis de Trap integrada. Ambos escenarios comprobados en el navegador. Primera afinación de la respuesta al audio por rol. Pendiente personalizar el arte y probar la sincronía con Bluetooth.
   - [x] **Cargar el arte de cada temática al abrir su pack.** El renderer mantiene el SVG como respaldo.
   - [x] **Boom Bap con los personajes streetwear** (2026-11-05), generados por script desde los conceptos aprobados: `npm run rive:streetwear`. Ver `docs/ARCHITECTURE.md`.
-  - [ ] **Tamaño en escritorio:** los personajes de cuerpo entero quedan chicos en las tarjetas (pensadas para bustos). En el celular se ven bien. Evaluar tarjetas más altas o recortar a medio cuerpo.
+  - [x] **Personajes más grandes y sin tarjetas** (2026-11-05): de la cadera hacia arriba, uno al lado del otro sobre el piso del escenario, estilo banda en vivo.
+  - [ ] **Probar el arrastre con el dedo** en el escenario nuevo: el destino ya no es una tarjeta, sino el área del personaje.
   - [ ] **Respaldo SVG:** mientras carga Rive (o si falla) se ve el `SvgCharacter` viejo, de estilo distinto. Se podría reemplazar por la versión streetwear.
   - [ ] **Parpadeo escalonado** en Rive (la versión SVG anterior lo tenía).
 - [ ] **Loop Station** (contratos en `src/extensions/loopStation.ts` y `userSounds.ts`, diseño en `docs/EXTENSIONS.md`). Conviene hacerla con la app ya publicada, para probar el micrófono en el celular.
@@ -97,6 +98,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-05:** escenario sin tarjetas: personajes de la cadera hacia arriba (rig de Rive recortado a 120 × 158), grandes y alineados sobre una franja de piso continua con nombres y controles. Probado en escritorio y celular, con Boom Bap y con Trap.
 
 - **2026-11-05:** los personajes de Boom Bap ahora son los **streetwear** aprobados, en Rive: conversor SVG→RML con pruebas, generador `npm run rive:streetwear`, colores de rol de Boom Bap actualizados a los de los conceptos y 6 `.riv` publicados. Probados cantando en escritorio y celular: la boca y el brillo siguen al audio.
 

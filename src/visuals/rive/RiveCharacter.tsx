@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { useRive, useStateMachineInput } from '@rive-app/react-canvas'
+import { Alignment, Fit, Layout, useRive, useStateMachineInput } from '@rive-app/react-canvas'
 import { subscribeFrame } from '../animationLoop'
 import type { CharacterRenderProps } from '../CharacterRenderer'
 import { beatImpulse } from '../pose'
@@ -7,6 +7,8 @@ import { SvgCharacter } from '../svg/SvgCharacter'
 import { followRiveLevel } from './motion'
 
 const MACHINE = 'Performance'
+// Characters stand on the stage edge: bottom-aligned so every waist lines up across the row.
+const LAYOUT = new Layout({ fit: Fit.Contain, alignment: Alignment.BottomCenter })
 const STATUS = { empty: 0, queued: 1, playing: 2, stopping: 3 } as const
 
 export default function RiveCharacter(props: CharacterRenderProps & { src: string }) {
@@ -14,6 +16,7 @@ export default function RiveCharacter(props: CharacterRenderProps & { src: strin
   const { rive, RiveComponent } = useRive({
     src: props.src,
     stateMachines: MACHINE,
+    layout: LAYOUT,
     autoplay: true,
     shouldDisableRiveListeners: true,
     onLoadError: () => setFailed(true),
