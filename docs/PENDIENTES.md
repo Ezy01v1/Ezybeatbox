@@ -14,7 +14,10 @@ Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editori
 ## 1. Próximo paso de código (en este orden)
 
 - [x] **Cualquier sonido en cualquier personaje** (2026-11-06). Un mismo sonido no puede estar en dos personajes; si se suelta en otro, se mueve. Cada personaje conserva su aspecto, y el color viene del sonido.
-- [ ] **Paleta sonora propia por género, con voz y FX menos genéricos** (siguiente). Voz: chops con cambio de vocal, talkbox/vocoder, armonías y frases. FX por género: vinilo/scratch, tape stop, sirena/bocina, barridos de filtro, rewind, silbato/talking drum. Más adelante, golpes CC0 de Freesound o grabados por Daniel.
+- [x] **Paleta sonora propia: Trap, House y Reggaetón** (2026-11-06).
+- [ ] **Paleta sonora propia: Boom Bap, Drum & Bass y Afrobeat** (siguiente). Ya existe `boomBapFinish` en `finish.ts`.
+- [ ] **Escuchar y ajustar** las paletas nuevas (Daniel).
+- Referencia: Voz: chops con cambio de vocal, talkbox/vocoder, armonías y frases. FX por género: vinilo/scratch, tape stop, sirena/bocina, barridos de filtro, rewind, silbato/talking drum. Más adelante, golpes CC0 de Freesound o grabados por Daniel.
 - [ ] **Más combinaciones por género:** de 10 a 12 sonidos por sección, con fills.
 - [ ] **Nombres de los personajes:** hoy se llaman "Kick", "Snare"…, aunque ya pueden tocar cualquier cosa. Decidir si llevan nombres propios.
 - [ ] **Teclado:** al tocar un sonido, la app elige el personaje (`placeSound`). Para poner dos bombos con teclado hay que mover el primero; falta una forma de elegir el personaje con teclado.
@@ -117,6 +120,12 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-06:** paleta sonora propia para Trap, House y Reggaetón. Los ids no cambiaron, así que las mezclas, los links y las bases siguen funcionando.
+  - **Instrumentos nuevos** (`scripts/placeholders/voices.ts`): voz con formantes que cambia de vocal, talkbox, hi-hat metálico 808, 808 con glide, bombo 909, clap grande, caja dembow, güiro, bocina, sirena, tape stop, rewind, barrido de filtro, silbato y talking drum.
+  - **Color de mezcla por género** (`finish.ts`, aplicado al renderizar): saturación y sala en Trap, bombeo tipo sidechain y reverb en House, Reggaetón seco con la voz en sala.
+  - Los reemplazos de cada género están en `palettes.ts` y se aplican con `overrideSounds`.
+  - En `dsp.ts` se agregaron un biquad, una reverb Schroeder y `processLoop`, que procesa el loop sin cortes.
 
 - **2026-11-06:** se dejaron los roles fijos: ahora cualquier personaje toca cualquier sonido del pack, un personaje por sonido.
   - **Motor:** los `Tone.Player` de cada canal se crean bajo demanda desde los buffers del pack, que se comparten entre canales.

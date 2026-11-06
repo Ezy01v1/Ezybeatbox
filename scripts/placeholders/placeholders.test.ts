@@ -12,8 +12,12 @@ const packsDir = resolve(__dirname, '../../public/packs')
 
 describe.each(PLACEHOLDER_PACKS.map((pack) => [pack.meta.id, pack] as const))(
   '%s placeholder recipes',
-  (_, { meta, recipes }) => {
+  (_, { meta, recipes, finish }) => {
     const allRecipes = recipes.flatMap((character) => character.sounds)
+    const roleOf = (id: string) =>
+      recipes.find((c) => c.sounds.some((s) => s.id === id))?.role ?? 'fx'
+    const render = (recipe: (typeof allRecipes)[number]) =>
+      renderPlaceholder(recipe, meta, finish && { role: roleOf(recipe.id), apply: finish })
     const expectedLength = loopSampleCount(meta, meta.loopBars, PLACEHOLDER_SAMPLE_RATE)
 
     it('define the 6 roles in order with 7 sounds each (5 + swing and half-time)', () => {
@@ -32,12 +36,14 @@ describe.each(PLACEHOLDER_PACKS.map((pack) => [pack.meta.id, pack] as const))(
           }
         }
       },
+      // Seven full loops per character; the richer instruments take a few seconds.
+      30_000,
     )
 
     it.each(allRecipes.map((recipe) => [recipe.id, recipe] as const))(
       '%s renders an exact-length, non-silent loop within the peak ceiling',
       (_, recipe) => {
-        const data = renderPlaceholder(recipe, meta)
+        const data = render(recipe)
         expect(data.length).toBe(expectedLength)
         expect(data.every(Number.isFinite)).toBe(true)
         expect(rmsOf(data)).toBeGreaterThan(0.001)
@@ -47,7 +53,7 @@ describe.each(PLACEHOLDER_PACKS.map((pack) => [pack.meta.id, pack] as const))(
 
     it('is deterministic', () => {
       const recipe = allRecipes[7]!
-      expect(renderPlaceholder(recipe, meta)).toEqual(renderPlaceholder(recipe, meta))
+      expect(render(recipe)).toEqual(render(recipe))
     })
 
     it('ships a valid manifest, matching the recipes, whose files all exist', () => {

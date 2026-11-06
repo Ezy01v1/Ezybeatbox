@@ -1,5 +1,7 @@
 import { type MeterConfig, loopSampleCount } from '../../src/core/audio/timing'
 import { LoopBuffer, createRng, normalize } from './dsp'
+import type { CharacterRole } from '../../src/core/packs/schema'
+import type { Finish } from './finish'
 import type { SoundRecipe } from './recipes'
 
 export const PLACEHOLDER_SAMPLE_RATE = 44_100
@@ -13,7 +15,12 @@ export interface RenderSettings extends MeterConfig {
 }
 
 /** Renders one placeholder loop of exactly `loopBars` bars. */
-export function renderPlaceholder(recipe: SoundRecipe, settings: RenderSettings): Float32Array {
+export function renderPlaceholder(
+  recipe: SoundRecipe,
+  settings: RenderSettings,
+  /** The pack's mix color (see finish.ts) and the section the sound belongs to. */
+  finish?: { role: CharacterRole; apply: Finish },
+): Float32Array {
   const sampleRate = settings.sampleRate ?? PLACEHOLDER_SAMPLE_RATE
   const length = loopSampleCount(settings, settings.loopBars, sampleRate)
   const buffer = new LoopBuffer(length, sampleRate)
@@ -22,6 +29,11 @@ export function renderPlaceholder(recipe: SoundRecipe, settings: RenderSettings)
   const step = 60 / settings.bpm / 4
 
   recipe.render({ buffer, step, stepsPerBar, rng: createRng(hashSeed(recipe.id)) })
+  finish?.apply(buffer.data, {
+    role: finish.role,
+    sampleRate,
+    beat: (60 / settings.bpm) * (4 / beatUnit),
+  })
   normalize(buffer.data, TARGET_RMS_DB, PEAK_CEILING_DB)
   return buffer.data
 }

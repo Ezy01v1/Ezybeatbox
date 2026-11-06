@@ -53,7 +53,7 @@ function writeFile(path: string, data: Uint8Array | string): void {
   writeFileSync(path, data)
 }
 
-function generatePack({ meta, recipes }: PlaceholderPack): void {
+function generatePack({ meta, recipes, finish }: PlaceholderPack): void {
   const packDir = join(root, 'public', 'packs', meta.id)
   let written = 0
   let skipped = 0
@@ -77,7 +77,10 @@ function generatePack({ meta, recipes }: PlaceholderPack): void {
           return sound
         }
 
-        const wav = encodeWav(renderPlaceholder(recipe, meta), PLACEHOLDER_SAMPLE_RATE)
+        const wav = encodeWav(
+          renderPlaceholder(recipe, meta, finish && { role: character.role, apply: finish }),
+          PLACEHOLDER_SAMPLE_RATE,
+        )
         if (hasFfmpeg) {
           const wavPath = join(tmpDir, meta.id, `${recipe.id}.wav`)
           writeFile(wavPath, wav)

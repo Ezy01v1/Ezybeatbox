@@ -323,7 +323,7 @@
         },
         {
           "id": "reggaeton-fx-2",
-          "label": "Láser",
+          "label": "Bocina",
           "file": "fx/reggaeton-fx-2.ogg",
           "fallback": "fx/reggaeton-fx-2.m4a"
         },
@@ -347,13 +347,13 @@
         },
         {
           "id": "reggaeton-fx-6",
-          "label": "Sirena swing",
+          "label": "Bocina swing",
           "file": "fx/reggaeton-fx-6.ogg",
           "fallback": "fx/reggaeton-fx-6.m4a"
         },
         {
           "id": "reggaeton-fx-7",
-          "label": "Láser ½",
+          "label": "Bocina ½",
           "file": "fx/reggaeton-fx-7.ogg",
           "fallback": "fx/reggaeton-fx-7.m4a"
         }

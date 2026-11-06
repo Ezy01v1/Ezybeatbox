@@ -125,6 +125,27 @@ export function withVariations(
   })
 }
 
+/**
+ * Replaces sounds by id (label and render), keeping ids so saved mixes, links and bases still
+ * point at the same slot. Fails loudly on an unknown id.
+ */
+export function overrideSounds(
+  recipes: CharacterRecipe[],
+  overrides: Record<string, Omit<SoundRecipe, 'id'>>,
+): CharacterRecipe[] {
+  const known = new Set(recipes.flatMap((c) => c.sounds.map((s) => s.id)))
+  for (const id of Object.keys(overrides)) {
+    if (!known.has(id)) throw new Error(`overrideSounds: unknown sound ${id}`)
+  }
+  return recipes.map((character) => ({
+    ...character,
+    sounds: character.sounds.map((sound) => {
+      const override = overrides[sound.id]
+      return override ? { id: sound.id, ...override } : sound
+    }),
+  }))
+}
+
 /** Repeats a one-bar pattern (16th steps 0–15) across a two-bar loop. */
 export const twoBars = (hits: readonly Hit[]): Hit[] =>
   [0, 16].flatMap((offset) =>

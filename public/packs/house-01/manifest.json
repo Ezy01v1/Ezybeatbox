@@ -293,7 +293,7 @@
         },
         {
           "id": "house-voice-5",
-          "label": "Arpegio",
+          "label": "Coro",
           "file": "voice/house-voice-5.ogg",
           "fallback": "voice/house-voice-5.m4a"
         },
@@ -318,7 +318,7 @@
       "sounds": [
         {
           "id": "house-fx-1",
-          "label": "Subida",
+          "label": "Filtro",
           "file": "fx/house-fx-1.ogg",
           "fallback": "fx/house-fx-1.m4a"
         },
@@ -330,7 +330,7 @@
         },
         {
           "id": "house-fx-3",
-          "label": "Zap",
+          "label": "Cierre",
           "file": "fx/house-fx-3.ogg",
           "fallback": "fx/house-fx-3.m4a"
         },
@@ -348,7 +348,7 @@
         },
         {
           "id": "house-fx-6",
-          "label": "Subida swing",
+          "label": "Redoble swing",
           "file": "fx/house-fx-6.ogg",
           "fallback": "fx/house-fx-6.m4a"
         },

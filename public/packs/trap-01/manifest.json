@@ -220,13 +220,13 @@
       "sounds": [
         {
           "id": "trap-bass-1",
-          "label": "Sub",
+          "label": "808",
           "file": "bass/trap-bass-1.ogg",
           "fallback": "bass/trap-bass-1.m4a"
         },
         {
           "id": "trap-bass-2",
-          "label": "Deslizado",
+          "label": "808 Deslizado",
           "file": "bass/trap-bass-2.ogg",
           "fallback": "bass/trap-bass-2.m4a"
         },
@@ -238,7 +238,7 @@
         },
         {
           "id": "trap-bass-4",
-          "label": "Pulso",
+          "label": "808 Pulso",
           "file": "bass/trap-bass-4.ogg",
           "fallback": "bass/trap-bass-4.m4a"
         },
@@ -250,13 +250,13 @@
         },
         {
           "id": "trap-bass-6",
-          "label": "Sub swing",
+          "label": "808 swing",
           "file": "bass/trap-bass-6.ogg",
           "fallback": "bass/trap-bass-6.m4a"
         },
         {
           "id": "trap-bass-7",
-          "label": "Pulso ½",
+          "label": "808 Pulso ½",
           "file": "bass/trap-bass-7.ogg",
           "fallback": "bass/trap-bass-7.m4a"
         }
@@ -293,7 +293,7 @@
         },
         {
           "id": "trap-voice-5",
-          "label": "Agudo",
+          "label": "Talkbox",
           "file": "voice/trap-voice-5.ogg",
           "fallback": "voice/trap-voice-5.m4a"
         },
@@ -324,7 +324,7 @@
         },
         {
           "id": "trap-fx-2",
-          "label": "Láser",
+          "label": "Tape stop",
           "file": "fx/trap-fx-2.ogg",
           "fallback": "fx/trap-fx-2.m4a"
         },
@@ -336,7 +336,7 @@
         },
         {
           "id": "trap-fx-4",
-          "label": "Barrido",
+          "label": "Rewind",
           "file": "fx/trap-fx-4.ogg",
           "fallback": "fx/trap-fx-4.m4a"
         },
@@ -348,13 +348,13 @@
         },
         {
           "id": "trap-fx-6",
-          "label": "Riser swing",
+          "label": "Rewind swing",
           "file": "fx/trap-fx-6.ogg",
           "fallback": "fx/trap-fx-6.m4a"
         },
         {
           "id": "trap-fx-7",
-          "label": "Láser ½",
+          "label": "Sirena ½",
           "file": "fx/trap-fx-7.ogg",
           "fallback": "fx/trap-fx-7.m4a"
         }

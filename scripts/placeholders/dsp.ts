@@ -112,3 +112,68 @@ export function normalize(data: Float32Array, targetRmsDb: number, peakCeilingDb
   const gain = Math.min(dbToGain(targetRmsDb) / rms, dbToGain(peakCeilingDb) / peak)
   for (let i = 0; i < data.length; i++) data[i] = (data[i] ?? 0) * gain
 }
+
+/** RBJ biquad (band-pass or low-pass) whose cutoff can change per sample. */
+export function biquad(type: 'bandpass' | 'lowpass', sampleRate: number, q = 0.707) {
+  let x1 = 0
+  let x2 = 0
+  let y1 = 0
+  let y2 = 0
+  return (x: number, freqHz: number): number => {
+    const w = (TWO_PI * Math.min(freqHz, sampleRate * 0.45)) / sampleRate
+    const cos = Math.cos(w)
+    const alpha = Math.sin(w) / (2 * q)
+    const a0 = 1 + alpha
+    const [b0, b1, b2] =
+      type === 'bandpass' ? [alpha, 0, -alpha] : [(1 - cos) / 2, 1 - cos, (1 - cos) / 2]
+    // a1 = -2·cos(w), a2 = 1 - alpha
+    const y = (b0 * x + b1 * x1 + b2 * x2 + 2 * cos * y1 - (1 - alpha) * y2) / a0
+    x2 = x1
+    x1 = x
+    y2 = y1
+    y1 = y
+    return y
+  }
+}
+
+/**
+ * Runs a stateful per-sample effect over a loop seamlessly: one warm-up pass so filter and
+ * reverb tails coming from the end of the loop are already present at its start.
+ */
+export function processLoop(data: Float32Array, effect: (x: number, i: number) => number): void {
+  for (let i = 0; i < data.length; i++) effect(data[i] ?? 0, i)
+  for (let i = 0; i < data.length; i++) data[i] = effect(data[i] ?? 0, i)
+}
+
+/** Small Schroeder reverb (4 combs + 2 all-passes) mixed in with `wet`. */
+export function reverb(sampleRate: number, { size = 1, wet = 0.25, damp = 0.3 } = {}) {
+  const combs = [1557, 1617, 1491, 1422].map((n) => {
+    const buf = new Float32Array(Math.round(n * size * (sampleRate / 44_100)))
+    let i = 0
+    let low = 0
+    return (x: number) => {
+      const out = buf[i] ?? 0
+      low = out * (1 - damp) + low * damp
+      buf[i] = x + low * 0.82
+      i = (i + 1) % buf.length
+      return out
+    }
+  })
+  const allpasses = [225, 556].map((n) => {
+    const buf = new Float32Array(Math.round(n * (sampleRate / 44_100)))
+    let i = 0
+    return (x: number) => {
+      const delayed = buf[i] ?? 0
+      buf[i] = x + delayed * 0.5
+      i = (i + 1) % buf.length
+      return delayed - x * 0.5
+    }
+  })
+  return (x: number) => {
+    let sum = 0
+    for (const comb of combs) sum += comb(x)
+    let y = sum * 0.25
+    for (const ap of allpasses) y = ap(y)
+    return x + y * wet
+  }
+}
