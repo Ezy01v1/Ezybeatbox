@@ -1,6 +1,6 @@
 /**
  * Generates the Rive scenes for the Boom Bap streetwear characters:
- * assets/rive/<role>/scene.rml, from scripts/rive/streetwearArt.ts and the pack's role colors.
+ * assets/rive/<role>/scene.rml, from src/visuals/streetwear/art.ts and the pack's role colors.
  *
  *   npm run rive:streetwear               # write the six scene.rml files
  *   npm run rive:streetwear -- --verify   # also compile each one with the Rive CLI
@@ -22,41 +22,18 @@ import {
   BROWS_SVG,
   EYES_SVG,
   QUEUED_MOUTH_SVG,
-  type RolePalette,
   SINGING_MOUTH_SVG,
   SMILE_SVG,
   bodySvg,
   headSvg,
-} from './streetwearArt'
+  paletteFor,
+} from '../../src/visuals/streetwear/art'
 import { resetShapeNames, rmlColor, svgToRml } from './svgToRml'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
 const manifest = JSON.parse(
   readFileSync(join(root, 'public/packs/boom-bap-01/manifest.json'), 'utf8'),
 ) as { theme: { stage: { background: string }; roles: Record<CharacterRole, string> } }
-
-// ── Palette ────────────────────────────────────────────────────────────────────────────
-
-function mix(hex: string, target: string, amount: number): string {
-  const channel = (h: string, i: number) => parseInt(h.slice(1 + i * 2, 3 + i * 2), 16)
-  return `#${[0, 1, 2]
-    .map((i) =>
-      Math.round(channel(hex, i) + (channel(target, i) - channel(hex, i)) * amount)
-        .toString(16)
-        .padStart(2, '0'),
-    )
-    .join('')}`
-}
-
-export function paletteFor(accent: string): RolePalette {
-  return {
-    accent,
-    dark: mix(accent, '#000000', 0.22),
-    deeper: mix(accent, '#000000', 0.38),
-    light: mix(accent, '#ffffff', 0.78),
-    soft: mix(accent, '#ffffff', 0.55),
-  }
-}
 
 // ── Rig ────────────────────────────────────────────────────────────────────────────────
 
@@ -320,7 +297,7 @@ ${row(cells('reposo'))}
 
 ## Cómo actualizarlas
 
-1. Editar el arte en \`scripts/rive/streetwearArt.ts\` (o los colores de rol en \`scripts/placeholders/packs.ts\`).
+1. Editar el arte en \`src/visuals/streetwear/art.ts\` (o los colores de rol en \`scripts/placeholders/packs.ts\`).
 2. \`npm run rive:streetwear -- --previews\` regenera las escenas y estas imágenes (necesita el CLI de Rive, sin iniciar sesión).
 3. \`npm run rive:streetwear -- --publish --previews\` además escribe los \`.riv\` del juego (necesita \`rive login\`).
 `,

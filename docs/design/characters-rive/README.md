@@ -18,6 +18,6 @@ color del escenario. Los conceptos originales están en [`../characters-v1/`](..
 
 ## Cómo actualizarlas
 
-1. Editar el arte en `scripts/rive/streetwearArt.ts` (o los colores de rol en `scripts/placeholders/packs.ts`).
+1. Editar el arte en `src/visuals/streetwear/art.ts` (o los colores de rol en `scripts/placeholders/packs.ts`).
 2. `npm run rive:streetwear -- --previews` regenera las escenas y estas imágenes (necesita el CLI de Rive, sin iniciar sesión).
 3. `npm run rive:streetwear -- --publish --previews` además escribe los `.riv` del juego (necesita `rive login`).

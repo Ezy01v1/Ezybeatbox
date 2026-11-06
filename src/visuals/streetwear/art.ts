@@ -1,11 +1,12 @@
 /**
  * Streetwear hip hop characters (approved concepts: docs/design/characters-v1), as plain SVG
- * markup for the Rive converter. Coordinates use the original 120 × 226 rig (viewBox
+ * markup. Shared by the Rive generator (scripts/rive/build-streetwear.ts) and the in-app SVG
+ * fallback (StreetwearCharacter.tsx). Coordinates use the original 120 × 226 rig (viewBox
  * `0 -6 120 226`); feet rest at y ≈ 209.
  *
  * Every role-specific accent comes from `palette`, so a theme can re-skin the same rig.
  */
-import type { CharacterRole } from '../../src/core/packs/schema'
+import type { CharacterRole } from '../../core/packs/schema'
 
 export interface RolePalette {
   /** Main outfit color (the role color). */
@@ -18,6 +19,29 @@ export interface RolePalette {
   light: string
   /** Soft tint, between `accent` and `light`. */
   soft: string
+}
+
+/** Blends `hex` toward `target` by `amount` (0–1). */
+function mix(hex: string, target: string, amount: number): string {
+  const channel = (h: string, i: number) => parseInt(h.slice(1 + i * 2, 3 + i * 2), 16)
+  return `#${[0, 1, 2]
+    .map((i) =>
+      Math.round(channel(hex, i) + (channel(target, i) - channel(hex, i)) * amount)
+        .toString(16)
+        .padStart(2, '0'),
+    )
+    .join('')}`
+}
+
+/** Derives the outfit shades from a role color. */
+export function paletteFor(accent: string): RolePalette {
+  return {
+    accent,
+    dark: mix(accent, '#000000', 0.22),
+    deeper: mix(accent, '#000000', 0.38),
+    light: mix(accent, '#ffffff', 0.78),
+    soft: mix(accent, '#ffffff', 0.55),
+  }
 }
 
 export const INK = '#15151e'

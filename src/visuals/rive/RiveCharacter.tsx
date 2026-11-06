@@ -1,9 +1,8 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { Alignment, Fit, Layout, useRive, useStateMachineInput } from '@rive-app/react-canvas'
 import { subscribeFrame } from '../animationLoop'
 import type { CharacterRenderProps } from '../CharacterRenderer'
 import { beatImpulse } from '../pose'
-import { SvgCharacter } from '../svg/SvgCharacter'
 import { followRiveLevel } from './motion'
 
 const MACHINE = 'Performance'
@@ -11,10 +10,18 @@ const MACHINE = 'Performance'
 const LAYOUT = new Layout({ fit: Fit.Contain, alignment: Alignment.BottomCenter })
 const STATUS = { empty: 0, queued: 1, playing: 2, stopping: 3 } as const
 
-export default function RiveCharacter(props: CharacterRenderProps & { src: string }) {
+export default function RiveCharacter({
+  src,
+  fallback,
+  ...props
+}: CharacterRenderProps & {
+  src: string
+  /** Shown while the `.riv` loads and if it fails to load. */
+  fallback: ReactNode
+}) {
   const [failed, setFailed] = useState(false)
   const { rive, RiveComponent } = useRive({
-    src: props.src,
+    src,
     stateMachines: MACHINE,
     layout: LAYOUT,
     autoplay: true,
@@ -50,11 +57,11 @@ export default function RiveCharacter(props: CharacterRenderProps & { src: strin
     })
   }, [level, beat, status, muted])
 
-  if (failed) return <SvgCharacter {...props} />
+  if (failed) return fallback
 
   return (
     <div aria-hidden className="relative h-full w-full">
-      {!ready && <SvgCharacter {...props} />}
+      {!ready && fallback}
       <RiveComponent
         className={`pointer-events-none absolute inset-0 ${ready ? '' : 'opacity-0'}`}
       />

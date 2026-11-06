@@ -79,7 +79,7 @@ main.tsx ─ new AudioEngine() ─ createAppStore(engine) ─ <AppStoreProvider>
   - Cada `CharacterSlot` es un _drop target_ (`data-drop-character`) y se detecta con `elementFromPoint`.
   - `resolveDrop` (lógica pura, con pruebas) decide qué pasa al soltar. Un sonido de la paleta solo se asigna a **su** personaje. Arrastrar el sonido de un personaje fuera de él lo quita.
   - El fantasma sigue al puntero escribiendo `transform` directamente en el DOM (`dragStore.positionGhost`). React solo se entera del inicio, del fin y de cuando el puntero cruza el borde de un personaje.
-- **Render de personajes:** `visuals/CharacterRenderer.ts` define las props (`role`, `color`, `outline`, `status`, `muted`, `level`, `beat`, `reducedMotion`). `color` y `outline` vienen del tema del pack, así el renderer no lee el store. `visuals/PackCharacter.tsx` elige el arte por pack y rol. Los personajes de Boom Bap y Trap cargan su arte Rive al montar sus tarjetas, con SVG de respaldo. Las fuentes editables están en `assets/rive/`. El renderer es solo visual (`aria-hidden`): el nombre accesible y los controles viven en `CharacterSlot`.
+- **Render de personajes:** `visuals/CharacterRenderer.ts` define las props (`role`, `color`, `outline`, `status`, `muted`, `level`, `beat`, `reducedMotion`). `color` y `outline` vienen del tema del pack, así el renderer no lee el store. `visuals/PackCharacter.tsx` elige el arte por pack y rol. Los personajes de Boom Bap y Trap cargan su arte Rive al montar sus tarjetas. Mientras carga, o si falla, se ve un respaldo SVG: en Boom Bap, `visuals/streetwear/StreetwearCharacter.tsx`, del mismo estilo (lo elige `fallbackStyle` en `rive/characterArt.ts`); en Trap, el `SvgCharacter` clásico. Las fuentes editables están en `assets/rive/`. El renderer es solo visual (`aria-hidden`): el nombre accesible y los controles viven en `CharacterSlot`.
 - **i18n:** todos los textos de la UI están en `i18n/locales/es/common.json`, con claves tipadas. Los textos del pack (nombres, etiquetas) se resuelven con `useLocalizedText`.
 - **Movimiento reducido:** `usePrefersReducedMotion` desactiva el pulso del estado "en espera"; las transiciones CSS usan `motion-reduce:`.
 
@@ -146,7 +146,7 @@ animationLoop (un solo rAF) ──► SvgCharacter × 6: followLevel → compute
 
 ### Personajes streetwear de Boom Bap (Rive, 2026-11-05)
 
-- **El arte se genera, no se dibuja a mano en RML:** `scripts/rive/streetwearArt.ts` describe los 6 personajes como SVG (conceptos aprobados en `docs/design/characters-v1/`). `scripts/rive/svgToRml.ts` (con pruebas) traduce ese SVG a `PointsPath` y vértices de Rive. `scripts/rive/build-streetwear.ts` arma `assets/rive/<rol>/scene.rml` con el rig.
+- **El arte se genera, no se dibuja a mano en RML:** `src/visuals/streetwear/art.ts` describe los 6 personajes como SVG (conceptos aprobados en `docs/design/characters-v1/`). `scripts/rive/svgToRml.ts` (con pruebas) traduce ese SVG a `PointsPath` y vértices de Rive. `scripts/rive/build-streetwear.ts` arma `assets/rive/<rol>/scene.rml` con el rig.
 - **Comandos:**
   - `npm run rive:streetwear -- --verify`: regenera las escenas y las compila.
   - `npm run rive:streetwear -- --publish`: escribe `public/packs/boom-bap-01/<rol>.riv`. Necesita el CLI de Rive con sesión iniciada (`rive login`, una vez por PC).
