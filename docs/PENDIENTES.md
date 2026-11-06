@@ -3,38 +3,37 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-05**, Fases A y B de temáticas terminadas en la rama `feat/editorial-themes` (subida a GitHub, todavía sin fusionar a `main`: falta que Daniel la revise). En la PC1 se rescataron las referencias de diseño de una sesión anterior (ver "Ideas rescatadas").
+> Última actualización: **2026-11-05**, `feat/editorial-themes` fusionada en `main` (interfaz editorial, multi-pack, Trap y personajes en Rive). En la PC1 se rescataron las referencias de diseño de una sesión anterior (ver "Ideas rescatadas").
 
 ## Estado en una línea
 
-Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editorial, selector de packs (Boom Bap y Trap, cada uno con su escenario temático) y cambio de pack sin recargar. Los doce personajes de Boom Bap y Trap ya están integrados en Rive. **Falta:** personalizar los avatares, revisar y fusionar la rama, publicar la app, probar en dispositivos reales y avanzar con las funciones nuevas.
+Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editorial, selector de packs (Boom Bap y Trap, cada uno con su escenario temático) y cambio de pack sin recargar. Los doce personajes de Boom Bap y Trap ya están integrados en Rive. **Falta:** personalizar los avatares, publicar la app, probar en dispositivos reales y avanzar con las funciones nuevas.
 
 ---
 
 ## 1. Próximo paso de código (en este orden)
 
-- [ ] **Fusionar `feat/editorial-themes` en `main`** cuando Daniel revise la interfaz (y hacer push para que la otra PC la tenga).
 - [ ] **Personajes en Rive:** un renderer `RiveCharacter` con el contrato de `CharacterRenderer` (inputs `level`, `beat`, `status`, `muted`). Referencia de arte: las hojas de 6 personajes de Stitch. CLI 1.9.0 instalado. Primera pasada de los seis personajes de Boom Bap y los seis de Trap integrada. Ambos escenarios comprobados en el navegador. Primera afinación de la respuesta al audio por rol. Pendiente personalizar el arte y probar la sincronía con Bluetooth.
   - [x] **Cargar el arte de cada temática al abrir su pack.** El renderer mantiene el SVG como respaldo.
 - [ ] **Loop Station** (contratos en `src/extensions/loopStation.ts` y `userSounds.ts`, diseño en `docs/EXTENSIONS.md`). Conviene hacerla con la app ya publicada, para probar el micrófono en el celular.
 
-### Ideas rescatadas de la PC1 (sesión del 2026-11-04, sin implementar en esta rama)
+### Ideas rescatadas de la PC1 (sesión del 2026-11-04, sin implementar todavía)
 
-Esa sesión hizo una portada neutra y personajes SVG streetwear **que nunca se subieron**. La rama los reemplazó con el selector de packs y Rive. Las referencias visuales están ahora en `docs/design/` (`characters-v1/` y `home-neutral-v1/`). El código completo quedó solo en la rama local `respaldo/portada-neutra-pc1` de la PC1 (no está en GitHub). Ideas que valen la pena evaluar:
+Esa sesión hizo una portada neutra y personajes SVG streetwear **que nunca se subieron**. La interfaz actual los reemplazó con el selector de packs y Rive. Las referencias visuales están ahora en `docs/design/` (`characters-v1/` y `home-neutral-v1/`). El código completo quedó solo en la rama local `respaldo/portada-neutra-pc1` de la PC1 (no está en GitHub). Ideas que valen la pena evaluar:
 
 - [ ] **Botón "Inicio" en el escenario** que vuelve a la portada **sin perder el beat**, y desde ahí **"Continuar mi beat"** sin recargar sonidos.
 - [ ] **"Mis mixes" desde la portada:** abrir la biblioteca antes de elegir pack (solo cargar, sin el formulario de guardar). Al cargar un mix se prepara su pack.
 - [ ] **Bases por temática:** después de elegir el género, elegir una base (se propusieron **tres por temática**) o **"Crear desde cero"**. Las bases deben sonar bien juntas y compartir tempo y duración.
 - [ ] **Personaje piloto:** pulir **solo Kick** al nivel de su concepto (`docs/design/characters-v1/kick.webp`), comparándolo en escritorio y móvil, antes de rehacer los seis.
 - [ ] **Detalles de animación:** parpadeo escalonado entre personajes y pulso del cuerpo con el audio. Verificar si Rive ya los cubre.
-- [ ] **Robustez de carga:** evitar dos cargas de pack simultáneas y, si falla, reintentar el pack pedido en vez de volver al predeterminado. Verificar contra la rama, que ya maneja "pack inexistente".
+- [ ] **Robustez de carga:** evitar dos cargas de pack simultáneas y, si falla, reintentar el pack pedido en vez de volver al predeterminado. Verificar contra el código actual, que ya maneja "pack inexistente".
 - [ ] **Controles en móvil:** M/S debajo del personaje y quitar sonido junto a él, sin que tocar ese botón inicie un arrastre. Se relaciona con el punto de los botones de 32 px de la sección 5.
 
 ## 2. Tareas de Daniel (no son código)
 
 - [x] **Diseño en Stitch:** dirección elegida y 6 personajes por temática (2026-11-05). Stitch está conectado por MCP en la configuración de usuario de esta PC (en la otra PC hay que agregarlo de nuevo con `claude mcp add stitch …`).
 - [ ] **Rotar la API key de Stitch**: quedó escrita en una conversación.
-- [ ] **Revisar la interfaz nueva** con `npm run dev` (selector, escenario hip hop y trap, "Cambiar estilo") y decir qué ajustar. Primera mirada el 2026-11-05: le gustó; sigue probando.
+- [ ] **Seguir revisando la interfaz nueva** con `npm run dev` (selector, escenario hip hop y trap, "Cambiar estilo"). Aprobada y fusionada en `main` el 2026-11-05; anotar aquí los ajustes que aparezcan.
 - [ ] **Generar más ritmos sintéticos** para ampliar la variedad de loops de prueba de Boom Bap y Trap.
 - [ ] **Grabar los samples reales del pack trap** (140 BPM, 2 compases). Los nombres de los sonidos están en `scripts/placeholders/trapRecipes.ts`; para regenerar los placeholders hace falta `ffmpeg` en el `PATH`.
 - [ ] **Animar los avatares en Rive** (o pedirle a Claude que lo haga con el CLI).
@@ -93,6 +92,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-05:** `feat/editorial-themes` fusionada en `main` (fast-forward, 10 commits). Pasaron el lint, 232 pruebas y el build. El trabajo nuevo sigue en `main`.
 
 - **2026-11-05:** en la PC1 se rescataron las referencias de una sesión que no se había subido: los 6 conceptos de personajes hip hop (PNG → WebP, de 8,8 MB a 0,9 MB) y la portada neutra de Stitch, en `docs/design/`. Las ideas de interacción quedaron anotadas en la sección 1.
 

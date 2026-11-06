@@ -2,7 +2,7 @@
 
 Approved by Daniel on 2026-11-04 as the visual direction for the six hip hop characters. Concept references only, not production sprites. Originally PNG (~1.5 MB each); stored here as WebP (quality 88) to keep the repo light.
 
-**Status on `feat/editorial-themes`:** the game uses the Rive characters (`src/visuals/rive/`) with the SVG renderer as fallback. These concepts are the reference for customizing those avatars. A first vector adaptation (`StreetwearArt.tsx`) was made on PC1 but lives only in the local backup branch `respaldo/portada-neutra-pc1`; it was superseded by the Rive work.
+**Status on `main`:** the game uses the Rive characters (`src/visuals/rive/`) with the SVG renderer as fallback. These concepts are the reference for customizing those avatars. A first vector adaptation (`StreetwearArt.tsx`) was made on PC1 but lives only in the local backup branch `respaldo/portada-neutra-pc1`; it was superseded by the Rive work.
 
 ## Prompt set
 
