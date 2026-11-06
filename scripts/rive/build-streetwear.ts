@@ -5,6 +5,8 @@
  *   npm run rive:streetwear               # write the six scene.rml files
  *   npm run rive:streetwear -- --verify   # also compile each one with the Rive CLI
  *   npm run rive:streetwear -- --publish  # also write public/packs/boom-bap-01/<role>.riv
+ *                                         # (unused: the app draws Boom Bap as SVG since
+ *                                         # 2026-11-06, to avoid the free-plan watermark)
  *   npm run rive:streetwear -- --previews # also render PNG previews + gallery to
  *                                         # docs/design/characters-rive/ (combinable)
  *
@@ -26,6 +28,9 @@ import {
   SMILE_SVG,
   bodySvg,
   headSvg,
+  BLINK,
+  BLINK_SQUASH,
+  EYES_CENTER_Y,
   paletteFor,
 } from '../../src/visuals/streetwear/art'
 import { resetShapeNames, rmlColor, svgToRml } from './svgToRml'
@@ -97,22 +102,6 @@ function statusKeys(state: keyof typeof EXPRESSIONS, ring: number): [string, str
     [ID.presence, 'opacity', presence],
   ]
 }
-
-/**
- * Staggered blinking: each role loops on its own period (frames at 60 fps) and blinks at its own
- * offset, so the band never blinks in unison. Only visible while the eyes are open.
- */
-const BLINK: Record<CharacterRole, { period: number; at: number }> = {
-  kick: { period: 252, at: 40 },
-  snare: { period: 300, at: 150 },
-  hihat: { period: 228, at: 95 },
-  bass: { period: 336, at: 210 },
-  voice: { period: 276, at: 15 },
-  fx: { period: 312, at: 120 },
-}
-/** Vertical center of the eyes in artwork space: the squash keeps it fixed. */
-const EYES_CENTER_Y = 41
-const BLINK_SQUASH = 0.1
 
 /** Squashes the eyes around their center by keying scaleY and y together (linear in both). */
 export function blinkAnimation(role: CharacterRole): string {

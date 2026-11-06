@@ -255,3 +255,28 @@ export const EYES_SVG = `
 export const SMILE_SVG = `<path d="M54 60q6 3 12-1" fill="none" stroke="#432a2c" stroke-width="1.8"/>`
 export const QUEUED_MOUTH_SVG = `<circle cx="60" cy="60" r="2.5" fill="#211722" stroke="none"/>`
 export const SINGING_MOUTH_SVG = `<ellipse cx="60" cy="60" rx="4" ry="0.8" fill="#211722" stroke="#5e3433" stroke-width="1"/>`
+
+/**
+ * Staggered blinking: each role loops on its own period (frames at 60 fps) and blinks at its own
+ * offset, so the band never blinks in unison. Only visible while the eyes are open.
+ */
+export const BLINK: Record<CharacterRole, { period: number; at: number }> = {
+  kick: { period: 252, at: 40 },
+  snare: { period: 300, at: 150 },
+  hihat: { period: 228, at: 95 },
+  bass: { period: 336, at: 210 },
+  voice: { period: 276, at: 15 },
+  fx: { period: 312, at: 120 },
+}
+/** Vertical center of the eyes in artwork space: the squash keeps it fixed. */
+export const EYES_CENTER_Y = 41
+export const BLINK_SQUASH = 0.1
+
+/** Eye scaleY (1 = open) at `seconds`: closes over 3 frames, reopens over 4, as in the Rive rig. */
+export function blinkScale(role: CharacterRole, seconds: number): number {
+  const { period, at } = BLINK[role]
+  const frame = (seconds * 60) % period
+  if (frame <= at || frame >= at + 7) return 1
+  if (frame <= at + 3) return 1 - ((frame - at) / 3) * (1 - BLINK_SQUASH)
+  return BLINK_SQUASH + ((frame - at - 3) / 4) * (1 - BLINK_SQUASH)
+}

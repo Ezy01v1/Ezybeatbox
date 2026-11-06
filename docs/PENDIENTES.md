@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-06**, inicio sin perder el beat, respaldo SVG streetwear y parpadeo escalonado en Boom Bap; CLI de Rive en la PC2. En la PC1 se rescataron las referencias de diseño de una sesión anterior (ver "Ideas rescatadas").
+> Última actualización: **2026-11-06**, Boom Bap en SVG propio (sin marca de agua de Rive), inicio sin perder el beat, respaldo SVG streetwear y parpadeo escalonado en Boom Bap; CLI de Rive en la PC2. En la PC1 se rescataron las referencias de diseño de una sesión anterior (ver "Ideas rescatadas").
 
 ## Estado en una línea
 
@@ -20,7 +20,8 @@ Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editori
   - [ ] **Probar el arrastre con el dedo** en el escenario nuevo: el destino ya no es una tarjeta, sino el área del personaje.
   - [x] **Respaldo SVG streetwear en Boom Bap** (2026-11-06): mientras carga Rive, o si falla, se ve `StreetwearCharacter` (mismo arte, boca que sigue el audio). Trap sigue con el `SvgCharacter` clásico hasta que tenga su propio arte.
   - [x] **Parpadeo escalonado en Boom Bap** (2026-11-06): capa `Blink` en bucle, con periodo y desfase propios por rol (`BLINK` en `scripts/rive/build-streetwear.ts`). Trap no lo tiene: su rig no se genera con este script.
-  - [ ] **Marca de agua de Rive (se nota mucho):** cada vez que se monta el escenario, cada personaje muestra un cuadro negro con el logo "RIVE" (plan gratuito), durante ~2 s. Pasa también con los `.riv` de la PC1. **Probado y descartado (2026-11-06):** taparla con el respaldo SVG un tiempo fijo no sirve, porque la presentación empieza a correr recién cuando el canvas se ve. Opciones reales: (a) plan pago de Rive y volver a publicar; (b) **recomendado:** dibujar Boom Bap con el SVG propio (`StreetwearCharacter`), sumando rebote, pulso y parpadeo al bucle de animación, sin Rive ni marca de agua. **Decide Daniel.**
+  - [x] **Marca de agua de Rive en Boom Bap** (2026-11-06): Boom Bap ya no usa Rive; se dibuja con SVG propio (`StreetwearCharacter`), con el mismo arte, movimiento y parpadeo. Taparla un tiempo fijo no servía: la presentación empieza a correr cuando el canvas se ve.
+  - [ ] **Trap sigue en Rive con marca de agua.** Opciones: pasarlo también a SVG (hace falta su arte streetwear en `art.ts`) o pagar un plan de Rive y volver a publicar.
 - [ ] **Loop Station** (contratos en `src/extensions/loopStation.ts` y `userSounds.ts`, diseño en `docs/EXTENSIONS.md`). Conviene hacerla con la app ya publicada, para probar el micrófono en el celular.
 
 ### Ideas rescatadas de la PC1 (sesión del 2026-11-04, sin implementar todavía)
@@ -99,6 +100,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-06:** Boom Bap pasó de Rive a SVG propio para quitar la marca de agua del plan gratuito. Mismos valores de movimiento que el rig (aplaste a la cadera, rebote, boca, brillo, parpadeo escalonado compartido en `BLINK`). Se quitaron los `.riv` de Boom Bap de `public/`; el generador de Rive queda para las vistas previas.
 
 - **2026-11-06:** inicio sin perder el beat y "Continuar mi beat". Se corrigió además un error: si el escenario se montaba justo al empezar un compás, un personaje podía quedarse en "En espera" aunque ya sonaba (Tone.Draw descarta avisos con más de 0,25 s de retraso). Ahora el store se corrige solo en cada tiempo.
 

@@ -1,6 +1,6 @@
 import { lazy, Suspense, Component, type ReactNode } from 'react'
 import type { CharacterRenderProps } from './CharacterRenderer'
-import { characterArt, fallbackStyle } from './rive/characterArt'
+import { characterArt, svgStyle } from './rive/characterArt'
 import { StreetwearCharacter } from './streetwear/StreetwearCharacter'
 import { SvgCharacter } from './svg/SvgCharacter'
 
@@ -24,7 +24,7 @@ export function PackCharacter({
 }: CharacterRenderProps & { packId: string | undefined }) {
   const src = characterArt(packId, props.role)
   const fallback =
-    fallbackStyle(packId) === 'streetwear' ? (
+    svgStyle(packId) === 'streetwear' ? (
       <StreetwearCharacter {...props} />
     ) : (
       <SvgCharacter {...props} />

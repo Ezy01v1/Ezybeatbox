@@ -1,47 +1,69 @@
-import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
+import { useEffect, useId, useLayoutEffect, useMemo, useRef } from 'react'
 import { subscribeFrame } from '../animationLoop'
 import type { CharacterRenderProps } from '../CharacterRenderer'
-import { followLevel, normalizeLevel } from '../levels'
+import { beatImpulse } from '../pose'
+import { followRiveLevel } from '../rive/motion'
 import {
   BROWS_SVG,
+  EYES_CENTER_Y,
   EYES_SVG,
   QUEUED_MOUTH_SVG,
   SINGING_MOUTH_SVG,
   SMILE_SVG,
+  blinkScale,
   bodySvg,
   headSvg,
   paletteFor,
 } from './art'
 
-/** Same framing as the Rive artboard (120 × 158, art space starts at y = -6, cut at the hips). */
+/** Same framing as the old Rive artboard: 120 × 158, art space from y = -6, cut at the hips. */
 const VIEW_BOX = '0 -6 120 158'
-/** Singing mouth radius at rest; the Rive rig scales it up to 8× on a hit. */
-const MOUTH_RY = 0.8
-const MOUTH_MAX_SCALE = 8
+const HIPS = { x: 60, y: 152 }
+
+/**
+ * Motion at full level / on the beat. Same numbers as the Rive rig it replaces
+ * (scripts/rive/build-streetwear.ts), so both renderers move alike.
+ */
+const MOTION = {
+  /** Body squash around the hips. */
+  squashX: 0.03,
+  squashY: 0.03,
+  /** Head bounce on each beat (art units, up). */
+  headBob: 4,
+  /** Singing mouth radii at rest and their growth at full level. */
+  mouthRx: 4,
+  mouthRxGrowth: 0.5,
+  mouthRy: 0.8,
+  mouthRyGrowth: 7,
+  glow: 0.55,
+} as const
 
 type Expression = 'resting' | 'queued' | 'singing'
 
 function expressionSvg(expression: Expression): string {
+  const eyes = `<g data-eyes>${EYES_SVG}</g>`
   if (expression === 'resting') return BROWS_SVG + SMILE_SVG
-  if (expression === 'queued') return BROWS_SVG + EYES_SVG + QUEUED_MOUTH_SVG
-  return BROWS_SVG + EYES_SVG + SINGING_MOUTH_SVG.replace('<ellipse', '<ellipse data-mouth')
+  if (expression === 'queued') return BROWS_SVG + eyes + QUEUED_MOUTH_SVG
+  return BROWS_SVG + eyes + SINGING_MOUTH_SVG.replace('<ellipse', '<ellipse data-mouth')
 }
 
 /**
- * Static SVG version of the streetwear Rive rig. Shown while the `.riv` loads, or instead of it
- * when Rive fails, so the stage never switches art style. Only the mouth follows the audio.
+ * The streetwear characters (Boom Bap), drawn as plain SVG. React renders the markup only when
+ * the role, color or expression changes; per-frame motion (squash, head bounce, mouth, glow and
+ * the staggered blink) is written straight to SVG attributes from the shared animation loop.
  *
  * The markup comes from our own art constants plus pack colors validated as `#rrggbb`
  * (core/packs/schema), so injecting it as HTML is safe.
  */
 export function StreetwearCharacter(props: CharacterRenderProps) {
   const { role, color, status, muted } = props
+  const glowId = useId()
   const singing = status === 'playing' || status === 'stopping'
   const expression: Expression = singing ? 'singing' : status === 'queued' ? 'queued' : 'resting'
 
-  const markup = useMemo(() => {
+  const { head, body } = useMemo(() => {
     const palette = paletteFor(color)
-    return headSvg(role, palette, expressionSvg(expression)) + bodySvg(role, palette)
+    return { head: headSvg(role, palette, expressionSvg(expression)), body: bodySvg(role, palette) }
   }, [role, color, expression])
 
   const live = useRef(props)
@@ -49,22 +71,41 @@ export function StreetwearCharacter(props: CharacterRenderProps) {
     live.current = props
   })
 
-  const artRef = useRef<SVGGElement>(null)
-  useEffect(() => {
-    if (!singing) return
-    const mouth = artRef.current?.querySelector('[data-mouth]')
-    if (!mouth) return
-    let level = 0
-    return subscribeFrame((_, delta) => {
-      const current = live.current
-      const moving = !current.muted && !current.reducedMotion
-      level = moving ? followLevel(level, normalizeLevel(current.level.getLevel()), delta) : 0
-      const scale = 1 + level * (MOUTH_MAX_SCALE - 1)
-      mouth.setAttribute('ry', (MOUTH_RY * scale).toFixed(2))
-    })
-  }, [singing, markup])
+  const pivotRef = useRef<SVGGElement>(null)
+  const headRef = useRef<SVGGElement>(null)
+  const glowRef = useRef<SVGCircleElement>(null)
 
-  // Matches the rig: dimmed while empty ("Presence") and further while muted.
+  useEffect(() => {
+    const eyes = headRef.current?.querySelector('[data-eyes]')
+    const mouth = headRef.current?.querySelector('[data-mouth]')
+    let level = 0
+    return subscribeFrame((now, delta) => {
+      const current = live.current
+      const playing = current.status === 'playing' || current.status === 'stopping'
+      const moving = playing && !current.muted && !current.reducedMotion
+      level = moving ? followRiveLevel(current.role, level, current.level.getLevel(), delta) : 0
+      const bob = moving ? beatImpulse(current.beat.getBeatPosition()) * MOTION.headBob : 0
+
+      pivotRef.current?.setAttribute(
+        'transform',
+        `translate(${HIPS.x} ${HIPS.y}) scale(${(1 + level * MOTION.squashX).toFixed(4)} ${(1 - level * MOTION.squashY).toFixed(4)}) translate(${-HIPS.x} ${-HIPS.y})`,
+      )
+      headRef.current?.setAttribute('transform', `translate(0 ${(-bob).toFixed(2)})`)
+      glowRef.current?.setAttribute('opacity', (level * MOTION.glow).toFixed(3))
+      mouth?.setAttribute('rx', (MOTION.mouthRx * (1 + level * MOTION.mouthRxGrowth)).toFixed(2))
+      mouth?.setAttribute('ry', (MOTION.mouthRy * (1 + level * MOTION.mouthRyGrowth)).toFixed(2))
+
+      if (eyes) {
+        const scale = current.reducedMotion ? 1 : blinkScale(current.role, now / 1000)
+        eyes.setAttribute(
+          'transform',
+          `translate(0 ${(EYES_CENTER_Y * (1 - scale)).toFixed(2)}) scale(1 ${scale.toFixed(3)})`,
+        )
+      }
+    })
+  }, [head])
+
+  // Matches the old rig: dimmed while empty ("Presence") and further while muted.
   const opacity = (muted ? 0.35 : 1) * (status === 'empty' ? 0.65 : 1)
 
   return (
@@ -74,6 +115,15 @@ export function StreetwearCharacter(props: CharacterRenderProps) {
       className="h-full w-full"
       aria-hidden
     >
+      <defs>
+        <radialGradient id={glowId}>
+          <stop offset="0%" stopColor={color} stopOpacity="0.9" />
+          <stop offset="100%" stopColor={color} stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      {singing && (
+        <circle ref={glowRef} cx="60" cy="76" r="80" fill={`url(#${glowId})`} opacity="0" />
+      )}
       {status === 'queued' && (
         <ellipse
           cx="60"
@@ -88,7 +138,12 @@ export function StreetwearCharacter(props: CharacterRenderProps) {
           opacity="0.85"
         />
       )}
-      <g ref={artRef} opacity={opacity} dangerouslySetInnerHTML={{ __html: markup }} />
+      <g opacity={opacity}>
+        <g ref={pivotRef}>
+          <g ref={headRef} dangerouslySetInnerHTML={{ __html: head }} />
+          <g dangerouslySetInnerHTML={{ __html: body }} />
+        </g>
+      </g>
     </svg>
   )
 }
