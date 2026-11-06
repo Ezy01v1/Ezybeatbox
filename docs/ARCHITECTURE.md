@@ -133,7 +133,7 @@ animationLoop (un solo rAF) ──► SvgCharacter × 6: followLevel → compute
 - **Sin tema:** `DEFAULT_THEME` en `visuals/theme.ts`. `resolveTheme(manifest)` elige; el hook `app/useTheme` lo expone a los componentes.
 - **Solo el escenario es temático:** `StageScreen` publica el tema como variables CSS (`--stage-bg`, `--stage-panel`, `--stage-outline`, `--stage-ink`) y las clases las usan (`bg-(--stage-panel)`). Los colores por rol se pasan como props (tarjeta, chip de estado, ficha de sonido, fantasma del arrastre, personaje).
 - **Contraste:** `readableInk(color)` elige texto oscuro o blanco sobre un color de rol. Un test verifica 4.5:1 en todos los colores de los temas incluidos y que `stage.ink` se lea sobre el fondo y las tarjetas.
-- **Adornos:** `visuals/svg/StagePattern` dibuja el patrón del tema (`vinyl` para hip hop) detrás del canvas de anillos, cerca de los bordes.
+- **Adornos:** `visuals/svg/StagePattern` dibuja el patrón del tema detrás del canvas de anillos, cerca de los bordes: `vinyl` (hip hop, componente React), `sun`, `lights`, `speed` y `kente` (markup en `visuals/patterns.ts`, compartido con `scripts/covers/build-covers.ts`, que genera las portadas).
 
 ### Varios packs y selector
 

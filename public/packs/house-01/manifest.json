@@ -8,6 +8,7 @@
     4
   ],
   "loopBars": 2,
+  "cover": "cover.jpg",
   "description": "Cuatro en el piso, pianos y mucha pista.",
   "theme": {
     "id": "house",
@@ -17,7 +18,7 @@
       "outline": "#3b4c8f",
       "ink": "#ffffff",
       "glow": "#5ce1ff",
-      "pattern": "none"
+      "pattern": "lights"
     },
     "roles": {
       "kick": "#ff4fa3",

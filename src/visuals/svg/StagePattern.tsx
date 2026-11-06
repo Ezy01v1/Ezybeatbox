@@ -1,4 +1,5 @@
 import type { PackTheme } from '@/core/packs/schema'
+import { PATTERN_BOX, patternMarkup } from '../patterns'
 
 function Vinyl({
   x,
@@ -41,6 +42,19 @@ function Vinyl({
 export function StagePattern({ theme }: { theme: PackTheme }) {
   const { stage, roles } = theme
   if (!stage.pattern || stage.pattern === 'none') return null
+  if (stage.pattern !== 'vinyl') {
+    // Markup from our own pattern code plus validated #rrggbb theme colors: safe to inject.
+    return (
+      <svg
+        aria-hidden
+        focusable="false"
+        viewBox={`0 0 ${PATTERN_BOX.width} ${PATTERN_BOX.height}`}
+        preserveAspectRatio="xMidYMid slice"
+        className="pointer-events-none absolute inset-0 -z-20 h-full w-full"
+        dangerouslySetInnerHTML={{ __html: patternMarkup(stage.pattern, theme) }}
+      />
+    )
+  }
 
   return (
     <svg

@@ -87,6 +87,7 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
       bpm: 95,
       timeSignature: [4, 4],
       loopBars: 2,
+      cover: 'cover.jpg',
       description: 'Dembow, perreo y calor de la calle.',
       theme: {
         id: 'reggaeton',
@@ -96,7 +97,7 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
           outline: '#3a1d4a',
           ink: '#3a1d4a',
           glow: '#fff8e6',
-          pattern: 'none',
+          pattern: 'sun',
         },
         roles: {
           kick: '#e8432a',
@@ -118,6 +119,7 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
       bpm: 124,
       timeSignature: [4, 4],
       loopBars: 2,
+      cover: 'cover.jpg',
       description: 'Cuatro en el piso, pianos y mucha pista.',
       theme: {
         id: 'house',
@@ -127,7 +129,7 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
           outline: '#3b4c8f',
           ink: '#ffffff',
           glow: '#5ce1ff',
-          pattern: 'none',
+          pattern: 'lights',
         },
         roles: {
           kick: '#ff4fa3',
@@ -149,6 +151,7 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
       bpm: 174,
       timeSignature: [4, 4],
       loopBars: 2,
+      cover: 'cover.jpg',
       description: 'Breaks a toda velocidad y bajos que rugen.',
       theme: {
         id: 'dnb',
@@ -158,7 +161,7 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
           outline: '#2b3f37',
           ink: '#e9fff4',
           glow: '#38ff9c',
-          pattern: 'none',
+          pattern: 'speed',
         },
         roles: {
           kick: '#38ff9c',
@@ -180,6 +183,7 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
       bpm: 105,
       timeSignature: [4, 4],
       loopBars: 2,
+      cover: 'cover.jpg',
       description: 'Percusión que se mueve, guitarras y sol.',
       theme: {
         id: 'afrobeat',
@@ -189,7 +193,7 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
           outline: '#1d3b2a',
           ink: '#1d3b2a',
           glow: '#ffe08a',
-          pattern: 'none',
+          pattern: 'kente',
         },
         roles: {
           kick: '#d9480f',

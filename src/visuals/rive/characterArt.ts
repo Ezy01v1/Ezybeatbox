@@ -1,7 +1,13 @@
 import type { CharacterRole } from '@/core/packs/schema'
 
 /** Packs drawn with the streetwear SVG characters (no Rive, so no Rive watermark). */
-const STREETWEAR_PACKS = new Set(['boom-bap-01'])
+const STREETWEAR_PACKS = new Set([
+  'boom-bap-01',
+  'reggaeton-01',
+  'house-01',
+  'dnb-01',
+  'afrobeat-01',
+])
 
 /** Packs whose characters are Rive files (`public/packs/<pack>/<role>.riv`). */
 const RIVE_PACKS = new Set(['trap-01'])

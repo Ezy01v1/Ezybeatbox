@@ -8,6 +8,7 @@
     4
   ],
   "loopBars": 2,
+  "cover": "cover.jpg",
   "description": "Percusión que se mueve, guitarras y sol.",
   "theme": {
     "id": "afrobeat",
@@ -17,7 +18,7 @@
       "outline": "#1d3b2a",
       "ink": "#1d3b2a",
       "glow": "#ffe08a",
-      "pattern": "none"
+      "pattern": "kente"
     },
     "roles": {
       "kick": "#d9480f",

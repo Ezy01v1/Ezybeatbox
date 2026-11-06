@@ -8,6 +8,7 @@
     4
   ],
   "loopBars": 2,
+  "cover": "cover.jpg",
   "description": "Breaks a toda velocidad y bajos que rugen.",
   "theme": {
     "id": "dnb",
@@ -17,7 +18,7 @@
       "outline": "#2b3f37",
       "ink": "#e9fff4",
       "glow": "#38ff9c",
-      "pattern": "none"
+      "pattern": "speed"
     },
     "roles": {
       "kick": "#38ff9c",

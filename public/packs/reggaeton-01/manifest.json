@@ -8,6 +8,7 @@
     4
   ],
   "loopBars": 2,
+  "cover": "cover.jpg",
   "description": "Dembow, perreo y calor de la calle.",
   "theme": {
     "id": "reggaeton",
@@ -17,7 +18,7 @@
       "outline": "#3a1d4a",
       "ink": "#3a1d4a",
       "glow": "#fff8e6",
-      "pattern": "none"
+      "pattern": "sun"
     },
     "roles": {
       "kick": "#e8432a",

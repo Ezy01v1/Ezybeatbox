@@ -65,7 +65,7 @@ export const characterSchema = z.object({
  */
 export const hexColorSchema = z.string().regex(/^#[0-9a-fA-F]{6}$/, 'must be a #rrggbb color')
 
-export const STAGE_PATTERNS = ['none', 'vinyl'] as const
+export const STAGE_PATTERNS = ['none', 'vinyl', 'sun', 'lights', 'speed', 'kente'] as const
 
 /**
  * Visual skin of a pack. Only the stage changes per theme; the app UI around it is shared.

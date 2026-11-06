@@ -16,7 +16,7 @@ Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editori
 Foco de Daniel (2026-11-06): **diseño, animaciones, funcionalidades, variedad de ritmo y de géneros**. "Mis mixes" queda para después.
 
 - [x] **Variedad de géneros:** Reggaetón/Dembow (95), House (124), Drum & Bass (174) y Afrobeat (105), con sonidos sintéticos propios.
-- [ ] **Portadas de los 4 géneros nuevos:** hoy el selector muestra un bloque de color plano en su lugar. Usar ilustraciones propias del mismo estilo que las de Boom Bap y Trap.
+- [x] **Portadas y escenarios de los 4 géneros nuevos:** personajes streetwear en SVG, un patrón de escenario por género (`sun`, `lights`, `speed`, `kente`) y portadas generadas con `scripts/covers/build-covers.ts`.
 - [ ] **Variedad de ritmo:** más variaciones por rol (fills, medio tiempo, swing) y bases prearmadas por género (ver "Bases por temática").
 - [ ] **Diseño y animaciones:** Trap a SVG streetwear y un escenario con identidad por género (patrones de fondo, luces al compás). Cuando un sonido entra o sale en el compás, que el personaje lo muestre con su animación.
 - [ ] **Funcionalidades:** BPM en vivo (cuantizado), botón "Sorpréndeme", drops.
@@ -108,6 +108,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-06:** identidad visual de los géneros nuevos. Los cuatro usan los personajes streetwear SVG con su paleta. Cada uno tiene su fondo: sol y palmeras, rayos de club, líneas de velocidad y tela kente. Los patrones viven en `src/visuals/patterns.ts` y los comparten el escenario y el generador de portadas. Las portadas se rasterizan con `sharp`: `npx tsx scripts/covers/build-covers.ts`.
 
 - **2026-11-06:** cuatro géneros nuevos con 30 loops sintéticos cada uno: `reggaeton-01`, `house-01`, `dnb-01` y `afrobeat-01`. Se agregaron instrumentos nuevos (`tom`, `cowbell`, `pluck`, `chord`, `reese`) en `scripts/placeholders/instruments.ts`. El generador usa `ffmpeg-static` si `ffmpeg` no está en el `PATH`. Los personajes usan el SVG clásico con la paleta de cada género. Faltan las portadas.
 
