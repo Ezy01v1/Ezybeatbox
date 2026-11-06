@@ -150,6 +150,7 @@ animationLoop (un solo rAF) ──► SvgCharacter × 6: followLevel → compute
 - **Comandos:**
   - `npm run rive:streetwear -- --verify`: regenera las escenas y las compila.
   - `npm run rive:streetwear -- --publish`: escribe `public/packs/boom-bap-01/<rol>.riv`. Necesita el CLI de Rive con sesión iniciada (`rive login`, una vez por PC).
+  - `--previews` (combinable con los anteriores): renderiza cada personaje **cantando** y **en reposo** a PNG, más una galería, en `docs/design/characters-rive/`. Así se ven en GitHub desde cualquier PC o el celular. No necesita iniciar sesión. Como el CLI no permite cambiar las entradas del state machine, renderiza una copia temporal de la escena con los valores iniciales de `status` y `level` ya puestos. La generación es determinista: los nombres automáticos de las figuras se reinician en cada escena.
 - **Mismo contrato que antes:** los ids `0:20`–`0:24` y las entradas `level`, `beat`, `status` y `muted` del state machine `Performance` no cambian, así que `RiveCharacter.tsx` no se tocó.
 - **Lo nuevo del rig:**
   - Estados de expresión por `status`: en reposo (ojos cerrados, sonrisa, figura atenuada), en espera (boca "o" y anillo punteado) y cantando (boca que sigue al nivel).

@@ -336,6 +336,11 @@ function nameAndId(attrs: Record<string, string>, fallback: string): string {
 
 let shapeCount = 0
 
+/** Restarts the automatic shape names ("path 1"…) so each scene is generated identically. */
+export function resetShapeNames(): void {
+  shapeCount = 0
+}
+
 function shapeRml(el: SvgElement, style: Style): string {
   const a = el.attrs
   const label = nameAndId(a, `${el.tag} ${++shapeCount}`)

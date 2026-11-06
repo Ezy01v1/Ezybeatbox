@@ -99,6 +99,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 
 ## Hecho recientemente
 
+- **2026-11-05:** vistas previas de los avatares en el repo (`docs/design/characters-rive/`, galería con los personajes cantando y en reposo), generadas con `npm run rive:streetwear -- --previews`. La generación de escenas ahora es determinista.
+
 - **2026-11-05:** escenario sin tarjetas: personajes de la cadera hacia arriba (rig de Rive recortado a 120 × 158), grandes y alineados sobre una franja de piso continua con nombres y controles. Probado en escritorio y celular, con Boom Bap y con Trap.
 
 - **2026-11-05:** los personajes de Boom Bap ahora son los **streetwear** aprobados, en Rive: conversor SVG→RML con pruebas, generador `npm run rive:streetwear`, colores de rol de Boom Bap actualizados a los de los conceptos y 6 `.riv` publicados. Probados cantando en escritorio y celular: la boca y el brillo siguen al audio.
@@ -137,3 +139,5 @@ npm run dev
 - Requisitos: Node ≥ 22 (recomendado 24) y `ffmpeg` en el `PATH` (solo para regenerar placeholders).
 - Antes de dar algo por terminado: `npm run lint`, `npm test` y `npm run build` en limpio.
 - Claude lee `CLAUDE.md` al iniciar, y ahí se le indica revisar este archivo.
+- **Ver los avatares sin instalar nada:** `docs/design/characters-rive/README.md` (en GitHub se ve como galería: cantando y en reposo). Los conceptos originales están en `docs/design/characters-v1/`.
+- **Para editar los avatares en otra PC:** instalar el CLI de Rive. `npm run rive:streetwear -- --previews` regenera escenas e imágenes; con `--publish` (requiere `rive login`) también los `.riv` del juego.

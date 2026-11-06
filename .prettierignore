@@ -4,3 +4,4 @@ node_modules
 package-lock.json
 public/packs
 docs/design/**/*.html
+docs/design/characters-rive/README.md

@@ -5,14 +5,16 @@
  *   npm run rive:streetwear               # write the six scene.rml files
  *   npm run rive:streetwear -- --verify   # also compile each one with the Rive CLI
  *   npm run rive:streetwear -- --publish  # also write public/packs/boom-bap-01/<role>.riv
+ *   npm run rive:streetwear -- --previews # also render PNG previews + gallery to
+ *                                         # docs/design/characters-rive/ (combinable)
  *
  * The rig keeps the ids and state machine the app drives (RiveCharacter.tsx):
  * inputs level / beat / status / muted on the "Performance" state machine.
  * `--publish` needs the Rive CLI signed in (`rive login`, once per PC).
  */
 import { spawnSync } from 'node:child_process'
-import { readFileSync, writeFileSync } from 'node:fs'
-import { homedir } from 'node:os'
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { homedir, tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { CHARACTER_ROLES, type CharacterRole } from '../../src/core/packs/schema'
@@ -26,12 +28,12 @@ import {
   bodySvg,
   headSvg,
 } from './streetwearArt'
-import { rmlColor, svgToRml } from './svgToRml'
+import { resetShapeNames, rmlColor, svgToRml } from './svgToRml'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
 const manifest = JSON.parse(
   readFileSync(join(root, 'public/packs/boom-bap-01/manifest.json'), 'utf8'),
-) as { theme: { roles: Record<CharacterRole, string> } }
+) as { theme: { stage: { background: string }; roles: Record<CharacterRole, string> } }
 
 // ── Palette ────────────────────────────────────────────────────────────────────────────
 
@@ -119,7 +121,15 @@ function statusKeys(state: keyof typeof EXPRESSIONS, ring: number): [string, str
   ]
 }
 
-export function sceneFor(role: CharacterRole, accent: string): string {
+/** Starts the scene in a given state, over a solid background: only for preview renders. */
+export interface PreviewState {
+  status: number
+  level: number
+  background: string
+}
+
+export function sceneFor(role: CharacterRole, accent: string, preview?: PreviewState): string {
+  resetShapeNames()
   const palette = paletteFor(accent)
   const expression = `
     ${BROWS_SVG}
@@ -159,10 +169,18 @@ ${body}
         <DashPath><Dash length="6"/><Dash length="6"/></DashPath>
       </Stroke>
     </Shape>
+${
+  preview
+    ? `<Shape name="Preview background" x="${WIDTH / 2}" y="${HEIGHT / 2}">
+      <Rectangle width="${WIDTH}" height="${HEIGHT}" originX="0.5" originY="0.5"/>
+      <Fill><SolidColor colorValue="${rmlColor(preview.background)}"/></Fill>
+    </Shape>`
+    : ''
+}
     <StateMachine name="Performance" id="0:4">
-      <StateMachineNumber name="level" id="0:30"/>
+      <StateMachineNumber name="level" id="0:30"${preview ? ` value="${preview.level}"` : ''}/>
       <StateMachineNumber name="beat" id="0:31"/>
-      <StateMachineNumber name="status" id="0:32"/>
+      <StateMachineNumber name="status" id="0:32"${preview ? ` value="${preview.status}"` : ''}/>
       <StateMachineBool name="muted" id="0:33"/>
       <StateMachineLayer name="Meter">
         <AnyState x="200" y="-120"/><ExitState x="400" y="-120"/>
@@ -230,7 +248,88 @@ function riveExecutable(): string {
   return process.platform === 'win32' ? join(homedir(), '.rive', 'bin', 'rive.exe') : 'rive'
 }
 
+// ── Previews ───────────────────────────────────────────────────────────────────────────
+
+const PREVIEW_DIR = join(root, 'docs', 'design', 'characters-rive')
+/** 2× the artboard: sharp on GitHub and phones, small enough to keep the repo light. */
+const PREVIEW_SIZE = `${WIDTH * 2}x${HEIGHT * 2}`
+const PREVIEW_STATES = {
+  cantando: { status: 2, level: 0.6 },
+  reposo: { status: 0, level: 0 },
+} as const
+
+/**
+ * Renders each state with the Rive CLI (no login needed) from a temporary copy of the scene
+ * that starts in that state. The CLI cannot set state machine inputs, so the initial values
+ * are baked into the copy instead.
+ */
+function renderPreviews(role: CharacterRole): boolean {
+  const work = join(tmpdir(), 'ezybeatbox-rive-preview', role)
+  let ok = true
+  for (const [state, values] of Object.entries(PREVIEW_STATES)) {
+    rmSync(work, { recursive: true, force: true })
+    mkdirSync(work, { recursive: true })
+    writeFileSync(join(work, 'rive.yaml'), `name: ${role}-${state}\n`)
+    writeFileSync(
+      join(work, 'scene.rml'),
+      sceneFor(role, manifest.theme.roles[role], {
+        ...values,
+        background: manifest.theme.stage.background,
+      }),
+    )
+    const out = join(PREVIEW_DIR, `${role}-${state}.png`).replaceAll('\\', '/')
+    const result = spawnSync(riveExecutable(), [work, '--commands'], {
+      encoding: 'utf8',
+      input: `viewport ${PREVIEW_SIZE}\nfit contain\nscreenshot ${out}\nquit\n`,
+    })
+    if (result.status !== 0 || !result.stdout.includes('ok screenshot')) {
+      ok = false
+      console.log(`  ✗ preview ${role}-${state}\n${result.stdout}${result.stderr}`)
+    }
+  }
+  rmSync(work, { recursive: true, force: true })
+  return ok
+}
+
+function writeGallery(): void {
+  const cells = (state: string) =>
+    CHARACTER_ROLES.map(
+      (role) => `<img src="${role}-${state}.png" width="120" alt="${LABELS[role]}">`,
+    )
+  const names = CHARACTER_ROLES.map((role) => LABELS[role])
+  const row = (items: string[]) => `| ${items.join(' | ')} |`
+  writeFileSync(
+    join(PREVIEW_DIR, 'README.md'),
+    `# Personajes en Rive: vista previa
+
+Generado por \`npm run rive:streetwear -- --previews\` (no editar a mano). Así se ven los
+personajes de Boom Bap **en el juego**, renderizados desde \`assets/rive/<rol>/scene.rml\` sobre el
+color del escenario. Los conceptos originales están en [\`../characters-v1/\`](../characters-v1/).
+
+## Cantando
+
+${row(names)}
+${row(names.map(() => ':---:'))}
+${row(cells('cantando'))}
+
+## En reposo (sin sonido)
+
+${row(names)}
+${row(names.map(() => ':---:'))}
+${row(cells('reposo'))}
+
+## Cómo actualizarlas
+
+1. Editar el arte en \`scripts/rive/streetwearArt.ts\` (o los colores de rol en \`scripts/placeholders/packs.ts\`).
+2. \`npm run rive:streetwear -- --previews\` regenera las escenas y estas imágenes (necesita el CLI de Rive, sin iniciar sesión).
+3. \`npm run rive:streetwear -- --publish --previews\` además escribe los \`.riv\` del juego (necesita \`rive login\`).
+`,
+  )
+}
+
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const previews = process.argv.includes('--previews')
+  if (previews) mkdirSync(PREVIEW_DIR, { recursive: true })
   const publish = process.argv.includes('--publish')
   const verify = publish || process.argv.includes('--verify')
   const outputDir = join(root, 'public', 'packs', 'boom-bap-01')
@@ -238,6 +337,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   for (const role of CHARACTER_ROLES) {
     const dir = join(root, 'assets', 'rive', role)
     writeFileSync(join(dir, 'scene.rml'), sceneFor(role, manifest.theme.roles[role]))
+    if (previews && !renderPreviews(role)) failed = true
     if (!verify) {
       console.log(`  ✓ ${role}`)
       continue
@@ -247,6 +347,10 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     const ok = result.status === 0
     failed ||= !ok
     console.log(`  ${ok ? '✓' : '✗'} ${role}${ok ? '' : `\n${result.stdout}${result.stderr}`}`)
+  }
+  if (previews) {
+    writeGallery()
+    console.log(`  ✓ previews in ${PREVIEW_DIR}`)
   }
   if (failed) process.exit(1)
 }

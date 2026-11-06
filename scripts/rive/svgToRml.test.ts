@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { isClockwise, parsePathData, parseSvg, rmlColor, svgToRml } from './svgToRml'
+import {
+  isClockwise,
+  parsePathData,
+  parseSvg,
+  resetShapeNames,
+  rmlColor,
+  svgToRml,
+} from './svgToRml'
 
 describe('parsePathData', () => {
   it('handles relative moveto with implicit lineto, h, v and Z', () => {
@@ -103,6 +110,15 @@ describe('svgToRml', () => {
   it('writes stroke dashes', () => {
     const rml = svgToRml('<path d="M0 0h10" fill="none" stroke="#000" stroke-dasharray="1 4"/>')
     expect(rml).toContain('<DashPath><Dash length="1"/><Dash length="4"/></DashPath>')
+  })
+
+  it('names shapes the same way every time after a reset (stable generated files)', () => {
+    const markup = '<path d="M0 0h1v1Z"/><circle cx="0" cy="0" r="1"/>'
+    resetShapeNames()
+    const first = svgToRml(markup)
+    svgToRml(markup) // advances the counter
+    resetShapeNames()
+    expect(svgToRml(markup)).toBe(first)
   })
 
   it('rejects markup it does not understand', () => {

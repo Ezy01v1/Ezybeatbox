@@ -64,6 +64,7 @@
         <DashPath><Dash length="6"/><Dash length="6"/></DashPath>
       </Stroke>
     </Shape>
+
     <StateMachine name="Performance" id="0:4">
       <StateMachineNumber name="level" id="0:30"/>
       <StateMachineNumber name="beat" id="0:31"/>
