@@ -19,7 +19,8 @@ Foco de Daniel (2026-11-06): **diseño, animaciones, funcionalidades, variedad d
 - [x] **Portadas y escenarios de los 4 géneros nuevos:** personajes streetwear en SVG, un patrón de escenario por género (`sun`, `lights`, `speed`, `kente`) y portadas generadas con `scripts/covers/build-covers.ts`.
 - [x] **Bases por género:** tres bases por pack y "Desde cero" en el escenario (campo `bases` del manifest).
 - [ ] **Más variaciones por rol:** fills, medio tiempo, swing (hoy son 5 por personaje).
-- [ ] **Diseño y animaciones:** Trap a SVG streetwear y un escenario con identidad por género (patrones de fondo, luces al compás). Cuando un sonido entra o sale en el compás, que el personaje lo muestre con su animación.
+- [x] **Animaciones de entrada y salida + fondo al compás.**
+- [ ] **Trap a SVG streetwear** (quita su marca de agua de Rive).
 - [ ] **Funcionalidades:** BPM en vivo (cuantizado), botón "Sorpréndeme", drops.
 
 - [ ] **Personajes en Rive:** un renderer `RiveCharacter` con el contrato de `CharacterRenderer` (inputs `level`, `beat`, `status`, `muted`). Referencia de arte: las hojas de 6 personajes de Stitch. CLI 1.9.0 instalado. Primera pasada de los seis personajes de Boom Bap y los seis de Trap integrada. Ambos escenarios comprobados en el navegador. Primera afinación de la respuesta al audio por rol. Pendiente personalizar el arte y probar la sincronía con Bluetooth.
@@ -109,6 +110,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-06:** animaciones al compás. Al entrar su sonido, el personaje da un salto con aplaste. Hace lo mismo cuando su sonido se cambia por otro y, cuando se queda en silencio, se hunde un poco. Se hace con la Web Animations API en el contenedor (`visuals/statusMotion.ts`, `features/stage/useStatusMotion.ts`), así que sirve para SVG y Rive. Además, el patrón del escenario late con cada tiempo (`features/stage/BeatPulse.tsx`). Todo se apaga con `prefers-reduced-motion`.
 
 - **2026-11-06:** bases prearmadas. Cada pack trae 3 bases en el manifest (`bases`, validadas contra los sonidos del pack). Sobre el escenario aparece "Bases" con sus botones y "Desde cero". Elegir una cambia todos los personajes en el siguiente compás y respeta mute, solo y volumen. Decisión: el selector vive en el escenario, no en un paso previo, para no agregar una pantalla más al inicio.
 

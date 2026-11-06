@@ -7,6 +7,7 @@ import { Notices } from '@/features/sharing/Notices'
 import { TransportBar } from '@/features/transport/TransportBar'
 import { StagePattern } from '@/visuals'
 import { BasePicker } from './BasePicker'
+import { BeatPulse } from './BeatPulse'
 import { CharacterSlot } from './CharacterSlot'
 import { ResumeOverlay } from './ResumeOverlay'
 import { StageBackdrop } from './StageBackdrop'
@@ -22,7 +23,9 @@ export function StageScreen({ manifest }: { manifest: PackManifest }) {
       <main aria-label={t('stage.label')} className="flex min-h-0 flex-1 flex-col p-2 sm:p-4">
         {/* The only themed area: background, decorations, floor and characters come from the pack. */}
         <div className="relative isolate mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col gap-2 overflow-hidden rounded-3xl bg-(--stage-bg) p-2 text-(--stage-ink) sm:p-4">
-          <StagePattern theme={theme} />
+          <BeatPulse>
+            <StagePattern theme={theme} />
+          </BeatPulse>
           <StageBackdrop color={theme.stage.glow} />
           <BasePicker manifest={manifest} />
           {/*

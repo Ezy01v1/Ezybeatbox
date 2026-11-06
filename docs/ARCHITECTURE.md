@@ -135,6 +135,7 @@ animationLoop (un solo rAF) ──► SvgCharacter × 6: followLevel → compute
 - **Solo el escenario es temático:** `StageScreen` publica el tema como variables CSS (`--stage-bg`, `--stage-panel`, `--stage-outline`, `--stage-ink`) y las clases las usan (`bg-(--stage-panel)`). Los colores por rol se pasan como props (tarjeta, chip de estado, ficha de sonido, fantasma del arrastre, personaje).
 - **Contraste:** `readableInk(color)` elige texto oscuro o blanco sobre un color de rol. Un test verifica 4.5:1 en todos los colores de los temas incluidos y que `stage.ink` se lea sobre el fondo y las tarjetas.
 - **Adornos:** `visuals/svg/StagePattern` dibuja el patrón del tema detrás del canvas de anillos, cerca de los bordes: `vinyl` (hip hop, componente React), `sun`, `lights`, `speed` y `kente` (markup en `visuals/patterns.ts`, compartido con `scripts/covers/build-covers.ts`, que genera las portadas).
+- **Movimiento al compás:** `useStatusMotion` lanza un salto (entrada o cambio de sonido) o un hundimiento (salida) con `element.animate` cuando cambia el estado del slot; `BeatPulse` escala y aclara los adornos del escenario con `beatImpulse` en el loop de animación compartido. Ambos se desactivan con reduced motion.
 
 ### Varios packs y selector
 

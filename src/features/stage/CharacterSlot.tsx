@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppStore, useEngine } from '@/app/store/AppStoreContext'
 import { useTheme } from '@/app/useTheme'
@@ -9,6 +9,7 @@ import { acceptsDrop } from '@/features/palette/dnd/resolveDrop'
 import { DROP_TARGET_ATTR, usePointerDrag } from '@/features/palette/dnd/usePointerDrag'
 import { useLocalizedText } from '@/i18n/useLocalizedText'
 import { usePrefersReducedMotion } from '@/ui/usePrefersReducedMotion'
+import { useStatusMotion } from './useStatusMotion'
 import { readableInk } from '@/visuals'
 import { PackCharacter } from '@/visuals/PackCharacter'
 import { compensateLatency } from '@/visuals/levels'
@@ -47,6 +48,9 @@ export function CharacterSlot({ character, color }: { character: CharacterDef; c
     [engine, character.id],
   )
   const beat = useMemo(() => engine.getBeatClock(), [engine])
+
+  const motionRef = useRef<HTMLDivElement>(null)
+  useStatusMotion(motionRef, slot?.status ?? 'empty', slot?.playing ?? null, reducedMotion)
 
   const target = slot?.target ?? null
   const drag = usePointerDrag(
@@ -97,17 +101,19 @@ export function CharacterSlot({ character, color }: { character: CharacterDef; c
         }`}
         style={figureStyle}
       >
-        <PackCharacter
-          packId={packId}
-          role={character.role}
-          color={color}
-          outline={theme.stage.outline}
-          status={slot.status}
-          muted={muted}
-          level={level}
-          beat={beat}
-          reducedMotion={reducedMotion}
-        />
+        <div ref={motionRef} className="h-full w-full origin-bottom">
+          <PackCharacter
+            packId={packId}
+            role={character.role}
+            color={color}
+            outline={theme.stage.outline}
+            status={slot.status}
+            muted={muted}
+            level={level}
+            beat={beat}
+            reducedMotion={reducedMotion}
+          />
+        </div>
         {accepts && (
           <span
             className={`absolute inset-x-0 bottom-2 mx-auto w-fit rounded-full px-2.5 py-0.5 text-xs font-bold shadow-sm ${
