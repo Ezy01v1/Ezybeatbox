@@ -136,5 +136,9 @@
     "continuePlaying": "Sonando",
     "continuePaused": "En pausa",
     "continue": "Continuar mi beat"
+  },
+  "bases": {
+    "label": "Bases",
+    "scratch": "Desde cero"
   }
 }

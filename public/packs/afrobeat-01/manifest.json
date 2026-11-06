@@ -29,6 +29,42 @@
       "fx": "#2f6fd6"
     }
   },
+  "bases": [
+    {
+      "id": "afrobeats",
+      "name": "Afrobeats",
+      "sounds": {
+        "kick": "afrobeat-kick-1",
+        "snare": "afrobeat-snare-1",
+        "hihat": "afrobeat-hihat-1",
+        "bass": "afrobeat-bass-1",
+        "voice": "afrobeat-voice-1"
+      }
+    },
+    {
+      "id": "amapiano",
+      "name": "Amapiano",
+      "sounds": {
+        "kick": "afrobeat-kick-3",
+        "snare": "afrobeat-snare-2",
+        "hihat": "afrobeat-hihat-5",
+        "bass": "afrobeat-bass-2",
+        "voice": "afrobeat-voice-3"
+      }
+    },
+    {
+      "id": "fiesta",
+      "name": "Fiesta",
+      "sounds": {
+        "kick": "afrobeat-kick-4",
+        "snare": "afrobeat-snare-5",
+        "hihat": "afrobeat-hihat-4",
+        "bass": "afrobeat-bass-4",
+        "voice": "afrobeat-voice-5",
+        "fx": "afrobeat-fx-2"
+      }
+    }
+  ],
   "characters": [
     {
       "id": "kick",

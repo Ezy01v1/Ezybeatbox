@@ -17,7 +17,8 @@ Foco de Daniel (2026-11-06): **diseño, animaciones, funcionalidades, variedad d
 
 - [x] **Variedad de géneros:** Reggaetón/Dembow (95), House (124), Drum & Bass (174) y Afrobeat (105), con sonidos sintéticos propios.
 - [x] **Portadas y escenarios de los 4 géneros nuevos:** personajes streetwear en SVG, un patrón de escenario por género (`sun`, `lights`, `speed`, `kente`) y portadas generadas con `scripts/covers/build-covers.ts`.
-- [ ] **Variedad de ritmo:** más variaciones por rol (fills, medio tiempo, swing) y bases prearmadas por género (ver "Bases por temática").
+- [x] **Bases por género:** tres bases por pack y "Desde cero" en el escenario (campo `bases` del manifest).
+- [ ] **Más variaciones por rol:** fills, medio tiempo, swing (hoy son 5 por personaje).
 - [ ] **Diseño y animaciones:** Trap a SVG streetwear y un escenario con identidad por género (patrones de fondo, luces al compás). Cuando un sonido entra o sale en el compás, que el personaje lo muestre con su animación.
 - [ ] **Funcionalidades:** BPM en vivo (cuantizado), botón "Sorpréndeme", drops.
 
@@ -38,7 +39,7 @@ Esa sesión hizo una portada neutra y personajes SVG streetwear **que nunca se s
 
 - [x] **Inicio sin perder el beat** (2026-11-06): el logo del escenario es "Ir al inicio"; el beat sigue sonando en la portada, con una franja para pausarlo o reanudarlo y **"Continuar mi beat"**. "Cambiar estilo" también deja de detenerlo; solo se detiene al abrir otro pack.
 - [ ] **"Mis mixes" desde la portada:** abrir la biblioteca antes de elegir pack (solo cargar, sin el formulario de guardar). Al cargar un mix se prepara su pack.
-- [ ] **Bases por temática:** después de elegir el género, elegir una base (se propusieron **tres por temática**) o **"Crear desde cero"**. Las bases deben sonar bien juntas y compartir tempo y duración.
+- [x] **Bases por temática:** hecho el 2026-11-06, en el escenario y no en un paso aparte. Detalle original: después de elegir el género, elegir una base (se propusieron **tres por temática**) o **"Crear desde cero"**. Las bases deben sonar bien juntas y compartir tempo y duración.
 - [ ] **Personaje piloto:** pulir **solo Kick** al nivel de su concepto (`docs/design/characters-v1/kick.webp`), comparándolo en escritorio y móvil, antes de rehacer los seis.
 - [x] **Pulso del cuerpo con el audio:** cubierto por el rig de Rive. El parpadeo escalonado quedó como pendiente en la sección de Rive.
 - [ ] **Robustez de carga:** evitar dos cargas de pack simultáneas y, si falla, reintentar el pack pedido en vez de volver al predeterminado. Verificar contra el código actual, que ya maneja "pack inexistente".
@@ -108,6 +109,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-06:** bases prearmadas. Cada pack trae 3 bases en el manifest (`bases`, validadas contra los sonidos del pack). Sobre el escenario aparece "Bases" con sus botones y "Desde cero". Elegir una cambia todos los personajes en el siguiente compás y respeta mute, solo y volumen. Decisión: el selector vive en el escenario, no en un paso previo, para no agregar una pantalla más al inicio.
 
 - **2026-11-06:** identidad visual de los géneros nuevos. Los cuatro usan los personajes streetwear SVG con su paleta. Cada uno tiene su fondo: sol y palmeras, rayos de club, líneas de velocidad y tela kente. Los patrones viven en `src/visuals/patterns.ts` y los comparten el escenario y el generador de portadas. Las portadas se rasterizan con `sharp`: `npx tsx scripts/covers/build-covers.ts`.
 

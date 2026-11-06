@@ -29,6 +29,43 @@
       "fx": "#ff9f1c"
     }
   },
+  "bases": [
+    {
+      "id": "liquid",
+      "name": "Liquid",
+      "sounds": {
+        "kick": "dnb-kick-1",
+        "snare": "dnb-snare-2",
+        "hihat": "dnb-hihat-1",
+        "bass": "dnb-bass-2",
+        "voice": "dnb-voice-1"
+      }
+    },
+    {
+      "id": "jungla",
+      "name": "Jungla",
+      "sounds": {
+        "kick": "dnb-kick-3",
+        "snare": "dnb-snare-3",
+        "hihat": "dnb-hihat-2",
+        "bass": "dnb-bass-1",
+        "voice": "dnb-voice-2",
+        "fx": "dnb-fx-2"
+      }
+    },
+    {
+      "id": "medio-tiempo",
+      "name": "Medio tiempo",
+      "sounds": {
+        "kick": "dnb-kick-5",
+        "snare": "dnb-snare-5",
+        "hihat": "dnb-hihat-3",
+        "bass": "dnb-bass-4",
+        "voice": "dnb-voice-4",
+        "fx": "dnb-fx-3"
+      }
+    }
+  ],
   "characters": [
     {
       "id": "kick",

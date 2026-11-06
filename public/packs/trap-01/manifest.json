@@ -29,6 +29,42 @@
       "fx": "#ff5fa2"
     }
   },
+  "bases": [
+    {
+      "id": "clasica",
+      "name": "Clásica",
+      "sounds": {
+        "kick": "trap-kick-1",
+        "snare": "trap-snare-1",
+        "hihat": "trap-hihat-1",
+        "bass": "trap-bass-1"
+      }
+    },
+    {
+      "id": "rodada",
+      "name": "Rodada",
+      "sounds": {
+        "kick": "trap-kick-3",
+        "snare": "trap-snare-5",
+        "hihat": "trap-hihat-3",
+        "bass": "trap-bass-2",
+        "voice": "trap-voice-1",
+        "fx": "trap-fx-2"
+      }
+    },
+    {
+      "id": "oscura",
+      "name": "Oscura",
+      "sounds": {
+        "kick": "trap-kick-4",
+        "snare": "trap-snare-4",
+        "hihat": "trap-hihat-2",
+        "bass": "trap-bass-3",
+        "voice": "trap-voice-4",
+        "fx": "trap-fx-1"
+      }
+    }
+  ],
   "characters": [
     {
       "id": "kick",

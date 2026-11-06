@@ -14,6 +14,13 @@ function expectInvalid(data: unknown, detailPattern: RegExp) {
 }
 
 describe('parseManifest', () => {
+  it('rejects a base that uses a sound from another character', () => {
+    expectInvalid(
+      makeTestManifest({ bases: [{ id: 'b', name: 'B', sounds: { kick: 'snare-1' } }] }),
+      /unknown sound "kick.snare-1"/,
+    )
+  })
+
   it('accepts a valid manifest', () => {
     const manifest = makeTestManifest()
     expect(parseManifest(manifest)).toEqual(manifest)

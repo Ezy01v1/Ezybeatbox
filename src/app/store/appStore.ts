@@ -129,6 +129,11 @@ export interface AppActions {
   toggleMute(characterId: string): void
   toggleSolo(characterId: string): void
   setMasterVolume(volumeDb: number): void
+  /**
+   * Swaps every character to a pack base (or clears them all with null). Mute, solo and volumes
+   * are kept; sound changes land on the next bar as usual.
+   */
+  applyBase(baseId: string | null): void
   /** Applies a whole mix; sound changes land on the next bar as usual. */
   applyMix(mix: Mix): { missingCount: number }
   getShareUrl(): string
@@ -456,6 +461,19 @@ export function createAppStore({
       setMasterVolume(volumeDb) {
         engine.setMasterVolume(volumeDb)
         set({ masterVolumeDb: volumeDb })
+      },
+
+      applyBase(baseId) {
+        const manifest = get().manifest
+        if (!manifest) return
+        const base = baseId ? manifest.bases?.find((b) => b.id === baseId) : undefined
+        if (baseId && !base) return
+        for (const { id } of manifest.characters) {
+          const soundId = base?.sounds[id]
+          if (soundId) engine.setSound(id, soundId)
+          else engine.clearSound(id)
+        }
+        refreshAllSlots()
       },
 
       applyMix(source) {

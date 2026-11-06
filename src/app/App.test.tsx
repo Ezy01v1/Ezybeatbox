@@ -177,4 +177,32 @@ describe('App', () => {
     expect(within(alert).getByText(/No se pudo cargar el pack/)).toBeInTheDocument()
     expect(within(alert).getByRole('button', { name: 'Reintentar' })).toBeInTheDocument()
   })
+
+  describe('bases', () => {
+    it('loads a base on the next bar and "Desde cero" clears every character', async () => {
+      const { user, engine, store } = renderApp()
+      await enterStage(user)
+      const bases = screen.getByRole('group', { name: 'Bases' })
+      await act(() => store.getState().togglePlay())
+
+      await user.click(within(bases).getByRole('button', { name: 'Base 1' }))
+      expect(within(bases).getByRole('button', { name: 'Base 1' })).toHaveAttribute(
+        'aria-pressed',
+        'true',
+      )
+      expect(store.getState().slots.kick?.status).toBe('queued')
+      act(() => engine.advanceBar())
+      expect(store.getState().slots.hihat).toMatchObject({ status: 'playing', playing: 'hihat-1' })
+      expect(store.getState().slots.bass?.status).toBe('empty')
+
+      await user.click(within(bases).getByRole('button', { name: 'Base 2' }))
+      act(() => engine.advanceBar())
+      expect(store.getState().slots.hihat?.status).toBe('empty')
+      expect(store.getState().slots.bass?.playing).toBe('bass-2')
+
+      await user.click(within(bases).getByRole('button', { name: 'Desde cero' }))
+      act(() => engine.advanceBar())
+      expect(Object.values(store.getState().slots).every((s) => s.status === 'empty')).toBe(true)
+    })
+  })
 })

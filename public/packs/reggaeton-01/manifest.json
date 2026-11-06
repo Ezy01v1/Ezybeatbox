@@ -29,6 +29,41 @@
       "fx": "#2a7de1"
     }
   },
+  "bases": [
+    {
+      "id": "dembow",
+      "name": "Dembow",
+      "sounds": {
+        "kick": "reggaeton-kick-1",
+        "snare": "reggaeton-snare-1",
+        "hihat": "reggaeton-hihat-1",
+        "bass": "reggaeton-bass-1"
+      }
+    },
+    {
+      "id": "perreo",
+      "name": "Perreo",
+      "sounds": {
+        "kick": "reggaeton-kick-2",
+        "snare": "reggaeton-snare-5",
+        "hihat": "reggaeton-hihat-3",
+        "bass": "reggaeton-bass-2",
+        "voice": "reggaeton-voice-3",
+        "fx": "reggaeton-fx-3"
+      }
+    },
+    {
+      "id": "romantico",
+      "name": "Romántico",
+      "sounds": {
+        "kick": "reggaeton-kick-3",
+        "snare": "reggaeton-snare-3",
+        "hihat": "reggaeton-hihat-4",
+        "bass": "reggaeton-bass-5",
+        "voice": "reggaeton-voice-5"
+      }
+    }
+  ],
   "characters": [
     {
       "id": "kick",

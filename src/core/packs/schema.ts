@@ -91,6 +91,16 @@ export const themeSchema = z.object({
   roles: z.record(z.enum(CHARACTER_ROLES), hexColorSchema),
 })
 
+/**
+ * A ready-made beat for the pack: which sound each character starts with. Characters left out
+ * start silent. The ids are checked against the pack's characters below.
+ */
+export const baseSchema = z.object({
+  id: idSchema,
+  name: localizedTextSchema,
+  sounds: z.record(idSchema, idSchema),
+})
+
 export const packManifestSchema = z
   .object({
     id: idSchema,
@@ -108,6 +118,8 @@ export const packManifestSchema = z
     description: localizedTextSchema.optional(),
     /** Pack-relative cover art for the pack picker (16:9 works best). */
     cover: imagePathSchema.optional(),
+    /** Ready-made beats offered on the stage, next to "start from scratch". */
+    bases: z.array(baseSchema).max(6).optional(),
   })
   .superRefine((pack, ctx) => {
     const characterIds = new Set<string>()
@@ -135,12 +147,35 @@ export const packManifestSchema = z
         soundIds.add(sound.id)
       })
     })
+
+    const baseIds = new Set<string>()
+    pack.bases?.forEach((base, bi) => {
+      if (baseIds.has(base.id)) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['bases', bi, 'id'],
+          message: `duplicate base id "${base.id}"`,
+        })
+      }
+      baseIds.add(base.id)
+      for (const [characterId, soundId] of Object.entries(base.sounds)) {
+        const character = pack.characters.find((c) => c.id === characterId)
+        if (!character?.sounds.some((s) => s.id === soundId)) {
+          ctx.addIssue({
+            code: 'custom',
+            path: ['bases', bi, 'sounds', characterId],
+            message: `base "${base.id}" uses unknown sound "${characterId}.${soundId}"`,
+          })
+        }
+      }
+    })
   })
 
 export type LocalizedText = z.infer<typeof localizedTextSchema>
 export type CharacterRole = (typeof CHARACTER_ROLES)[number]
 export type SoundDef = z.infer<typeof soundSchema>
 export type CharacterDef = z.infer<typeof characterSchema>
+export type PackBase = z.infer<typeof baseSchema>
 export type PackTheme = z.infer<typeof themeSchema>
 export type StagePattern = (typeof STAGE_PATTERNS)[number]
 export type PackManifest = z.infer<typeof packManifestSchema>

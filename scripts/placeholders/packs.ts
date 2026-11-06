@@ -1,10 +1,29 @@
-import type { PackManifest } from '../../src/core/packs/schema'
+import type { PackBase, PackManifest } from '../../src/core/packs/schema'
 import { BOOM_BAP_RECIPES, type CharacterRecipe } from './recipes'
 import { AFROBEAT_RECIPES } from './afrobeatRecipes'
 import { DNB_RECIPES } from './dnbRecipes'
 import { HOUSE_RECIPES } from './houseRecipes'
 import { REGGAETON_RECIPES } from './reggaetonRecipes'
 import { TRAP_RECIPES } from './trapRecipes'
+
+const ROLES = ['kick', 'snare', 'hihat', 'bass', 'voice', 'fx'] as const
+
+/**
+ * A pack base from one sound number per role (kick, snare, hihat, bass, voice, fx), 0 = silent.
+ * Sound ids follow the recipes: `<prefix><role>-<n>`.
+ */
+function base(
+  prefix: string,
+  id: string,
+  name: string,
+  picks: readonly [number, number, number, number, number, number],
+): PackBase {
+  const sounds: Record<string, string> = {}
+  picks.forEach((n, i) => {
+    if (n > 0) sounds[ROLES[i] as string] = `${prefix}${ROLES[i]}-${n}`
+  })
+  return { id, name, sounds }
+}
 
 export interface PlaceholderPack {
   /** Everything in the manifest except the characters, which come from the recipes. */
@@ -44,6 +63,11 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
           fx: '#27b6d3',
         },
       },
+      bases: [
+        base('', 'clasica', 'Clásica', [1, 1, 1, 1, 0, 0]),
+        base('', 'con-flow', 'Con flow', [3, 4, 4, 2, 3, 3]),
+        base('', 'pesada', 'Pesada', [4, 1, 2, 3, 4, 4]),
+      ],
     },
     recipes: BOOM_BAP_RECIPES,
   },
@@ -76,6 +100,11 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
           fx: '#ff5fa2',
         },
       },
+      bases: [
+        base('trap-', 'clasica', 'Clásica', [1, 1, 1, 1, 0, 0]),
+        base('trap-', 'rodada', 'Rodada', [3, 5, 3, 2, 1, 2]),
+        base('trap-', 'oscura', 'Oscura', [4, 4, 2, 3, 4, 1]),
+      ],
     },
     recipes: TRAP_RECIPES,
   },
@@ -108,6 +137,11 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
           fx: '#2a7de1',
         },
       },
+      bases: [
+        base('reggaeton-', 'dembow', 'Dembow', [1, 1, 1, 1, 0, 0]),
+        base('reggaeton-', 'perreo', 'Perreo', [2, 5, 3, 2, 3, 3]),
+        base('reggaeton-', 'romantico', 'Romántico', [3, 3, 4, 5, 5, 0]),
+      ],
     },
     recipes: REGGAETON_RECIPES,
   },
@@ -140,6 +174,11 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
           fx: '#6bffb0',
         },
       },
+      bases: [
+        base('house-', 'clasico', 'Clásico', [1, 1, 1, 1, 1, 0]),
+        base('house-', 'deep', 'Deep', [2, 4, 4, 4, 3, 0]),
+        base('house-', 'pista', 'Pista', [3, 5, 5, 2, 5, 1]),
+      ],
     },
     recipes: HOUSE_RECIPES,
   },
@@ -172,6 +211,11 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
           fx: '#ff9f1c',
         },
       },
+      bases: [
+        base('dnb-', 'liquid', 'Liquid', [1, 2, 1, 2, 1, 0]),
+        base('dnb-', 'jungla', 'Jungla', [3, 3, 2, 1, 2, 2]),
+        base('dnb-', 'medio-tiempo', 'Medio tiempo', [5, 5, 3, 4, 4, 3]),
+      ],
     },
     recipes: DNB_RECIPES,
   },
@@ -204,6 +248,11 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
           fx: '#2f6fd6',
         },
       },
+      bases: [
+        base('afrobeat-', 'afrobeats', 'Afrobeats', [1, 1, 1, 1, 1, 0]),
+        base('afrobeat-', 'amapiano', 'Amapiano', [3, 2, 5, 2, 3, 0]),
+        base('afrobeat-', 'fiesta', 'Fiesta', [4, 5, 4, 4, 5, 2]),
+      ],
     },
     recipes: AFROBEAT_RECIPES,
   },

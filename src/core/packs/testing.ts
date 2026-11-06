@@ -20,6 +20,14 @@ export function makeTestManifest(overrides: Partial<PackManifest> = {}): PackMan
         fallback: `${role}/${role}-${n}.m4a`,
       })),
     })),
+    bases: [
+      {
+        id: 'base-1',
+        name: 'Base 1',
+        sounds: { kick: 'kick-1', snare: 'snare-1', hihat: 'hihat-1' },
+      },
+      { id: 'base-2', name: 'Base 2', sounds: { kick: 'kick-2', bass: 'bass-2' } },
+    ],
     ...overrides,
   }
 }

@@ -29,6 +29,42 @@
       "fx": "#27b6d3"
     }
   },
+  "bases": [
+    {
+      "id": "clasica",
+      "name": "Clásica",
+      "sounds": {
+        "kick": "kick-1",
+        "snare": "snare-1",
+        "hihat": "hihat-1",
+        "bass": "bass-1"
+      }
+    },
+    {
+      "id": "con-flow",
+      "name": "Con flow",
+      "sounds": {
+        "kick": "kick-3",
+        "snare": "snare-4",
+        "hihat": "hihat-4",
+        "bass": "bass-2",
+        "voice": "voice-3",
+        "fx": "fx-3"
+      }
+    },
+    {
+      "id": "pesada",
+      "name": "Pesada",
+      "sounds": {
+        "kick": "kick-4",
+        "snare": "snare-1",
+        "hihat": "hihat-2",
+        "bass": "bass-3",
+        "voice": "voice-4",
+        "fx": "fx-4"
+      }
+    }
+  ],
   "characters": [
     {
       "id": "kick",

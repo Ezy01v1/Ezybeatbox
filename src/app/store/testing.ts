@@ -44,7 +44,9 @@ export function createTestApp({ extraPacks = [], catalog, ...overrides }: TestAp
 
 /** A second valid pack (`other-pack`) with its own sound ids, for pack-switching tests. */
 export function makeOtherPack(): PackManifest {
+  // No bases: they would point at the renamed sound ids.
   const base = makeTestManifest({ id: 'other-pack', name: 'Other Pack', bpm: 140 })
+  delete base.bases
   return {
     ...base,
     characters: base.characters.map((c) => ({

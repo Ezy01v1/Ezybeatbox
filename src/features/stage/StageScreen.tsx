@@ -6,6 +6,7 @@ import { Palette } from '@/features/palette/Palette'
 import { Notices } from '@/features/sharing/Notices'
 import { TransportBar } from '@/features/transport/TransportBar'
 import { StagePattern } from '@/visuals'
+import { BasePicker } from './BasePicker'
 import { CharacterSlot } from './CharacterSlot'
 import { ResumeOverlay } from './ResumeOverlay'
 import { StageBackdrop } from './StageBackdrop'
@@ -23,6 +24,7 @@ export function StageScreen({ manifest }: { manifest: PackManifest }) {
         <div className="relative isolate mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col gap-2 overflow-hidden rounded-3xl bg-(--stage-bg) p-2 text-(--stage-ink) sm:p-4">
           <StagePattern theme={theme} />
           <StageBackdrop color={theme.stage.glow} />
+          <BasePicker manifest={manifest} />
           {/*
            * Characters stand side by side, cut at the waist by the stage floor: a strip of
            * height --floor at the bottom of every row (one row on wide screens, two on phones),

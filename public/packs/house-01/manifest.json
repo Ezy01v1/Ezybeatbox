@@ -29,6 +29,42 @@
       "fx": "#6bffb0"
     }
   },
+  "bases": [
+    {
+      "id": "clasico",
+      "name": "Clásico",
+      "sounds": {
+        "kick": "house-kick-1",
+        "snare": "house-snare-1",
+        "hihat": "house-hihat-1",
+        "bass": "house-bass-1",
+        "voice": "house-voice-1"
+      }
+    },
+    {
+      "id": "deep",
+      "name": "Deep",
+      "sounds": {
+        "kick": "house-kick-2",
+        "snare": "house-snare-4",
+        "hihat": "house-hihat-4",
+        "bass": "house-bass-4",
+        "voice": "house-voice-3"
+      }
+    },
+    {
+      "id": "pista",
+      "name": "Pista",
+      "sounds": {
+        "kick": "house-kick-3",
+        "snare": "house-snare-5",
+        "hihat": "house-hihat-5",
+        "bass": "house-bass-2",
+        "voice": "house-voice-5",
+        "fx": "house-fx-1"
+      }
+    }
+  ],
   "characters": [
     {
       "id": "kick",
