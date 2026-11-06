@@ -100,6 +100,18 @@
           "label": "Rebote",
           "file": "kick/trap-kick-5.ogg",
           "fallback": "kick/trap-kick-5.m4a"
+        },
+        {
+          "id": "trap-kick-6",
+          "label": "808 Largo swing",
+          "file": "kick/trap-kick-6.ogg",
+          "fallback": "kick/trap-kick-6.m4a"
+        },
+        {
+          "id": "trap-kick-7",
+          "label": "Corto ½",
+          "file": "kick/trap-kick-7.ogg",
+          "fallback": "kick/trap-kick-7.m4a"
         }
       ]
     },
@@ -137,6 +149,18 @@
           "label": "Redoble",
           "file": "snare/trap-snare-5.ogg",
           "fallback": "snare/trap-snare-5.m4a"
+        },
+        {
+          "id": "trap-snare-6",
+          "label": "Clap swing",
+          "file": "snare/trap-snare-6.ogg",
+          "fallback": "snare/trap-snare-6.m4a"
+        },
+        {
+          "id": "trap-snare-7",
+          "label": "Caja ½",
+          "file": "snare/trap-snare-7.ogg",
+          "fallback": "snare/trap-snare-7.m4a"
         }
       ]
     },
@@ -174,6 +198,18 @@
           "label": "Shaker",
           "file": "hihat/trap-hihat-5.ogg",
           "fallback": "hihat/trap-hihat-5.m4a"
+        },
+        {
+          "id": "trap-hihat-6",
+          "label": "Rápido swing",
+          "file": "hihat/trap-hihat-6.ogg",
+          "fallback": "hihat/trap-hihat-6.m4a"
+        },
+        {
+          "id": "trap-hihat-7",
+          "label": "Tresillos ½",
+          "file": "hihat/trap-hihat-7.ogg",
+          "fallback": "hihat/trap-hihat-7.m4a"
         }
       ]
     },
@@ -211,6 +247,18 @@
           "label": "Caída",
           "file": "bass/trap-bass-5.ogg",
           "fallback": "bass/trap-bass-5.m4a"
+        },
+        {
+          "id": "trap-bass-6",
+          "label": "Sub swing",
+          "file": "bass/trap-bass-6.ogg",
+          "fallback": "bass/trap-bass-6.m4a"
+        },
+        {
+          "id": "trap-bass-7",
+          "label": "Pulso ½",
+          "file": "bass/trap-bass-7.ogg",
+          "fallback": "bass/trap-bass-7.m4a"
         }
       ]
     },
@@ -248,6 +296,18 @@
           "label": "Agudo",
           "file": "voice/trap-voice-5.ogg",
           "fallback": "voice/trap-voice-5.m4a"
+        },
+        {
+          "id": "trap-voice-6",
+          "label": "Ad-lib swing",
+          "file": "voice/trap-voice-6.ogg",
+          "fallback": "voice/trap-voice-6.m4a"
+        },
+        {
+          "id": "trap-voice-7",
+          "label": "Coro ½",
+          "file": "voice/trap-voice-7.ogg",
+          "fallback": "voice/trap-voice-7.m4a"
         }
       ]
     },
@@ -285,6 +345,18 @@
           "label": "Impacto",
           "file": "fx/trap-fx-5.ogg",
           "fallback": "fx/trap-fx-5.m4a"
+        },
+        {
+          "id": "trap-fx-6",
+          "label": "Riser swing",
+          "file": "fx/trap-fx-6.ogg",
+          "fallback": "fx/trap-fx-6.m4a"
+        },
+        {
+          "id": "trap-fx-7",
+          "label": "Láser ½",
+          "file": "fx/trap-fx-7.ogg",
+          "fallback": "fx/trap-fx-7.m4a"
         }
       ]
     }

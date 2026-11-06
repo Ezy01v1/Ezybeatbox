@@ -100,6 +100,18 @@
           "label": "Rebote",
           "file": "kick/kick-5.ogg",
           "fallback": "kick/kick-5.m4a"
+        },
+        {
+          "id": "kick-6",
+          "label": "Clásico swing",
+          "file": "kick/kick-6.ogg",
+          "fallback": "kick/kick-6.m4a"
+        },
+        {
+          "id": "kick-7",
+          "label": "Doble ½",
+          "file": "kick/kick-7.ogg",
+          "fallback": "kick/kick-7.m4a"
         }
       ]
     },
@@ -137,6 +149,18 @@
           "label": "Redoble",
           "file": "snare/snare-5.ogg",
           "fallback": "snare/snare-5.m4a"
+        },
+        {
+          "id": "snare-6",
+          "label": "Caja swing",
+          "file": "snare/snare-6.ogg",
+          "fallback": "snare/snare-6.m4a"
+        },
+        {
+          "id": "snare-7",
+          "label": "Rimshot ½",
+          "file": "snare/snare-7.ogg",
+          "fallback": "snare/snare-7.m4a"
         }
       ]
     },
@@ -174,6 +198,18 @@
           "label": "Shaker",
           "file": "hihat/hihat-5.ogg",
           "fallback": "hihat/hihat-5.m4a"
+        },
+        {
+          "id": "hihat-6",
+          "label": "Corcheas swing",
+          "file": "hihat/hihat-6.ogg",
+          "fallback": "hihat/hihat-6.m4a"
+        },
+        {
+          "id": "hihat-7",
+          "label": "Semicorcheas ½",
+          "file": "hihat/hihat-7.ogg",
+          "fallback": "hihat/hihat-7.m4a"
         }
       ]
     },
@@ -211,6 +247,18 @@
           "label": "Deslizado",
           "file": "bass/bass-5.ogg",
           "fallback": "bass/bass-5.m4a"
+        },
+        {
+          "id": "bass-6",
+          "label": "Raíz swing",
+          "file": "bass/bass-6.ogg",
+          "fallback": "bass/bass-6.m4a"
+        },
+        {
+          "id": "bass-7",
+          "label": "Caminante ½",
+          "file": "bass/bass-7.ogg",
+          "fallback": "bass/bass-7.m4a"
         }
       ]
     },
@@ -248,6 +296,18 @@
           "label": "Agudo",
           "file": "voice/voice-5.ogg",
           "fallback": "voice/voice-5.m4a"
+        },
+        {
+          "id": "voice-6",
+          "label": "Llamada swing",
+          "file": "voice/voice-6.ogg",
+          "fallback": "voice/voice-6.m4a"
+        },
+        {
+          "id": "voice-7",
+          "label": "Coro ½",
+          "file": "voice/voice-7.ogg",
+          "fallback": "voice/voice-7.m4a"
         }
       ]
     },
@@ -285,6 +345,18 @@
           "label": "Caída",
           "file": "fx/fx-5.ogg",
           "fallback": "fx/fx-5.m4a"
+        },
+        {
+          "id": "fx-6",
+          "label": "Barrido swing",
+          "file": "fx/fx-6.ogg",
+          "fallback": "fx/fx-6.m4a"
+        },
+        {
+          "id": "fx-7",
+          "label": "Láser ½",
+          "file": "fx/fx-7.ogg",
+          "fallback": "fx/fx-7.m4a"
         }
       ]
     }

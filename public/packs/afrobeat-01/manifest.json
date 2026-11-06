@@ -100,6 +100,18 @@
           "label": "Profundo",
           "file": "kick/afrobeat-kick-5.ogg",
           "fallback": "kick/afrobeat-kick-5.m4a"
+        },
+        {
+          "id": "afrobeat-kick-6",
+          "label": "Tresillo swing",
+          "file": "kick/afrobeat-kick-6.ogg",
+          "fallback": "kick/afrobeat-kick-6.m4a"
+        },
+        {
+          "id": "afrobeat-kick-7",
+          "label": "Suave ½",
+          "file": "kick/afrobeat-kick-7.ogg",
+          "fallback": "kick/afrobeat-kick-7.m4a"
         }
       ]
     },
@@ -137,6 +149,18 @@
           "label": "Capas",
           "file": "snare/afrobeat-snare-5.ogg",
           "fallback": "snare/afrobeat-snare-5.m4a"
+        },
+        {
+          "id": "afrobeat-snare-6",
+          "label": "Aro swing",
+          "file": "snare/afrobeat-snare-6.ogg",
+          "fallback": "snare/afrobeat-snare-6.m4a"
+        },
+        {
+          "id": "afrobeat-snare-7",
+          "label": "Palmas ½",
+          "file": "snare/afrobeat-snare-7.ogg",
+          "fallback": "snare/afrobeat-snare-7.m4a"
         }
       ]
     },
@@ -174,6 +198,18 @@
           "label": "Abierto",
           "file": "hihat/afrobeat-hihat-5.ogg",
           "fallback": "hihat/afrobeat-hihat-5.m4a"
+        },
+        {
+          "id": "afrobeat-hihat-6",
+          "label": "Shaker swing",
+          "file": "hihat/afrobeat-hihat-6.ogg",
+          "fallback": "hihat/afrobeat-hihat-6.m4a"
+        },
+        {
+          "id": "afrobeat-hihat-7",
+          "label": "Cencerro ½",
+          "file": "hihat/afrobeat-hihat-7.ogg",
+          "fallback": "hihat/afrobeat-hihat-7.m4a"
         }
       ]
     },
@@ -211,6 +247,18 @@
           "label": "Deslizado",
           "file": "bass/afrobeat-bass-5.ogg",
           "fallback": "bass/afrobeat-bass-5.m4a"
+        },
+        {
+          "id": "afrobeat-bass-6",
+          "label": "Groove swing",
+          "file": "bass/afrobeat-bass-6.ogg",
+          "fallback": "bass/afrobeat-bass-6.m4a"
+        },
+        {
+          "id": "afrobeat-bass-7",
+          "label": "Log drum ½",
+          "file": "bass/afrobeat-bass-7.ogg",
+          "fallback": "bass/afrobeat-bass-7.m4a"
         }
       ]
     },
@@ -248,6 +296,18 @@
           "label": "Marimba",
           "file": "voice/afrobeat-voice-5.ogg",
           "fallback": "voice/afrobeat-voice-5.m4a"
+        },
+        {
+          "id": "afrobeat-voice-6",
+          "label": "Guitarra swing",
+          "file": "voice/afrobeat-voice-6.ogg",
+          "fallback": "voice/afrobeat-voice-6.m4a"
+        },
+        {
+          "id": "afrobeat-voice-7",
+          "label": "Coro ½",
+          "file": "voice/afrobeat-voice-7.ogg",
+          "fallback": "voice/afrobeat-voice-7.m4a"
         }
       ]
     },
@@ -285,6 +345,18 @@
           "label": "Barrido",
           "file": "fx/afrobeat-fx-5.ogg",
           "fallback": "fx/afrobeat-fx-5.m4a"
+        },
+        {
+          "id": "afrobeat-fx-6",
+          "label": "Subida swing",
+          "file": "fx/afrobeat-fx-6.ogg",
+          "fallback": "fx/afrobeat-fx-6.m4a"
+        },
+        {
+          "id": "afrobeat-fx-7",
+          "label": "Silbato ½",
+          "file": "fx/afrobeat-fx-7.ogg",
+          "fallback": "fx/afrobeat-fx-7.m4a"
         }
       ]
     }

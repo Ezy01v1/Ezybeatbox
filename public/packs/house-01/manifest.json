@@ -100,6 +100,18 @@
           "label": "Garage",
           "file": "kick/house-kick-5.ogg",
           "fallback": "kick/house-kick-5.m4a"
+        },
+        {
+          "id": "house-kick-6",
+          "label": "Four swing",
+          "file": "kick/house-kick-6.ogg",
+          "fallback": "kick/house-kick-6.m4a"
+        },
+        {
+          "id": "house-kick-7",
+          "label": "Profundo ½",
+          "file": "kick/house-kick-7.ogg",
+          "fallback": "kick/house-kick-7.m4a"
         }
       ]
     },
@@ -137,6 +149,18 @@
           "label": "Capas",
           "file": "snare/house-snare-5.ogg",
           "fallback": "snare/house-snare-5.m4a"
+        },
+        {
+          "id": "house-snare-6",
+          "label": "Clap swing",
+          "file": "snare/house-snare-6.ogg",
+          "fallback": "snare/house-snare-6.m4a"
+        },
+        {
+          "id": "house-snare-7",
+          "label": "Caja ½",
+          "file": "snare/house-snare-7.ogg",
+          "fallback": "snare/house-snare-7.m4a"
         }
       ]
     },
@@ -174,6 +198,18 @@
           "label": "Ride",
           "file": "hihat/house-hihat-5.ogg",
           "fallback": "hihat/house-hihat-5.m4a"
+        },
+        {
+          "id": "house-hihat-6",
+          "label": "Abierto swing",
+          "file": "hihat/house-hihat-6.ogg",
+          "fallback": "hihat/house-hihat-6.m4a"
+        },
+        {
+          "id": "house-hihat-7",
+          "label": "Cerrado ½",
+          "file": "hihat/house-hihat-7.ogg",
+          "fallback": "hihat/house-hihat-7.m4a"
         }
       ]
     },
@@ -211,6 +247,18 @@
           "label": "Órgano",
           "file": "bass/house-bass-5.ogg",
           "fallback": "bass/house-bass-5.m4a"
+        },
+        {
+          "id": "house-bass-6",
+          "label": "Contra swing",
+          "file": "bass/house-bass-6.ogg",
+          "fallback": "bass/house-bass-6.m4a"
+        },
+        {
+          "id": "house-bass-7",
+          "label": "Octavas ½",
+          "file": "bass/house-bass-7.ogg",
+          "fallback": "bass/house-bass-7.m4a"
         }
       ]
     },
@@ -248,6 +296,18 @@
           "label": "Arpegio",
           "file": "voice/house-voice-5.ogg",
           "fallback": "voice/house-voice-5.m4a"
+        },
+        {
+          "id": "house-voice-6",
+          "label": "Piano swing",
+          "file": "voice/house-voice-6.ogg",
+          "fallback": "voice/house-voice-6.m4a"
+        },
+        {
+          "id": "house-voice-7",
+          "label": "Diva ½",
+          "file": "voice/house-voice-7.ogg",
+          "fallback": "voice/house-voice-7.m4a"
         }
       ]
     },
@@ -285,6 +345,18 @@
           "label": "Redoble",
           "file": "fx/house-fx-5.ogg",
           "fallback": "fx/house-fx-5.m4a"
+        },
+        {
+          "id": "house-fx-6",
+          "label": "Subida swing",
+          "file": "fx/house-fx-6.ogg",
+          "fallback": "fx/house-fx-6.m4a"
+        },
+        {
+          "id": "house-fx-7",
+          "label": "Barrido ½",
+          "file": "fx/house-fx-7.ogg",
+          "fallback": "fx/house-fx-7.m4a"
         }
       ]
     }

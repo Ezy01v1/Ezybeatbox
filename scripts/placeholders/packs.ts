@@ -1,5 +1,5 @@
 import type { PackBase, PackManifest } from '../../src/core/packs/schema'
-import { BOOM_BAP_RECIPES, type CharacterRecipe } from './recipes'
+import { BOOM_BAP_RECIPES, type CharacterRecipe, withVariations } from './recipes'
 import { AFROBEAT_RECIPES } from './afrobeatRecipes'
 import { DNB_RECIPES } from './dnbRecipes'
 import { HOUSE_RECIPES } from './houseRecipes'
@@ -69,7 +69,7 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
         base('', 'pesada', 'Pesada', [4, 1, 2, 3, 4, 4]),
       ],
     },
-    recipes: BOOM_BAP_RECIPES,
+    recipes: withVariations(BOOM_BAP_RECIPES, ''),
   },
   {
     meta: {
@@ -106,7 +106,7 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
         base('trap-', 'oscura', 'Oscura', [4, 4, 2, 3, 4, 1]),
       ],
     },
-    recipes: TRAP_RECIPES,
+    recipes: withVariations(TRAP_RECIPES, 'trap-', { bass: { half: 4 } }),
   },
   {
     meta: {
@@ -143,7 +143,7 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
         base('reggaeton-', 'romantico', 'Romántico', [3, 3, 4, 5, 5, 0]),
       ],
     },
-    recipes: REGGAETON_RECIPES,
+    recipes: withVariations(REGGAETON_RECIPES, 'reggaeton-', { voice: { swing: 5 } }),
   },
   {
     meta: {
@@ -180,7 +180,7 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
         base('house-', 'pista', 'Pista', [3, 5, 5, 2, 5, 1]),
       ],
     },
-    recipes: HOUSE_RECIPES,
+    recipes: withVariations(HOUSE_RECIPES, 'house-'),
   },
   {
     meta: {
@@ -217,7 +217,7 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
         base('dnb-', 'medio-tiempo', 'Medio tiempo', [5, 5, 3, 4, 4, 3]),
       ],
     },
-    recipes: DNB_RECIPES,
+    recipes: withVariations(DNB_RECIPES, 'dnb-', { voice: { swing: 2 } }),
   },
   {
     meta: {
@@ -254,6 +254,6 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
         base('afrobeat-', 'fiesta', 'Fiesta', [4, 5, 4, 4, 5, 2]),
       ],
     },
-    recipes: AFROBEAT_RECIPES,
+    recipes: withVariations(AFROBEAT_RECIPES, 'afrobeat-', { fx: { half: 3 } }),
   },
 ]

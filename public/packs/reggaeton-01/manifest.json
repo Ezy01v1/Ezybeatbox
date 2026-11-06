@@ -99,6 +99,18 @@
           "label": "Moombah",
           "file": "kick/reggaeton-kick-5.ogg",
           "fallback": "kick/reggaeton-kick-5.m4a"
+        },
+        {
+          "id": "reggaeton-kick-6",
+          "label": "Dembow swing",
+          "file": "kick/reggaeton-kick-6.ogg",
+          "fallback": "kick/reggaeton-kick-6.m4a"
+        },
+        {
+          "id": "reggaeton-kick-7",
+          "label": "Perreo ½",
+          "file": "kick/reggaeton-kick-7.ogg",
+          "fallback": "kick/reggaeton-kick-7.m4a"
         }
       ]
     },
@@ -136,6 +148,18 @@
           "label": "Doble",
           "file": "snare/reggaeton-snare-5.ogg",
           "fallback": "snare/reggaeton-snare-5.m4a"
+        },
+        {
+          "id": "reggaeton-snare-6",
+          "label": "Dembow swing",
+          "file": "snare/reggaeton-snare-6.ogg",
+          "fallback": "snare/reggaeton-snare-6.m4a"
+        },
+        {
+          "id": "reggaeton-snare-7",
+          "label": "Palmas ½",
+          "file": "snare/reggaeton-snare-7.ogg",
+          "fallback": "snare/reggaeton-snare-7.m4a"
         }
       ]
     },
@@ -173,6 +197,18 @@
           "label": "Cencerro",
           "file": "hihat/reggaeton-hihat-5.ogg",
           "fallback": "hihat/reggaeton-hihat-5.m4a"
+        },
+        {
+          "id": "reggaeton-hihat-6",
+          "label": "Corcheas swing",
+          "file": "hihat/reggaeton-hihat-6.ogg",
+          "fallback": "hihat/reggaeton-hihat-6.m4a"
+        },
+        {
+          "id": "reggaeton-hihat-7",
+          "label": "Contratiempo ½",
+          "file": "hihat/reggaeton-hihat-7.ogg",
+          "fallback": "hihat/reggaeton-hihat-7.m4a"
         }
       ]
     },
@@ -210,6 +246,18 @@
           "label": "Guitarra",
           "file": "bass/reggaeton-bass-5.ogg",
           "fallback": "bass/reggaeton-bass-5.m4a"
+        },
+        {
+          "id": "reggaeton-bass-6",
+          "label": "Tumbao swing",
+          "file": "bass/reggaeton-bass-6.ogg",
+          "fallback": "bass/reggaeton-bass-6.m4a"
+        },
+        {
+          "id": "reggaeton-bass-7",
+          "label": "Sub ½",
+          "file": "bass/reggaeton-bass-7.ogg",
+          "fallback": "bass/reggaeton-bass-7.m4a"
         }
       ]
     },
@@ -247,6 +295,18 @@
           "label": "Melodía",
           "file": "voice/reggaeton-voice-5.ogg",
           "fallback": "voice/reggaeton-voice-5.m4a"
+        },
+        {
+          "id": "reggaeton-voice-6",
+          "label": "Melodía swing",
+          "file": "voice/reggaeton-voice-6.ogg",
+          "fallback": "voice/reggaeton-voice-6.m4a"
+        },
+        {
+          "id": "reggaeton-voice-7",
+          "label": "Ad-lib ½",
+          "file": "voice/reggaeton-voice-7.ogg",
+          "fallback": "voice/reggaeton-voice-7.m4a"
         }
       ]
     },
@@ -284,6 +344,18 @@
           "label": "Timbales",
           "file": "fx/reggaeton-fx-5.ogg",
           "fallback": "fx/reggaeton-fx-5.m4a"
+        },
+        {
+          "id": "reggaeton-fx-6",
+          "label": "Sirena swing",
+          "file": "fx/reggaeton-fx-6.ogg",
+          "fallback": "fx/reggaeton-fx-6.m4a"
+        },
+        {
+          "id": "reggaeton-fx-7",
+          "label": "Láser ½",
+          "file": "fx/reggaeton-fx-7.ogg",
+          "fallback": "fx/reggaeton-fx-7.m4a"
         }
       ]
     }

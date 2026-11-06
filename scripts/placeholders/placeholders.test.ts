@@ -16,10 +16,23 @@ describe.each(PLACEHOLDER_PACKS.map((pack) => [pack.meta.id, pack] as const))(
     const allRecipes = recipes.flatMap((character) => character.sounds)
     const expectedLength = loopSampleCount(meta, meta.loopBars, PLACEHOLDER_SAMPLE_RATE)
 
-    it('define the 6 roles in order with 5 sounds each', () => {
+    it('define the 6 roles in order with 7 sounds each (5 + swing and half-time)', () => {
       expect(recipes.map((c) => c.role)).toEqual(['kick', 'snare', 'hihat', 'bass', 'voice', 'fx'])
-      for (const character of recipes) expect(character.sounds).toHaveLength(5)
+      for (const character of recipes) expect(character.sounds).toHaveLength(7)
     })
+
+    it.each(recipes.map((c) => [c.id, c] as const))(
+      '%s variations differ from every other sound of the character',
+      (_, character) => {
+        const rendered = character.sounds.map((s) => renderPlaceholder(s, meta))
+        for (const variation of rendered.slice(5)) {
+          for (const other of rendered) {
+            if (other === variation) continue
+            expect(other).not.toEqual(variation)
+          }
+        }
+      },
+    )
 
     it.each(allRecipes.map((recipe) => [recipe.id, recipe] as const))(
       '%s renders an exact-length, non-silent loop within the peak ceiling',

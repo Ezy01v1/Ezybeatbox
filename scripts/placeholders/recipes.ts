@@ -25,6 +25,11 @@ export interface RenderContext {
   /** 16th notes per bar. */
   stepsPerBar: number
   rng: () => number
+  /**
+   * Where a 16th-note step lands, in seconds (null = skip the hit). Defaults to `step * ctx.step`;
+   * variations (swing, half time) override it. Only `play` and `line` honor it.
+   */
+  at?: (step: number) => number | null
 }
 
 export interface SoundRecipe {
@@ -46,8 +51,10 @@ export type Hit = number | readonly [step: number, velocity: number]
 export function play(ctx: RenderContext, voice: Voice, hits: readonly Hit[], gain = 1): void {
   for (const hit of hits) {
     const [step, velocity] = typeof hit === 'number' ? [hit, 1] : hit
+    const time = timeOf(ctx, step)
+    if (time === null) continue
     const generate = voice.create(ctx.buffer.sampleRate, ctx.rng)
-    ctx.buffer.add(step * ctx.step, voice.duration, generate, gain * velocity)
+    ctx.buffer.add(time, voice.duration, generate, gain * velocity)
   }
 }
 
@@ -58,9 +65,64 @@ export function line(
   notes: readonly (readonly [number, number, number])[],
 ): void {
   for (const [step, midi, length] of notes) {
+    const time = timeOf(ctx, step)
+    if (time === null) continue
     const voice = make(midi, length * ctx.step)
-    ctx.buffer.add(step * ctx.step, voice.duration, voice.create(ctx.buffer.sampleRate, ctx.rng))
+    ctx.buffer.add(time, voice.duration, voice.create(ctx.buffer.sampleRate, ctx.rng))
   }
+}
+
+const timeOf = (ctx: RenderContext, step: number) => (ctx.at ? ctx.at(step) : step * ctx.step)
+
+/** Swing amount: off-beat 16ths are pushed this fraction of a step late, off-beat 8ths half. */
+export const SWING = 0.33
+
+const swingOffset = (s: number) =>
+  !Number.isInteger(s) ? 0 : s % 2 === 1 ? SWING : s % 4 === 2 ? SWING / 2 : 0
+
+/**
+ * Two variations per character built from existing sounds: "Swing" (off-beat 16ths pushed
+ * late) and "½ tiempo" (the first half of the pattern stretched over the whole loop). The
+ * sources must place every hit through `play`/`line`, so `at` reaches them.
+ */
+export function withVariations(
+  recipes: CharacterRecipe[],
+  prefix: string,
+  sources: Partial<Record<CharacterRole, { swing?: number; half?: number }>> = {},
+): CharacterRecipe[] {
+  return recipes.map((character) => {
+    const pick = (n: number) => {
+      const sound = character.sounds[n - 1]
+      if (!sound) throw new Error(`${character.id} has no sound ${n}`)
+      return sound
+    }
+    const swingFrom = pick(sources[character.role]?.swing ?? 1)
+    const halfFrom = pick(sources[character.role]?.half ?? 2)
+    const n = character.sounds.length
+    return {
+      ...character,
+      sounds: [
+        ...character.sounds,
+        {
+          id: `${prefix}${character.id}-${n + 1}`,
+          label: `${swingFrom.label} swing`,
+          render: (c) =>
+            swingFrom.render({
+              ...c,
+              at: (s) => (s + swingOffset(s)) * c.step,
+            }),
+        },
+        {
+          id: `${prefix}${character.id}-${n + 2}`,
+          label: `${halfFrom.label} ½`,
+          render: (c) => {
+            const totalSteps = Math.round(c.buffer.data.length / c.buffer.sampleRate / c.step)
+            halfFrom.render({ ...c, at: (s) => (s < totalSteps / 2 ? 2 * s * c.step : null) })
+          },
+        },
+      ],
+    }
+  })
 }
 
 /** Repeats a one-bar pattern (16th steps 0–15) across a two-bar loop. */

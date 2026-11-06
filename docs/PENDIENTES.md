@@ -18,7 +18,8 @@ Foco de Daniel (2026-11-06): **diseño, animaciones, funcionalidades, variedad d
 - [x] **Variedad de géneros:** Reggaetón/Dembow (95), House (124), Drum & Bass (174) y Afrobeat (105), con sonidos sintéticos propios.
 - [x] **Portadas y escenarios de los 4 géneros nuevos:** personajes streetwear en SVG, un patrón de escenario por género (`sun`, `lights`, `speed`, `kente`) y portadas generadas con `scripts/covers/build-covers.ts`.
 - [x] **Bases por género:** tres bases por pack y "Desde cero" en el escenario (campo `bases` del manifest).
-- [ ] **Más variaciones por rol:** fills, medio tiempo, swing (hoy son 5 por personaje).
+- [x] **Más variaciones por rol:** swing y ½ tiempo derivados (7 por personaje).
+- [ ] **Fills** (redobles o remates al final del loop): necesitan recetas a mano, no se derivan.
 - [x] **Animaciones de entrada y salida + fondo al compás.**
 - [x] **Trap a SVG streetwear:** ningún pack usa Rive ya, así que no queda marca de agua.
 - [ ] **Funcionalidades:** BPM en vivo (cuantizado), botón "Sorpréndeme", drops.
@@ -110,6 +111,12 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-06:** 72 loops nuevos, dos por personaje en los seis packs, así que cada personaje pasa de 5 a 7 sonidos. Se derivan de los sonidos existentes con `withVariations` en `scripts/placeholders/recipes.ts`:
+  - **"swing"** atrasa las semicorcheas y corcheas a contratiempo;
+  - **"½"** estira la primera mitad del patrón al loop entero.
+
+  Funciona porque `RenderContext.at` redefine dónde cae cada paso, y solo lo respetan `play` y `line`. Las fuentes que escriben directo al buffer se excluyen. Un test verifica que cada variación suena distinta de los demás sonidos de su personaje.
 
 - **2026-11-06:** Trap pasó a los personajes streetwear SVG y se quitaron sus `.riv`. Ningún pack usa Rive (`RIVE_PACKS` vacío), así que no queda marca de agua y no se descarga el motor de Rive. `RiveCharacter` y `scripts/rive` se quedan por si se paga un plan.
 

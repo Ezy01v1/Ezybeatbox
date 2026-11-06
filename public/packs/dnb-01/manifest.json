@@ -101,6 +101,18 @@
           "label": "Medio tiempo",
           "file": "kick/dnb-kick-5.ogg",
           "fallback": "kick/dnb-kick-5.m4a"
+        },
+        {
+          "id": "dnb-kick-6",
+          "label": "Two-step swing",
+          "file": "kick/dnb-kick-6.ogg",
+          "fallback": "kick/dnb-kick-6.m4a"
+        },
+        {
+          "id": "dnb-kick-7",
+          "label": "Rodante ½",
+          "file": "kick/dnb-kick-7.ogg",
+          "fallback": "kick/dnb-kick-7.m4a"
         }
       ]
     },
@@ -138,6 +150,18 @@
           "label": "Medio tiempo",
           "file": "snare/dnb-snare-5.ogg",
           "fallback": "snare/dnb-snare-5.m4a"
+        },
+        {
+          "id": "dnb-snare-6",
+          "label": "Golpe swing",
+          "file": "snare/dnb-snare-6.ogg",
+          "fallback": "snare/dnb-snare-6.m4a"
+        },
+        {
+          "id": "dnb-snare-7",
+          "label": "Fantasma ½",
+          "file": "snare/dnb-snare-7.ogg",
+          "fallback": "snare/dnb-snare-7.m4a"
         }
       ]
     },
@@ -175,6 +199,18 @@
           "label": "Abierto",
           "file": "hihat/dnb-hihat-5.ogg",
           "fallback": "hihat/dnb-hihat-5.m4a"
+        },
+        {
+          "id": "dnb-hihat-6",
+          "label": "Corcheas swing",
+          "file": "hihat/dnb-hihat-6.ogg",
+          "fallback": "hihat/dnb-hihat-6.m4a"
+        },
+        {
+          "id": "dnb-hihat-7",
+          "label": "Rápido ½",
+          "file": "hihat/dnb-hihat-7.ogg",
+          "fallback": "hihat/dnb-hihat-7.m4a"
         }
       ]
     },
@@ -212,6 +248,18 @@
           "label": "Deslizado",
           "file": "bass/dnb-bass-5.ogg",
           "fallback": "bass/dnb-bass-5.m4a"
+        },
+        {
+          "id": "dnb-bass-6",
+          "label": "Reese swing",
+          "file": "bass/dnb-bass-6.ogg",
+          "fallback": "bass/dnb-bass-6.m4a"
+        },
+        {
+          "id": "dnb-bass-7",
+          "label": "Sub ½",
+          "file": "bass/dnb-bass-7.ogg",
+          "fallback": "bass/dnb-bass-7.m4a"
         }
       ]
     },
@@ -249,6 +297,18 @@
           "label": "Grave",
           "file": "voice/dnb-voice-5.ogg",
           "fallback": "voice/dnb-voice-5.m4a"
+        },
+        {
+          "id": "dnb-voice-6",
+          "label": "MC swing",
+          "file": "voice/dnb-voice-6.ogg",
+          "fallback": "voice/dnb-voice-6.m4a"
+        },
+        {
+          "id": "dnb-voice-7",
+          "label": "MC ½",
+          "file": "voice/dnb-voice-7.ogg",
+          "fallback": "voice/dnb-voice-7.m4a"
         }
       ]
     },
@@ -286,6 +346,18 @@
           "label": "Sirena",
           "file": "fx/dnb-fx-5.ogg",
           "fallback": "fx/dnb-fx-5.m4a"
+        },
+        {
+          "id": "dnb-fx-6",
+          "label": "Subida swing",
+          "file": "fx/dnb-fx-6.ogg",
+          "fallback": "fx/dnb-fx-6.m4a"
+        },
+        {
+          "id": "dnb-fx-7",
+          "label": "Láser ½",
+          "file": "fx/dnb-fx-7.ogg",
+          "fallback": "fx/dnb-fx-7.m4a"
         }
       ]
     }
