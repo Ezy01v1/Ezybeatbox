@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio neutro · Móvil</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            marfil: '#f5f3ee',
+            tinta: '#202124',
+            cobalto: '#1a56db',
+            borde: '#e5e2da',
+            'borde-card': '#edeae1',
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            display: ['"Space Grotesk"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #f5f3ee;
+      color: #202124;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wavy-line {
+      display: inline-block;
+      width: 48px;
+      height: 12px;
+      background-repeat: repeat-x;
+      background-size: 16px 12px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 12' fill='none'%3E%3Cpath d='M0 6C2 2 6 2 8 6C10 10 14 10 16 6' stroke='%23d3cfc4' stroke-width='1.75' stroke-linecap='round'/%3E%3C/svg%3E");
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-marfil text-tinta flex flex-col justify-between selection:bg-cobalto selection:text-white">
+
+  <!-- Main Container constrained to 375px mobile experience -->
+  <div class="w-full max-w-[420px] mx-auto min-h-screen flex flex-col">
+
+    <!-- Top Navigation Header -->
+    <header class="w-full px-5 py-3.5 border-b border-borde/70 flex items-center justify-between sticky top-0 bg-marfil/95 backdrop-blur-md z-20">
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-2 group">
+        <div class="w-8 h-8 rounded-lg bg-tinta flex items-center justify-center text-white shadow-sm">
+          <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="3" y="9" width="2" height="6" rx="1"></rect>
+            <rect x="7.5" y="5" width="2" height="14" rx="1"></rect>
+            <rect x="12" y="3" width="2" height="18" rx="1"></rect>
+            <rect x="16.5" y="7" width="2" height="10" rx="1"></rect>
+            <rect x="21" y="10" width="2" height="4" rx="1"></rect>
+          </svg>
+        </div>
+        <div class="flex items-baseline">
+          <span class="font-display font-bold text-lg tracking-tight text-tinta">Ezybeatbox</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-cobalto ml-0.5"></span>
+        </div>
+      </a>
+
+      <!-- Header Actions -->
+      <div class="flex items-center gap-2">
+        <a href="#" class="text-xs font-medium text-tinta/60 hover:text-tinta px-2 py-1 transition-colors">
+          Cómo jugar
+        </a>
+        <button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-borde bg-white text-xs font-semibold text-tinta shadow-2xs hover:bg-[#faf8f4] active:scale-95 transition-all min-h-[36px]">
+          <svg class="w-3.5 h-3.5 text-tinta/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+            <path d="M6 6h10"></path>
+            <path d="M6 10h10"></path>
+          </svg>
+          <span>Mis mixes</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 px-4 sm:px-5 pt-6 pb-8 flex flex-col gap-6">
+
+      <!-- Hero Intro Section -->
+      <section class="space-y-2.5">
+        <!-- Eyebrow Badge -->
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full border border-borde bg-white/70 shadow-2xs">
+          <span class="w-2 h-2 rounded-full bg-cobalto animate-pulse"></span>
+          <span class="text-[11px] font-bold tracking-wider text-tinta/80 uppercase">Tu voz. Tu ritmo.</span>
+        </div>
+
+        <!-- Headline & Wavy Line -->
+        <div class="flex items-end justify-between gap-2">
+          <h1 class="text-[27px] leading-[1.18] font-extrabold text-tinta tracking-tight font-sans">
+            ¿Qué vas a<br>crear hoy?
+          </h1>
+          <div class="wavy-line mb-2 flex-shrink-0" aria-hidden="true"></div>
+        </div>
+
+        <!-- Subtitle -->
+        <p class="text-sm text-tinta/70 font-normal leading-relaxed">
+          Elige un estilo y arma tu beat, capa por capa.
+        </p>
+      </section>
+
+      <!-- Cards Column (Hip hop first, Trap second) -->
+      <div class="flex flex-col gap-5">
+
+        <!-- Card 1: Hip Hop -->
+        <article class="bg-white rounded-2xl border border-borde-card shadow-[0_4px_20px_-6px_rgba(32,33,36,0.06)] overflow-hidden flex flex-col transition-transform">
+          <!-- Illustration Container -->
+          <div class="relative w-full aspect-[16/9] bg-[#e8a588] overflow-hidden">
+            <img 
+              src="https://lh3.googleusercontent.com/aida/AEtjO1XetSbC1s8ces5xGWNa7X0K1WPVE2XFJGTd99Dos40jrRZQ6NRMulRSIYFCOqy5d6ZabecTf2OutWNBZxMoyjNbjFK0BLIp_JtkLzFAHMrfbkRZnIa922e4ck2vAm5Z9tRzJ6U39TvSc-KoJAp1Y61_6yW6YknCPQI5E5ZeLXUoR2bq4shlVAr1_QvRRVhwCtnxeRZIOr8Ymz5Lb0JxtL5SvFYSnrkHFoXeWRPVWo1In5xu8hrZCeAfCg" 
+              alt="Crew de beatbox Boom Bap de hip hop noventero" 
+              class="w-full h-full object-cover object-top"
+              loading="eager"
+            />
+            
+            <!-- Badges inside art -->
+            <div class="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-tinta/75 backdrop-blur-md text-white text-[11px] font-medium shadow-sm">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#ff7a45]"></span>
+              <span>Boom bap</span>
+            </div>
+
+            <div class="absolute bottom-3 right-3 px-2 py-0.5 rounded-md bg-white/90 backdrop-blur-sm text-tinta text-[10px] font-extrabold tracking-wider uppercase shadow-2xs">
+              Edición Clásica
+            </div>
+          </div>
+
+          <!-- Card Content -->
+          <div class="p-4 sm:p-5 flex flex-col gap-3">
+            <!-- Header: Title & Meta -->
+            <div class="flex items-center justify-between gap-2">
+              <h2 class="text-xl font-bold tracking-tight text-tinta">Hip hop</h2>
+              <span class="px-2.5 py-0.5 rounded-md bg-marfil border border-borde text-xs font-semibold text-tinta/75 tracking-tight whitespace-nowrap">
+                90 BPM · 6 voces
+              </span>
+            </div>
+
+            <!-- Description -->
+            <p class="text-[13.5px] text-tinta/70 leading-normal">
+              Groove cálido, bombos marcados y mucho flow.
+            </p>
+
+            <!-- Full-width Accessible Action Button (>= 44px) -->
+            <a 
+              href="#" 
+              class="mt-1 w-full min-h-[46px] flex items-center justify-center gap-2 rounded-xl border border-tinta/15 bg-white text-tinta font-semibold text-sm hover:bg-marfil active:bg-borde/50 active:scale-[0.99] transition-all shadow-2xs group focus:outline-none focus:ring-2 focus:ring-cobalto focus:ring-offset-1"
+            >
+              <span>Explorar Hip hop</span>
+              <svg class="w-4 h-4 text-tinta/80 group-hover:translate-x-0.5 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 2: Trap -->
+        <article class="bg-white rounded-2xl border border-borde-card shadow-[0_4px_20px_-6px_rgba(32,33,36,0.06)] overflow-hidden flex flex-col transition-transform">
+          <!-- Illustration Container -->
+          <div class="relative w-full aspect-[16/9] bg-[#2b303a] overflow-hidden">
+            <img 
+              src="https://lh3.googleusercontent.com/aida/AEtjO1XSeFONP1AOdBJyjlbp9ruiHMXZUv85cRF6BWEXQzNevv4q7PdRWBOyYODTCR_MVetJIXly1xMEPbW_ZMGwhMroAxkisQ0dbPQy5mw9lRAK6CPY6vLTMq6JlNZSRZ6sZ-K-HaZwrVtlcVkbQ-oBgRsObMyaIbi_wmlFEQRTUZwRnV4z07BOs40B7eDyBgGK5Uwa4UPGgPdS6h8h4xAPjctRPn0GbyveTSyvgbc2Nlobx7OWlHfrJR6Xbw" 
+              alt="Crew de beatbox moderno estilo Trap con 808s y hi-hats" 
+              class="w-full h-full object-cover object-top"
+              loading="lazy"
+            />
+            
+            <!-- Badges inside art -->
+            <div class="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-tinta/75 backdrop-blur-md text-white text-[11px] font-medium shadow-sm">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#a855f7]"></span>
+              <span>808 &amp; hi-hats</span>
+            </div>
+
+            <div class="absolute bottom-3 right-3 px-2 py-0.5 rounded-md bg-white/90 backdrop-blur-sm text-tinta text-[10px] font-extrabold tracking-wider uppercase shadow-2xs">
+              Edición Moderna
+            </div>
+          </div>
+
+          <!-- Card Content -->
+          <div class="p-4 sm:p-5 flex flex-col gap-3">
+            <!-- Header: Title & Meta -->
+            <div class="flex items-center justify-between gap-2">
+              <h2 class="text-xl font-bold tracking-tight text-tinta">Trap</h2>
+              <span class="px-2.5 py-0.5 rounded-md bg-marfil border border-borde text-xs font-semibold text-tinta/75 tracking-tight whitespace-nowrap">
+                140 BPM · 6 voces
+              </span>
+            </div>
+
+            <!-- Description -->
+            <p class="text-[13.5px] text-tinta/70 leading-normal">
+              Bajos profundos, hi-hats rápidos y tu propio estilo.
+            </p>
+
+            <!-- Full-width Accessible Action Button (>= 44px) -->
+            <a 
+              href="#" 
+              class="mt-1 w-full min-h-[46px] flex items-center justify-center gap-2 rounded-xl border border-tinta/15 bg-white text-tinta font-semibold text-sm hover:bg-marfil active:bg-borde/50 active:scale-[0.99] transition-all shadow-2xs group focus:outline-none focus:ring-2 focus:ring-cobalto focus:ring-offset-1"
+            >
+              <span>Explorar Trap</span>
+              <svg class="w-4 h-4 text-tinta/80 group-hover:translate-x-0.5 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
+            </a>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Explanatory note banner below cards -->
+      <aside class="mt-1 bg-white/70 border border-borde rounded-full px-4 py-2.5 flex items-center justify-center gap-2 text-center shadow-2xs">
+        <svg class="w-4 h-4 text-cobalto flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        <span class="text-xs text-tinta/80 font-medium">
+          Empieza desde cero o elige una base y hazla tuya.
+        </span>
+      </aside>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full px-5 py-4 border-t border-borde/70 flex items-center justify-between gap-3 text-xs text-tinta/60 bg-marfil mt-auto">
+      <span class="font-normal text-[11.5px] leading-tight">
+        Hecho con la boca. Creado por ti.
+      </span>
+      <div class="flex items-center gap-1.5 flex-shrink-0 px-2.5 py-1 rounded-full bg-white border border-borde text-[11px] font-medium text-tinta/80 shadow-2xs">
+        <svg class="w-3.5 h-3.5 text-tinta/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+          <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+        </svg>
+        <span>Mejor con audífonos</span>
+      </div>
+    </footer>
+
+  </div>
+
+</body>
+</html>

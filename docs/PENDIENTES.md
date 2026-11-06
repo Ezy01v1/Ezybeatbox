@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-05**, Fases A y B de temáticas terminadas en la rama `feat/editorial-themes` (sin push ni merge a `main`: falta que Daniel la revise).
+> Última actualización: **2026-11-05**, Fases A y B de temáticas terminadas en la rama `feat/editorial-themes` (subida a GitHub, todavía sin fusionar a `main`: falta que Daniel la revise). En la PC1 se rescataron las referencias de diseño de una sesión anterior (ver "Ideas rescatadas").
 
 ## Estado en una línea
 
@@ -17,6 +17,18 @@ Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editori
 - [ ] **Personajes en Rive:** un renderer `RiveCharacter` con el contrato de `CharacterRenderer` (inputs `level`, `beat`, `status`, `muted`). Referencia de arte: las hojas de 6 personajes de Stitch. CLI 1.9.0 instalado. Primera pasada de los seis personajes de Boom Bap y los seis de Trap integrada. Ambos escenarios comprobados en el navegador. Primera afinación de la respuesta al audio por rol. Pendiente personalizar el arte y probar la sincronía con Bluetooth.
   - [x] **Cargar el arte de cada temática al abrir su pack.** El renderer mantiene el SVG como respaldo.
 - [ ] **Loop Station** (contratos en `src/extensions/loopStation.ts` y `userSounds.ts`, diseño en `docs/EXTENSIONS.md`). Conviene hacerla con la app ya publicada, para probar el micrófono en el celular.
+
+### Ideas rescatadas de la PC1 (sesión del 2026-11-04, sin implementar en esta rama)
+
+Esa sesión hizo una portada neutra y personajes SVG streetwear **que nunca se subieron**. La rama los reemplazó con el selector de packs y Rive. Las referencias visuales están ahora en `docs/design/` (`characters-v1/` y `home-neutral-v1/`). El código completo quedó solo en la rama local `respaldo/portada-neutra-pc1` de la PC1 (no está en GitHub). Ideas que valen la pena evaluar:
+
+- [ ] **Botón "Inicio" en el escenario** que vuelve a la portada **sin perder el beat**, y desde ahí **"Continuar mi beat"** sin recargar sonidos.
+- [ ] **"Mis mixes" desde la portada:** abrir la biblioteca antes de elegir pack (solo cargar, sin el formulario de guardar). Al cargar un mix se prepara su pack.
+- [ ] **Bases por temática:** después de elegir el género, elegir una base (se propusieron **tres por temática**) o **"Crear desde cero"**. Las bases deben sonar bien juntas y compartir tempo y duración.
+- [ ] **Personaje piloto:** pulir **solo Kick** al nivel de su concepto (`docs/design/characters-v1/kick.webp`), comparándolo en escritorio y móvil, antes de rehacer los seis.
+- [ ] **Detalles de animación:** parpadeo escalonado entre personajes y pulso del cuerpo con el audio. Verificar si Rive ya los cubre.
+- [ ] **Robustez de carga:** evitar dos cargas de pack simultáneas y, si falla, reintentar el pack pedido en vez de volver al predeterminado. Verificar contra la rama, que ya maneja "pack inexistente".
+- [ ] **Controles en móvil:** M/S debajo del personaje y quitar sonido junto a él, sin que tocar ese botón inicie un arrastre. Se relaciona con el punto de los botones de 32 px de la sección 5.
 
 ## 2. Tareas de Daniel (no son código)
 
@@ -54,6 +66,8 @@ Detalle completo en `docs/QA.md`. Lo más importante:
 
 - [ ] **¿Un 7.º personaje "Tú" para los sonidos de la Loop Station?** Por ahora los sonidos de usuario van en uno de los 6 personajes; el número fijo de personajes es `CHARACTER_COUNT = 6` en `src/core/packs/schema.ts`.
 - [ ] **Hosting:** Vercel, Netlify o GitHub Pages (lo decide Daniel al hacer el deploy desde su otra cuenta).
+- [ ] **¿2D o 3D para los personajes?** Daniel tiene cuenta de Meshy y preguntó por 3D. Recomendación: mantener 2D con Rive, que ya está integrado. El 3D no es necesario para la calidad, y sumaría peso y otro pipeline de animación.
+- [ ] **¿Borrar la rama local `respaldo/portada-neutra-pc1`** de la PC1, una vez que esté claro que no se necesita más su código?
 
 ## 5. Deuda técnica y mejoras menores
 
@@ -79,6 +93,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-05:** en la PC1 se rescataron las referencias de una sesión que no se había subido: los 6 conceptos de personajes hip hop (PNG → WebP, de 8,8 MB a 0,9 MB) y la portada neutra de Stitch, en `docs/design/`. Las ideas de interacción quedaron anotadas en la sección 1.
 
 - **2026-11-05:** beta local guardada en el commit `7f5c12b` de `feat/editorial-themes`. Incluye los doce personajes de Rive, el indicador «Fuera del solo» y los resultados de QA. Pasaron el lint, el build y 232 pruebas. Queda elegir alojamiento y publicar una vista previa con HTTPS.
 
