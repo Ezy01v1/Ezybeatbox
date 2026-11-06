@@ -7,7 +7,7 @@
 
 ## Estado en una línea
 
-Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editorial, selector de packs (Boom Bap y Trap, cada uno con su escenario temático) y cambio de pack sin recargar. **Falta:** revisar y fusionar la rama, los personajes en Rive, publicar la app, probar en dispositivos reales y las funciones nuevas.
+Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editorial, selector de packs (Boom Bap y Trap, cada uno con su escenario temático) y cambio de pack sin recargar. Los doce personajes de Boom Bap y Trap ya están integrados en Rive. **Falta:** personalizar los avatares, revisar y fusionar la rama, publicar la app, probar en dispositivos reales y avanzar con las funciones nuevas.
 
 ---
 
@@ -32,7 +32,7 @@ Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editori
   - Configuración: build `npm run build`, carpeta de salida `dist`, Node 24. No hace falta nada más: es una app estática.
   - Si se usa GitHub Pages, la app queda en `/Ezybeatbox/`: hay que ajustar `base` en Vite y el `start_url`, el `scope` y el patrón `/packs/` de la PWA (pedírselo a Claude).
   - Al terminar, anotar aquí la URL publicada.
-- [ ] **QA en dispositivos reales:** ver la sección 3.
+- [ ] **QA en dispositivos reales:** Daniel retomará la prueba en su celular cuando tenga el cable para conectarlo a la PC. Ver la sección 3.
 
 ## 3. QA pendiente (solo se puede probar a mano)
 
@@ -79,6 +79,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-05:** beta local guardada en el commit `7f5c12b` de `feat/editorial-themes`. Incluye los doce personajes de Rive, el indicador «Fuera del solo» y los resultados de QA. Pasaron el lint, el build y 232 pruebas. Queda elegir alojamiento y publicar una vista previa con HTTPS.
 
 - **2026-11-05:** Fase B de temáticas: selector de packs como portada (basado en "Inicio neutro" de Stitch), pack `trap-01` a 140 BPM con su tema, catálogo `packs/index.json`, chip "Cambiar estilo" en la barra, y cambio de pack sin recargar (también desde un link o un mix guardado de otro pack). Si un pack no existe, se queda el escenario actual con un aviso.
 
