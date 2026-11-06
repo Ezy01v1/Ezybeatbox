@@ -3,7 +3,7 @@
  * signature timbres (and, through finish.ts, its own mix color). Ids stay the same, so saved
  * mixes, share links and bases keep working; only the sound and the label change.
  */
-import { clap, hat, kick, reverseCymbal, riser, subDrop } from './instruments'
+import { clap, hat, kick, reverseCymbal, riser, scratch, subDrop } from './instruments'
 import {
   type CharacterRecipe,
   type Hit,
@@ -16,7 +16,13 @@ import {
 import {
   airhorn,
   bigClap,
+  breakSnare,
   dembowSnare,
+  dustyKick,
+  logDrum,
+  shekere,
+  talkingDrum,
+  whistle,
   eight08,
   filterSweep,
   guiro,
@@ -343,6 +349,236 @@ export function reggaetonPalette(recipes: CharacterRecipe[]): CharacterRecipe[] 
         play(c, reverseCymbal(8 * c.step), [24], 0.8)
         play(c, riser(4 * c.step), [28], 0.4)
       },
+    },
+  })
+}
+
+/* ---------------------------------------------------------- Boom Bap (D minor, 90) */
+export function boomBapPalette(recipes: CharacterRecipe[]): CharacterRecipe[] {
+  return overrideSounds(recipes, {
+    'kick-1': {
+      label: 'Clásico',
+      render: (c) => play(c, dustyKick(), [0, [7, 0.7], 10, 16, [23, 0.7], 26]),
+    },
+    'kick-4': {
+      label: 'Pesado',
+      render: (c) => play(c, dustyKick({ tail: 0.32 }), [0, 10, 16, [19, 0.8], 26]),
+    },
+    'snare-1': {
+      label: 'Caja',
+      render: (c) => play(c, breakSnare({ ring: 0.06 }), twoBars([4, 12])),
+    },
+    'snare-4': {
+      label: 'Fantasma',
+      render: (c) =>
+        play(c, breakSnare({ ring: 0.05 }), twoBars([4, 12, [7, 0.25], [10, 0.2], [15, 0.3]])),
+    },
+    'voice-1': {
+      label: 'Yeah',
+      render: (c) =>
+        line(c, (m, d) => voice(m, d, { vowels: ['i', 'e', 'a'], breath: 0.2 }), [
+          [14, 62, 2],
+          [30, 65, 2],
+        ]),
+    },
+    'voice-2': {
+      label: 'Coro soul',
+      render: (c) => {
+        for (const note of [62, 65, 69]) {
+          line(c, (m, d) => voice(m, d, { vowels: ['o', 'u'], vibrato: 0.018 }), [
+            [0, note, 7],
+            [8, note - 2, 7],
+            [16, note - 4, 7],
+            [24, note - 2, 7],
+          ])
+        }
+      },
+    },
+    'voice-3': {
+      label: 'Respuesta',
+      render: (c) =>
+        line(c, (m, d) => voice(m, d, { vowels: ['e', 'o'], breath: 0.15 }), [
+          [6, 69, 1],
+          [7, 67, 2],
+          [22, 65, 1],
+          [23, 62, 3],
+        ]),
+    },
+    'voice-4': {
+      label: 'Grave',
+      render: (c) =>
+        line(c, (m, d) => voice(m, d, { vowels: ['u', 'o'] }), [
+          [0, 50, 14],
+          [16, 46, 14],
+        ]),
+    },
+    'voice-5': {
+      label: 'Hook',
+      render: (c) =>
+        line(c, (m, d) => voice(m, d, { vowels: ['a', 'e', 'i'], vibrato: 0.02 }), [
+          [0, 74, 3],
+          [3, 72, 3],
+          [6, 69, 6],
+          [16, 74, 3],
+          [19, 77, 3],
+          [22, 74, 6],
+        ]),
+    },
+    'fx-1': {
+      label: 'Scratch baby',
+      render: (c) => play(c, scratch(2 * c.step), [12, 13, 14, [15, 0.7], 28, 29, 30, [31, 0.7]]),
+    },
+    'fx-2': { label: 'Rewind', render: (c) => play(c, rewind(6 * c.step), [26]) },
+    'fx-5': {
+      label: 'Tape stop',
+      render: (c) => play(c, tapeStop([50, 57, 62, 65], 8 * c.step), [24]),
+    },
+  })
+}
+
+/* ------------------------------------------------------ Drum & Bass (E minor, 174) */
+export function dnbPalette(recipes: CharacterRecipe[]): CharacterRecipe[] {
+  return overrideSounds(recipes, {
+    'dnb-snare-1': { label: 'Golpe', render: (c) => play(c, breakSnare(), twoBars([4, 12])) },
+    'dnb-snare-2': {
+      label: 'Fantasma',
+      render: (c) => play(c, breakSnare(), twoBars([4, 12, [7, 0.3], [9, 0.25], [15, 0.3]])),
+    },
+    'dnb-snare-3': {
+      label: 'Amen',
+      render: (c) =>
+        play(c, breakSnare({ ring: 0.08 }), [
+          4,
+          [7, 0.5],
+          [9, 0.6],
+          12,
+          20,
+          [23, 0.5],
+          [25, 0.6],
+          28,
+          [30, 0.7],
+          [31, 0.8],
+        ]),
+    },
+    'dnb-hihat-3': {
+      label: 'Ride',
+      render: (c) => play(c, metalHat({ tau: 0.3 }), range(0, 32, 2), 0.6),
+    },
+    'dnb-voice-2': {
+      label: 'MC',
+      render: (c) =>
+        line(c, (m, d) => voice(m, d, { vowels: ['o', 'a'], breath: 0.25 }), [
+          [0, 64, 1],
+          [2, 64, 1],
+          [4, 67, 2],
+          [16, 64, 1],
+          [18, 62, 1],
+          [20, 59, 2],
+        ]),
+    },
+    'dnb-voice-3': {
+      label: 'Etéreo',
+      render: (c) => {
+        for (const note of [76, 79]) {
+          line(c, (m, d) => voice(m, d, { vowels: ['a', 'e', 'i'], vibrato: 0.02 }), [
+            [0, note, 14],
+            [16, note - 4, 14],
+          ])
+        }
+      },
+    },
+    'dnb-voice-5': {
+      label: 'Talkbox',
+      render: (c) =>
+        line(c, (m, d) => talkbox(m, d, ['u', 'o', 'a']), [
+          [0, 52, 6],
+          [8, 55, 6],
+          [16, 48, 6],
+          [24, 50, 6],
+        ]),
+    },
+    'dnb-fx-2': { label: 'Rewind', render: (c) => play(c, rewind(8 * c.step), [22]) },
+    'dnb-fx-5': {
+      label: 'Sirena',
+      render: (c) => play(c, siren(16 * c.step, 1), [0, [16, 0.6]], 0.6),
+    },
+  })
+}
+
+/* --------------------------------------------------------- Afrobeat (G minor, 105) */
+export function afrobeatPalette(recipes: CharacterRecipe[]): CharacterRecipe[] {
+  return overrideSounds(recipes, {
+    'afrobeat-hihat-1': {
+      label: 'Shekere',
+      render: (c) =>
+        play(
+          c,
+          shekere(),
+          range(0, 32).map((s) => [s, s % 4 === 2 ? 1 : 0.45]),
+        ),
+    },
+    'afrobeat-hihat-5': {
+      label: 'Shekere abierto',
+      render: (c) => {
+        play(c, shekere(), range(0, 32, 2), 0.6)
+        play(c, shekere(true), range(2, 32, 4))
+      },
+    },
+    'afrobeat-bass-2': {
+      label: 'Log drum',
+      render: (c) =>
+        line(c, (m) => logDrum(m), [
+          [0, 43, 1],
+          [3, 43, 1],
+          [6, 46, 1],
+          [10, 41, 1],
+          [14, 43, 1],
+          [16, 39, 1],
+          [19, 39, 1],
+          [22, 41, 1],
+          [26, 38, 1],
+          [28, 43, 1],
+        ]),
+    },
+    'afrobeat-voice-2': {
+      label: 'Coro',
+      render: (c) => {
+        for (const offset of [0, 3]) {
+          line(c, (m, d) => voice(m, d, { vowels: ['e', 'o'] }), [
+            [0, 67 + offset, 3],
+            [3, 70 + offset, 3],
+            [6, 72 + offset, 6],
+            [16, 70 + offset, 3],
+            [19, 67 + offset, 3],
+            [22, 65 + offset, 6],
+          ])
+        }
+      },
+    },
+    'afrobeat-voice-4': {
+      label: 'Ad-lib',
+      render: (c) =>
+        line(c, (m, d) => voice(m, d, { vowels: ['e', 'i', 'o'], breath: 0.18 }), [
+          [12, 74, 1],
+          [13, 72, 1],
+          [14, 70, 2],
+          [28, 77, 4],
+        ]),
+    },
+    'afrobeat-fx-2': {
+      label: 'Talking drum',
+      render: (c) =>
+        play(c, talkingDrum(170), [
+          [24, 0.6],
+          [26, 0.7],
+          [27, 0.8],
+          [28, 0.9],
+          [30, 1],
+        ]),
+    },
+    'afrobeat-fx-3': {
+      label: 'Silbato',
+      render: (c) => play(c, whistle(2 * c.step), [0, [2, 0.8], 16, [18, 0.8], [19, 0.8]], 0.7),
     },
   })
 }

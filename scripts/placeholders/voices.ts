@@ -317,3 +317,63 @@ export function guiro(duration = 0.18): Voice {
     },
   }
 }
+
+/** Shekere: a gourd net of beads, a short swish with a bright band of noise. */
+export function shekere(accent = false): Voice {
+  return {
+    duration: accent ? 0.22 : 0.12,
+    create: (sr, rng) => {
+      const bp = biquad('bandpass', sr, 1.8)
+      const swell = accent ? 0.03 : 0.012
+      return (t) =>
+        bp(noise(rng), 5200) * Math.min(1, t / swell) * Math.exp(-t / (accent ? 0.07 : 0.035)) * 3
+    },
+  }
+}
+
+/** Amapiano log drum: a woody, gliding low tone with a soft knock. */
+export function logDrum(midi: number, duration = 0.45): Voice {
+  const f0 = midiToHz(midi)
+  return {
+    duration,
+    create: (sr, rng) => {
+      const hp = onePoleHighpass(1500, sr)
+      return (t) => {
+        const body = Math.sin(sweepPhase(t, f0 * 1.6, f0, 0.03))
+        const wood = 0.35 * Math.sin(sweepPhase(t, f0 * 4.1, f0 * 2.7, 0.02)) * Math.exp(-t / 0.05)
+        const knock = 0.15 * hp(noise(rng)) * Math.exp(-t / 0.005)
+        return (
+          (Math.tanh((body + wood) * 1.8) * Math.exp(-t / 0.22) + knock) *
+          releaseEnv(t, duration, 0.03)
+        )
+      }
+    },
+  }
+}
+
+/** Breakbeat snare: crisp, ringy, with a resonant shell tone like a sampled break. */
+export function breakSnare(opts: { ring?: number } = {}): Voice {
+  const ring = opts.ring ?? 0.11
+  return {
+    duration: 0.4,
+    create: (sr, rng) => {
+      const bp = biquad('bandpass', sr, 0.9)
+      return (t) =>
+        0.6 * Math.sin(sweepPhase(t, 320, 230, 0.01)) * Math.exp(-t / 0.05) +
+        0.25 * Math.sin(TWO_PI * 760 * t) * Math.exp(-t / ring) +
+        bp(noise(rng), 3800) * Math.exp(-t / 0.09) * 1.6
+    },
+  }
+}
+
+/** Dusty boom bap kick: round, low-passed, with a soft knock (like a sampled record). */
+export function dustyKick(opts: { tail?: number } = {}): Voice {
+  return kick({
+    startHz: 110,
+    endHz: 46,
+    pitchTau: 0.035,
+    ampTau: opts.tail ?? 0.2,
+    click: 0.2,
+    drive: 1.8,
+  })
+}

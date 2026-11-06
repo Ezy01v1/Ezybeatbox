@@ -15,8 +15,8 @@ Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editori
 
 - [x] **Cualquier sonido en cualquier personaje** (2026-11-06). Un mismo sonido no puede estar en dos personajes; si se suelta en otro, se mueve. Cada personaje conserva su aspecto, y el color viene del sonido.
 - [x] **Paleta sonora propia: Trap, House y Reggaetón** (2026-11-06).
-- [ ] **Paleta sonora propia: Boom Bap, Drum & Bass y Afrobeat** (siguiente). Ya existe `boomBapFinish` en `finish.ts`.
-- [ ] **Escuchar y ajustar** las paletas nuevas (Daniel).
+- [x] **Paleta sonora propia: Boom Bap, Drum & Bass y Afrobeat** (2026-11-06).
+- [ ] **Escuchar y ajustar** las paletas de los seis géneros (Daniel).
 - Referencia: Voz: chops con cambio de vocal, talkbox/vocoder, armonías y frases. FX por género: vinilo/scratch, tape stop, sirena/bocina, barridos de filtro, rewind, silbato/talking drum. Más adelante, golpes CC0 de Freesound o grabados por Daniel.
 - [ ] **Más combinaciones por género:** de 10 a 12 sonidos por sección, con fills.
 - [ ] **Nombres de los personajes:** hoy se llaman "Kick", "Snare"…, aunque ya pueden tocar cualquier cosa. Decidir si llevan nombres propios.
@@ -120,6 +120,11 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-06:** paleta sonora propia para Boom Bap, Drum & Bass y Afrobeat. Instrumentos nuevos: bombo polvoriento, caja de break, shekere y log drum.
+  - **Boom Bap:** todo pasa por un "sampler viejo" (filtro y saturación). Tiene voces soul ("Yeah", "Coro soul", "Hook"), "Scratch baby", "Rewind" y "Tape stop".
+  - **Drum & Bass:** caja de break con sala (también en "Amen"), ride metálico, MC, "Etéreo" a dos voces, "Talkbox", "Rewind" y "Sirena"; voces y FX en un hall.
+  - **Afrobeat:** shekere, log drum de amapiano, coro "e-o", ad-lib, "Talking drum" y "Silbato" con trino.
 
 - **2026-11-06:** paleta sonora propia para Trap, House y Reggaetón. Los ids no cambiaron, así que las mezclas, los links y las bases siguen funcionando.
   - **Instrumentos nuevos** (`scripts/placeholders/voices.ts`): voz con formantes que cambia de vocal, talkbox, hi-hat metálico 808, 808 con glide, bombo 909, clap grande, caja dembow, güiro, bocina, sirena, tape stop, rewind, barrido de filtro, silbato y talking drum.

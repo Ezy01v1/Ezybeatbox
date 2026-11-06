@@ -58,3 +58,17 @@ export const reggaetonFinish: Finish = (data, ctx) => {
 export const boomBapFinish: Finish = (data, ctx) => {
   dusty(data, ctx.sampleRate, ctx.role === 'hihat' ? 7000 : 4200)
 }
+
+/** Drum & bass: crisp drums in a small room, a gritty low end, voices and FX in a hall. */
+export const dnbFinish: Finish = (data, ctx) => {
+  if (ctx.role === 'snare') addReverb(data, ctx.sampleRate, { size: 0.6, wet: 0.3, damp: 0.15 })
+  if (ctx.role === 'kick' || ctx.role === 'bass') saturate(data, 1.8)
+  if (ctx.role === 'voice' || ctx.role === 'fx')
+    addReverb(data, ctx.sampleRate, { size: 1.3, wet: 0.4, damp: 0.35 })
+}
+
+/** Afrobeat: dry, upfront percussion; voices in a warm room. */
+export const afrobeatFinish: Finish = (data, ctx) => {
+  if (ctx.role === 'voice') addReverb(data, ctx.sampleRate, { size: 0.9, wet: 0.3, damp: 0.45 })
+  if (ctx.role === 'bass') saturate(data, 1.5)
+}

@@ -294,7 +294,7 @@
         },
         {
           "id": "dnb-voice-5",
-          "label": "Grave",
+          "label": "Talkbox",
           "file": "voice/dnb-voice-5.ogg",
           "fallback": "voice/dnb-voice-5.m4a"
         },
@@ -325,7 +325,7 @@
         },
         {
           "id": "dnb-fx-2",
-          "label": "Láser",
+          "label": "Rewind",
           "file": "fx/dnb-fx-2.ogg",
           "fallback": "fx/dnb-fx-2.m4a"
         },
@@ -355,7 +355,7 @@
         },
         {
           "id": "dnb-fx-7",
-          "label": "Láser ½",
+          "label": "Barrido ½",
           "file": "fx/dnb-fx-7.ogg",
           "fallback": "fx/dnb-fx-7.m4a"
         }

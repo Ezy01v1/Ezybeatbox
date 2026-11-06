@@ -171,7 +171,7 @@
       "sounds": [
         {
           "id": "afrobeat-hihat-1",
-          "label": "Shaker",
+          "label": "Shekere",
           "file": "hihat/afrobeat-hihat-1.ogg",
           "fallback": "hihat/afrobeat-hihat-1.m4a"
         },
@@ -195,13 +195,13 @@
         },
         {
           "id": "afrobeat-hihat-5",
-          "label": "Abierto",
+          "label": "Shekere abierto",
           "file": "hihat/afrobeat-hihat-5.ogg",
           "fallback": "hihat/afrobeat-hihat-5.m4a"
         },
         {
           "id": "afrobeat-hihat-6",
-          "label": "Shaker swing",
+          "label": "Shekere swing",
           "file": "hihat/afrobeat-hihat-6.ogg",
           "fallback": "hihat/afrobeat-hihat-6.m4a"
         },
@@ -324,7 +324,7 @@
         },
         {
           "id": "afrobeat-fx-2",
-          "label": "Tambor",
+          "label": "Talking drum",
           "file": "fx/afrobeat-fx-2.ogg",
           "fallback": "fx/afrobeat-fx-2.m4a"
         },

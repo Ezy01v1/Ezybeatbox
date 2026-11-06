@@ -269,13 +269,13 @@
       "sounds": [
         {
           "id": "voice-1",
-          "label": "Llamada",
+          "label": "Yeah",
           "file": "voice/voice-1.ogg",
           "fallback": "voice/voice-1.m4a"
         },
         {
           "id": "voice-2",
-          "label": "Coro",
+          "label": "Coro soul",
           "file": "voice/voice-2.ogg",
           "fallback": "voice/voice-2.m4a"
         },
@@ -293,19 +293,19 @@
         },
         {
           "id": "voice-5",
-          "label": "Agudo",
+          "label": "Hook",
           "file": "voice/voice-5.ogg",
           "fallback": "voice/voice-5.m4a"
         },
         {
           "id": "voice-6",
-          "label": "Llamada swing",
+          "label": "Yeah swing",
           "file": "voice/voice-6.ogg",
           "fallback": "voice/voice-6.m4a"
         },
         {
           "id": "voice-7",
-          "label": "Coro ½",
+          "label": "Coro soul ½",
           "file": "voice/voice-7.ogg",
           "fallback": "voice/voice-7.m4a"
         }
@@ -318,13 +318,13 @@
       "sounds": [
         {
           "id": "fx-1",
-          "label": "Barrido",
+          "label": "Scratch baby",
           "file": "fx/fx-1.ogg",
           "fallback": "fx/fx-1.m4a"
         },
         {
           "id": "fx-2",
-          "label": "Láser",
+          "label": "Rewind",
           "file": "fx/fx-2.ogg",
           "fallback": "fx/fx-2.m4a"
         },
@@ -342,19 +342,19 @@
         },
         {
           "id": "fx-5",
-          "label": "Caída",
+          "label": "Tape stop",
           "file": "fx/fx-5.ogg",
           "fallback": "fx/fx-5.m4a"
         },
         {
           "id": "fx-6",
-          "label": "Barrido swing",
+          "label": "Scratch baby swing",
           "file": "fx/fx-6.ogg",
           "fallback": "fx/fx-6.m4a"
         },
         {
           "id": "fx-7",
-          "label": "Láser ½",
+          "label": "Scratch ½",
           "file": "fx/fx-7.ogg",
           "fallback": "fx/fx-7.m4a"
         }

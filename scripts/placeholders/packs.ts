@@ -1,5 +1,20 @@
-import { housePalette, reggaetonPalette, trapPalette } from './palettes'
-import { type Finish, houseFinish, reggaetonFinish, trapFinish } from './finish'
+import {
+  afrobeatPalette,
+  boomBapPalette,
+  dnbPalette,
+  housePalette,
+  reggaetonPalette,
+  trapPalette,
+} from './palettes'
+import {
+  type Finish,
+  afrobeatFinish,
+  boomBapFinish,
+  dnbFinish,
+  houseFinish,
+  reggaetonFinish,
+  trapFinish,
+} from './finish'
 import type { PackBase, PackManifest } from '../../src/core/packs/schema'
 import { BOOM_BAP_RECIPES, type CharacterRecipe, withVariations } from './recipes'
 import { AFROBEAT_RECIPES } from './afrobeatRecipes'
@@ -73,7 +88,8 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
         base('', 'pesada', 'Pesada', [4, 1, 2, 3, 4, 4]),
       ],
     },
-    recipes: withVariations(BOOM_BAP_RECIPES, ''),
+    recipes: withVariations(boomBapPalette(BOOM_BAP_RECIPES), '', { fx: { half: 3 } }),
+    finish: boomBapFinish,
   },
   {
     meta: {
@@ -230,7 +246,11 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
         base('dnb-', 'medio-tiempo', 'Medio tiempo', [5, 5, 3, 4, 4, 3]),
       ],
     },
-    recipes: withVariations(DNB_RECIPES, 'dnb-', { voice: { swing: 2 } }),
+    recipes: withVariations(dnbPalette(DNB_RECIPES), 'dnb-', {
+      voice: { swing: 2 },
+      fx: { half: 4 },
+    }),
+    finish: dnbFinish,
   },
   {
     meta: {
@@ -267,6 +287,7 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
         base('afrobeat-', 'fiesta', 'Fiesta', [4, 5, 4, 4, 5, 2]),
       ],
     },
-    recipes: withVariations(AFROBEAT_RECIPES, 'afrobeat-', { fx: { half: 3 } }),
+    recipes: withVariations(afrobeatPalette(AFROBEAT_RECIPES), 'afrobeat-', { fx: { half: 3 } }),
+    finish: afrobeatFinish,
   },
 ]
