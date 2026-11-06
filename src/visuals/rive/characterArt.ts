@@ -3,14 +3,18 @@ import type { CharacterRole } from '@/core/packs/schema'
 /** Packs drawn with the streetwear SVG characters (no Rive, so no Rive watermark). */
 const STREETWEAR_PACKS = new Set([
   'boom-bap-01',
+  'trap-01',
   'reggaeton-01',
   'house-01',
   'dnb-01',
   'afrobeat-01',
 ])
 
-/** Packs whose characters are Rive files (`public/packs/<pack>/<role>.riv`). */
-const RIVE_PACKS = new Set(['trap-01'])
+/**
+ * Packs whose characters are Rive files (`public/packs/<pack>/<role>.riv`). Empty since every
+ * pack moved to SVG to avoid the free-plan watermark; the Rive renderer stays for a paid plan.
+ */
+const RIVE_PACKS = new Set<string>()
 
 /** The `.riv` for a pack's character, or undefined when the pack is drawn as SVG. */
 export function characterArt(packId: string | undefined, role: CharacterRole): string | undefined {

@@ -20,7 +20,7 @@ Foco de Daniel (2026-11-06): **diseño, animaciones, funcionalidades, variedad d
 - [x] **Bases por género:** tres bases por pack y "Desde cero" en el escenario (campo `bases` del manifest).
 - [ ] **Más variaciones por rol:** fills, medio tiempo, swing (hoy son 5 por personaje).
 - [x] **Animaciones de entrada y salida + fondo al compás.**
-- [ ] **Trap a SVG streetwear** (quita su marca de agua de Rive).
+- [x] **Trap a SVG streetwear:** ningún pack usa Rive ya, así que no queda marca de agua.
 - [ ] **Funcionalidades:** BPM en vivo (cuantizado), botón "Sorpréndeme", drops.
 
 - [ ] **Personajes en Rive:** un renderer `RiveCharacter` con el contrato de `CharacterRenderer` (inputs `level`, `beat`, `status`, `muted`). Referencia de arte: las hojas de 6 personajes de Stitch. CLI 1.9.0 instalado. Primera pasada de los seis personajes de Boom Bap y los seis de Trap integrada. Ambos escenarios comprobados en el navegador. Primera afinación de la respuesta al audio por rol. Pendiente personalizar el arte y probar la sincronía con Bluetooth.
@@ -53,7 +53,7 @@ Esa sesión hizo una portada neutra y personajes SVG streetwear **que nunca se s
 - [ ] **Seguir revisando la interfaz nueva** con `npm run dev` (selector, escenario hip hop y trap, "Cambiar estilo"). Aprobada y fusionada en `main` el 2026-11-05; anotar aquí los ajustes que aparezcan.
 - [ ] **Generar más ritmos sintéticos** para ampliar la variedad de loops de prueba de Boom Bap y Trap.
 - [ ] **Grabar los samples reales del pack trap** (140 BPM, 2 compases). Los nombres de los sonidos están en `scripts/placeholders/trapRecipes.ts`; para regenerar los placeholders hace falta `ffmpeg` en el `PATH`.
-- [ ] **Animar los avatares de Trap en Rive** (o pedirle a Claude que lo haga con el CLI). Los de Boom Bap ya usan los streetwear.
+- [x] ~~Animar los avatares de Trap en Rive~~: Trap pasó a SVG streetwear el 2026-11-06. Rive queda para el día que haya plan de pago.
 - [x] **CLI de Rive en las dos PCs:** instalado y con sesión iniciada en ambas (PC2, cuenta Easy01v: 1.9.1, 2026-11-06). Instalación: `irm https://releases.rive.app/cli/install.ps1 | iex`; `rive login` funciona con un código que se aprueba en el navegador.
 - [ ] **Grabar los samples reales** del pack hip hop siguiendo `docs/SAMPLES.md` (90 BPM, 2 compases exactos, ~−18 LUFS). Basta reemplazar los archivos: el script de placeholders no los vuelve a pisar.
 - [ ] **Publicar la app (deploy)** desde la otra cuenta/PC, en Vercel o Netlify conectado al repo de GitHub, para que cada push se publique solo.
@@ -110,6 +110,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-06:** Trap pasó a los personajes streetwear SVG y se quitaron sus `.riv`. Ningún pack usa Rive (`RIVE_PACKS` vacío), así que no queda marca de agua y no se descarga el motor de Rive. `RiveCharacter` y `scripts/rive` se quedan por si se paga un plan.
 
 - **2026-11-06:** animaciones al compás. Al entrar su sonido, el personaje da un salto con aplaste. Hace lo mismo cuando su sonido se cambia por otro y, cuando se queda en silencio, se hunde un poco. Se hace con la Web Animations API en el contenedor (`visuals/statusMotion.ts`, `features/stage/useStatusMotion.ts`), así que sirve para SVG y Rive. Además, el patrón del escenario late con cada tiempo (`features/stage/BeatPulse.tsx`). Todo se apaga con `prefers-reduced-motion`.
 

@@ -109,7 +109,8 @@ describe('blinkScale', () => {
 describe('svgStyle', () => {
   it('matches the streetwear Rive art on Boom Bap and keeps the classic SVG elsewhere', () => {
     expect(svgStyle('boom-bap-01')).toBe('streetwear')
-    expect(svgStyle('trap-01')).toBe('classic')
+    expect(svgStyle('trap-01')).toBe('streetwear')
+    expect(svgStyle('unknown-pack')).toBe('classic')
     expect(svgStyle(undefined)).toBe('classic')
   })
 })
