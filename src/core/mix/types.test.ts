@@ -13,6 +13,16 @@ describe('fitMixToPack', () => {
     expect(fitMixToPack(mix, manifest)).toEqual({ mix, missingCount: 0 })
   })
 
+  it('accepts sounds from other sections but drops a repeated sound', () => {
+    const mix = createEmptyMix(manifest)
+    mix.characters.kick!.soundId = 'snare-1'
+    mix.characters.snare!.soundId = 'snare-1'
+    const result = fitMixToPack(mix, manifest)
+    expect(result.mix.characters.kick?.soundId).toBe('snare-1')
+    expect(result.mix.characters.snare?.soundId).toBeNull()
+    expect(result.missingCount).toBe(1)
+  })
+
   it('drops unknown sounds and characters and counts them', () => {
     const mix = createEmptyMix(manifest)
     mix.characters.kick!.soundId = 'kick-99'

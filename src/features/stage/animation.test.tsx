@@ -45,7 +45,7 @@ describe('reactive visuals', () => {
     await user.click(await screen.findByRole('button', { name: 'Toca para empezar' }))
     await screen.findByRole('main', { name: 'Escenario' })
     await user.click(screen.getByRole('button', { name: 'Reproducir' }))
-    await user.click(screen.getByRole('button', { name: 'kick 1 para kick' }))
+    await user.click(screen.getByRole('button', { name: 'kick 1 (kick)' }))
     act(() => engine.advanceBar())
 
     const mouth = document.querySelector('[data-drop-character="kick"] ellipse')

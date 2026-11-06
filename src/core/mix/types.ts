@@ -1,3 +1,4 @@
+import { findSound } from '../packs/sounds'
 import { AUDIO_CONFIG } from '../audio/config'
 import type { PackManifest } from '../packs/schema'
 
@@ -35,9 +36,13 @@ export function fitMixToPack(mix: Mix, manifest: PackManifest): { mix: Mix; miss
       if (source.soundId) missingCount++
       continue
     }
-    const soundExists = character.sounds.some((s) => s.id === source.soundId)
-    if (source.soundId && !soundExists) missingCount++
-    Object.assign(target, { ...source, soundId: soundExists ? source.soundId : null })
+    // Any sound of the pack fits any character, once: a repeat becomes silence.
+    const usable =
+      source.soundId !== null &&
+      findSound(manifest, source.soundId) !== undefined &&
+      !Object.values(fitted.characters).some((c) => c.soundId === source.soundId)
+    if (source.soundId && !usable) missingCount++
+    Object.assign(target, { ...source, soundId: usable ? source.soundId : null })
   }
   return { mix: fitted, missingCount }
 }

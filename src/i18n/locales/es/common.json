@@ -49,12 +49,12 @@
     "solo": "Solo de {{name}}",
     "remove": "Quitar sonido de {{name}}",
     "dropHere": "Suelta aquí",
-    "dragOutHint": "Arrastra fuera para quitar"
+    "dragOutHint": "Arrastra a otro personaje para moverlo, o fuera para quitarlo"
   },
   "palette": {
     "label": "Sonidos",
-    "sound": "{{sound}} para {{character}}",
-    "selected": "{{sound}} para {{character}} (elegido)"
+    "sound": "{{sound}} ({{section}})",
+    "selected": "{{sound}} ({{section}}), lo toca {{character}}"
   },
   "common": {
     "close": "Cerrar"

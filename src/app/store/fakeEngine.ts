@@ -82,6 +82,10 @@ export class FakeEngine implements EngineLike {
   }
 
   setSound(characterId: string, soundId: string) {
+    // Like the real engine: any sound of the pack, on any character.
+    if (!this.manifest?.characters.some((c) => c.sounds.some((s) => s.id === soundId))) {
+      throw new Error(`Unknown sound ${soundId}`)
+    }
     this.setTarget(characterId, soundId)
   }
 

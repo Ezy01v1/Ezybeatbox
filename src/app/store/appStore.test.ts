@@ -85,4 +85,19 @@ describe('appStore', () => {
     store.getState().toggleMute('snare')
     expect(store.getState().slots.snare?.muted).toBe(false)
   })
+
+  it('one character per sound: setting it elsewhere moves it', async () => {
+    const { engine, store } = setup()
+    await store.getState().begin()
+    await store.getState().togglePlay()
+    store.getState().setSound('kick', 'kick-1')
+    store.getState().setSound('voice', 'kick-2')
+    engine.advanceBar()
+
+    store.getState().setSound('bass', 'kick-1')
+    engine.advanceBar()
+    expect(store.getState().slots.kick?.status).toBe('empty')
+    expect(store.getState().slots.bass?.playing).toBe('kick-1')
+    expect(store.getState().slots.voice?.playing).toBe('kick-2')
+  })
 })

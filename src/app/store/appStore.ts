@@ -1,3 +1,4 @@
+import { placeSound } from '@/core/packs/sounds'
 import { createStore } from 'zustand/vanilla'
 // Type-only import of the engine keeps Tone.js out of this module (and out of jsdom tests).
 import type { AudioEngine, ContextState, SlotSnapshot } from '@/core/audio/AudioEngine'
@@ -124,7 +125,10 @@ export interface AppActions {
   /** Resumes a suspended/interrupted AudioContext. Call from a user gesture. */
   resumeAudio(): Promise<void>
   togglePlay(): Promise<void>
+  /** Queues a sound on a character; if another character has it, it moves (one per sound). */
   setSound(characterId: string, soundId: string): void
+  /** Tap on a palette sound: picks the character with `placeSound` (core/packs/sounds). */
+  placeSound(soundId: string): void
   clearSound(characterId: string): void
   toggleMute(characterId: string): void
   toggleSolo(characterId: string): void
@@ -441,7 +445,21 @@ export function createAppStore({
       },
 
       setSound(characterId, soundId) {
+        // One character per sound: placing it elsewhere moves it.
+        for (const [id, slot] of Object.entries(get().slots)) {
+          if (id !== characterId && slot.target === soundId) engine.clearSound(id)
+        }
         engine.setSound(characterId, soundId)
+      },
+
+      placeSound(soundId) {
+        const manifest = get().manifest
+        if (!manifest) return
+        const targets = Object.fromEntries(
+          Object.entries(get().slots).map(([id, slot]) => [id, slot.target]),
+        )
+        const characterId = placeSound(manifest, soundId, targets)
+        if (characterId) get().setSound(characterId, soundId)
       },
 
       clearSound(characterId) {

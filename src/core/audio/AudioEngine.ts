@@ -71,7 +71,8 @@ interface Slot {
   readonly def: CharacterDef
   readonly channel: Tone.Channel
   readonly meter: Tone.Meter
-  readonly players: ReadonlyMap<string, Tone.Player>
+  /** Created on demand: any character can play any sound of the pack. */
+  readonly players: Map<string, Tone.Player>
   playing: string | null
   target: string | null
   /** The chosen volume. Not read back from Tone: a muted channel reports -Infinity. */
@@ -84,6 +85,9 @@ interface LoadedPack {
   readonly ticksPerBeat: number
   readonly slots: ReadonlyMap<string, Slot>
   readonly repeatId: number
+  /** Decoded audio for every sound of the pack, shared by the players of all characters. */
+  readonly buffers: ReadonlyMap<string, Tone.ToneAudioBuffer>
+  readonly loopDuration: number
 }
 
 function levelOf(meter: Tone.Meter): number {
@@ -193,6 +197,17 @@ export class AudioEngine {
     const meter: MeterConfig = { bpm: manifest.bpm, timeSignature: manifest.timeSignature }
     const loopDuration = loopSeconds(meter, manifest.loopBars)
     const warnings: string[] = []
+    for (const { sound } of sounds) {
+      const buffer = buffers.get(sound.id)
+      if (
+        buffer &&
+        Math.abs(buffer.duration - loopDuration) > AUDIO_CONFIG.loopLengthToleranceSeconds
+      ) {
+        warnings.push(
+          `${sound.id}: ${buffer.duration.toFixed(3)}s, expected ${loopDuration.toFixed(3)}s`,
+        )
+      }
+    }
 
     const slots = new Map<string, Slot>()
     for (const def of manifest.characters) {
@@ -204,33 +219,11 @@ export class AudioEngine {
       channel.connect(this.master)
       channel.connect(channelMeter)
 
-      const players = new Map<string, Tone.Player>()
-      for (const sound of def.sounds) {
-        const buffer = buffers.get(sound.id)
-        if (!buffer) continue
-        if (Math.abs(buffer.duration - loopDuration) > AUDIO_CONFIG.loopLengthToleranceSeconds) {
-          warnings.push(
-            `${sound.id}: ${buffer.duration.toFixed(3)}s, expected ${loopDuration.toFixed(3)}s`,
-          )
-        }
-        const player = new Tone.Player({
-          url: buffer,
-          loop: true,
-          // Loop length always comes from the tempo, never from the file, so encoder padding
-          // or a slightly long recording cannot drift out of sync.
-          loopStart: 0,
-          loopEnd: loopDuration,
-          fadeIn: AUDIO_CONFIG.playerFadeSeconds,
-          fadeOut: AUDIO_CONFIG.playerFadeSeconds,
-        }).connect(channel)
-        players.set(sound.id, player)
-      }
-
       slots.set(def.id, {
         def,
         channel,
         meter: channelMeter,
-        players,
+        players: new Map(),
         playing: null,
         target: null,
         volumeDb: AUDIO_CONFIG.defaultChannelVolumeDb,
@@ -245,7 +238,7 @@ export class AudioEngine {
     const ticksPerBeat = (transport.PPQ * 4) / manifest.timeSignature[1]
     const repeatId = transport.scheduleRepeat((time) => this.onBeat(time), `${ticksPerBeat}i`, 0)
 
-    this.pack = { manifest, meter, ticksPerBeat, slots, repeatId }
+    this.pack = { manifest, meter, ticksPerBeat, slots, repeatId, buffers, loopDuration }
     return { warnings }
   }
 
@@ -279,9 +272,7 @@ export class AudioEngine {
   /** Queues `soundId` on a character; it starts on the next bar line. */
   setSound(characterId: string, soundId: string): void {
     const slot = this.requireSlot(characterId)
-    if (!slot.players.has(soundId)) {
-      throw new AudioEngineError(`Unknown sound "${soundId}" for character "${characterId}"`)
-    }
+    this.playerFor(slot, soundId)
     this.setTarget(slot, soundId)
   }
 
@@ -478,18 +469,37 @@ export class AudioEngine {
     return slot
   }
 
+  /** The character's player for `soundId`, created the first time that sound lands on it. */
+  private playerFor(slot: Slot, soundId: string): Tone.Player {
+    const existing = slot.players.get(soundId)
+    if (existing) return existing
+    const pack = this.requirePack()
+    const buffer = pack.buffers.get(soundId)
+    if (!buffer) throw new AudioEngineError(`Unknown sound "${soundId}"`)
+    const player = new Tone.Player({
+      url: buffer,
+      loop: true,
+      // Loop length always comes from the tempo, never from the file, so encoder padding
+      // or a slightly long recording cannot drift out of sync.
+      loopStart: 0,
+      loopEnd: pack.loopDuration,
+      fadeIn: AUDIO_CONFIG.playerFadeSeconds,
+      fadeOut: AUDIO_CONFIG.playerFadeSeconds,
+    }).connect(slot.channel)
+    slot.players.set(soundId, player)
+    return player
+  }
+
   private disposePack(): void {
     const pack = this.pack
     if (!pack) return
     Tone.getTransport().clear(pack.repeatId)
     pack.slots.forEach((slot) => {
-      slot.players.forEach((player) => {
-        player.buffer.dispose()
-        player.dispose()
-      })
+      slot.players.forEach((player) => player.dispose())
       slot.meter.dispose()
       slot.channel.dispose()
     })
+    pack.buffers.forEach((buffer) => buffer.dispose())
     this.pack = null
   }
 }

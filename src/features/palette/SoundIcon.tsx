@@ -7,8 +7,9 @@ import { useApplyDrop } from './dnd/useApplyDrop'
 import { usePointerDrag } from './dnd/usePointerDrag'
 
 /**
- * A palette sound. Drag it onto its character, or tap/click it (or press Enter/Space) to
- * assign it directly: that is the accessible fallback to drag & drop.
+ * A palette sound. Drag it onto any character, or tap/click it (or press Enter/Space) to
+ * place it where `placeSound` decides: that is the accessible fallback to drag & drop.
+ * `character` is the sound's section (color, glyph), not where it must go.
  */
 export function SoundIcon({
   character,
@@ -23,17 +24,22 @@ export function SoundIcon({
   const { t } = useTranslation()
   const localize = useLocalizedText()
   const applyDrop = useApplyDrop()
-  const setSound = useAppStore((s) => s.setSound)
-  const selected = useAppStore((s) => s.slots[character.id]?.target === sound.id)
+  const placeSound = useAppStore((s) => s.placeSound)
+  // Any character may hold it (one at a time); name that one in the label.
+  const holderId = useAppStore(
+    (s) => Object.entries(s.slots).find(([, slot]) => slot.target === sound.id)?.[0],
+  )
+  const holder = useAppStore((s) => s.manifest?.characters.find((c) => c.id === holderId))
+  const selected = holderId !== undefined
 
   const drag = usePointerDrag(
     { kind: 'sound', soundId: sound.id, characterId: character.id },
     applyDrop,
-    () => setSound(character.id, sound.id),
+    () => placeSound(sound.id),
   )
 
   const label = localize(sound.label)
-  const characterName = localize(character.label)
+  const characterName = holder ? localize(holder.label) : ''
 
   return (
     <button
@@ -41,6 +47,7 @@ export function SoundIcon({
       aria-pressed={selected}
       aria-label={t(selected ? 'palette.selected' : 'palette.sound', {
         sound: label,
+        section: localize(character.label),
         character: characterName,
       })}
       onPointerDown={drag.onPointerDown}

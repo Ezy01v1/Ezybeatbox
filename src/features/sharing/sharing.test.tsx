@@ -22,7 +22,7 @@ async function renderStage(overrides: Partial<AppStoreOptions> = {}) {
 describe('Mis mixes', () => {
   it('saves the current mix, lists it and loads it back', async () => {
     const { user } = await renderStage()
-    await user.click(screen.getByRole('button', { name: 'kick 2 para kick' }))
+    await user.click(screen.getByRole('button', { name: 'kick 2 (kick)' }))
 
     await user.click(screen.getByRole('button', { name: 'Mis mixes' }))
     const dialog = screen.getByRole('dialog', { name: 'Mis mixes' })
@@ -60,7 +60,7 @@ describe('Mis mixes', () => {
 describe('Compartir', () => {
   it('shows the share link for the current mix and copies it', async () => {
     const { user } = await renderStage()
-    await user.click(screen.getByRole('button', { name: 'bass 1 para bass' }))
+    await user.click(screen.getByRole('button', { name: 'bass 1 (bass)' }))
     await user.click(screen.getByRole('button', { name: 'Compartir' }))
 
     const dialog = screen.getByRole('dialog', { name: 'Compartir mix' })
@@ -107,7 +107,7 @@ describe('Exportar audio', () => {
     const click = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {})
 
     const { user, engine } = await renderStage()
-    await user.click(screen.getByRole('button', { name: 'kick 1 para kick' }))
+    await user.click(screen.getByRole('button', { name: 'kick 1 (kick)' }))
     await user.click(screen.getByRole('button', { name: 'Exportar audio' }))
     expect(await screen.findByText('Esperando el inicio del loop…')).toBeInTheDocument()
 

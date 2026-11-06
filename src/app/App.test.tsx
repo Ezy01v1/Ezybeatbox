@@ -58,21 +58,23 @@ describe('App', () => {
       const { user } = renderApp(undefined, withCatalog)
       await user.click(await screen.findByRole('button', { name: 'Explorar Test Pack' }))
       await screen.findByRole('main', { name: 'Escenario' })
-      await user.click(screen.getByRole('button', { name: 'kick 1 para kick' }))
+      await user.click(screen.getByRole('button', { name: 'kick 1 (kick)' }))
 
       await user.click(screen.getByRole('button', { name: /^Cambiar estilo: Test Pack · 90 BPM/ }))
       expect(await screen.findByText('Estilo actual')).toBeInTheDocument()
 
       await user.click(screen.getByRole('button', { name: 'Volver al escenario' }))
       await screen.findByRole('main', { name: 'Escenario' })
-      expect(screen.getByRole('button', { name: 'kick 1 para kick (elegido)' })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: 'kick 1 (kick), lo toca kick' }),
+      ).toBeInTheDocument()
     })
 
     it('the logo goes home with the beat still loaded, and "Continuar mi beat" comes back', async () => {
       const { user } = renderApp(undefined, withCatalog)
       await user.click(await screen.findByRole('button', { name: 'Explorar Test Pack' }))
       await screen.findByRole('main', { name: 'Escenario' })
-      await user.click(screen.getByRole('button', { name: 'kick 1 para kick' }))
+      await user.click(screen.getByRole('button', { name: 'kick 1 (kick)' }))
 
       await user.click(screen.getByRole('button', { name: 'Ir al inicio' }))
       const banner = await screen.findByRole('region', { name: 'Continuar mi beat' })
@@ -80,7 +82,9 @@ describe('App', () => {
 
       await user.click(screen.getByRole('button', { name: 'Continuar mi beat' }))
       await screen.findByRole('main', { name: 'Escenario' })
-      expect(screen.getByRole('button', { name: 'kick 1 para kick (elegido)' })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: 'kick 1 (kick), lo toca kick' }),
+      ).toBeInTheDocument()
     })
   })
 
@@ -98,9 +102,9 @@ describe('App', () => {
     await enterStage(user)
     await user.click(screen.getByRole('button', { name: 'Reproducir' }))
 
-    await user.click(screen.getByRole('button', { name: 'kick 1 para kick' }))
+    await user.click(screen.getByRole('button', { name: 'kick 1 (kick)' }))
     expect(characterRegion(/^kick: kick 1, En espera/)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'kick 1 para kick (elegido)' })).toHaveAttribute(
+    expect(screen.getByRole('button', { name: 'kick 1 (kick), lo toca kick' })).toHaveAttribute(
       'aria-pressed',
       'true',
     )
@@ -113,7 +117,7 @@ describe('App', () => {
     const { user } = renderApp()
     await enterStage(user)
 
-    screen.getByRole('button', { name: 'bass 2 para bass' }).focus()
+    screen.getByRole('button', { name: 'bass 2 (bass)' }).focus()
     await user.keyboard('{Enter}')
     expect(characterRegion(/^bass: bass 2, En espera/)).toBeInTheDocument()
   })
@@ -122,7 +126,7 @@ describe('App', () => {
     const { user, engine } = renderApp()
     await enterStage(user)
     await user.click(screen.getByRole('button', { name: 'Reproducir' }))
-    await user.click(screen.getByRole('button', { name: 'fx 2 para fx' }))
+    await user.click(screen.getByRole('button', { name: 'fx 2 (fx)' }))
     act(() => engine.advanceBar())
 
     await user.click(screen.getByRole('button', { name: 'Quitar sonido de fx' }))
@@ -131,29 +135,30 @@ describe('App', () => {
     expect(characterRegion(/^fx: En silencio/)).toBeInTheDocument()
   })
 
-  it('drag & drop: dropping a sound on its character assigns it', async () => {
+  it('drag & drop: any character takes any sound, and a sound moves instead of repeating', async () => {
     const { user } = renderApp()
     await enterStage(user)
 
-    const icon = screen.getByRole('button', { name: 'snare 2 para snare' })
+    const icon = screen.getByRole('button', { name: 'snare 2 (snare)' })
     const snareTarget = document.querySelector('[data-drop-character="snare"]')!
     const kickTarget = document.querySelector('[data-drop-character="kick"]')!
     const elementFromPoint = vi.fn(() => snareTarget)
     document.elementFromPoint = elementFromPoint
 
-    // Dropping on the wrong character does nothing...
+    // A snare dropped on the kick character plays there...
     elementFromPoint.mockReturnValue(kickTarget)
     fireEvent.pointerDown(icon, { pointerId: 1, clientX: 10, clientY: 300, button: 0 })
     fireEvent.pointerMove(icon, { pointerId: 1, clientX: 40, clientY: 100 })
     fireEvent.pointerUp(icon, { pointerId: 1, clientX: 40, clientY: 100 })
-    expect(characterRegion(/^snare: En silencio/)).toBeInTheDocument()
+    expect(characterRegion(/^kick: snare 2, En espera/)).toBeInTheDocument()
 
-    // ...dropping on its owner assigns it.
+    // ...and dropped on the snare character it moves: one character per sound.
     elementFromPoint.mockReturnValue(snareTarget)
     fireEvent.pointerDown(icon, { pointerId: 2, clientX: 10, clientY: 300, button: 0 })
     fireEvent.pointerMove(icon, { pointerId: 2, clientX: 40, clientY: 100 })
     fireEvent.pointerUp(icon, { pointerId: 2, clientX: 40, clientY: 100 })
     expect(characterRegion(/^snare: snare 2, En espera/)).toBeInTheDocument()
+    expect(characterRegion(/^kick: En silencio/)).toBeInTheDocument()
   })
 
   it('mute and solo are toggle buttons', async () => {

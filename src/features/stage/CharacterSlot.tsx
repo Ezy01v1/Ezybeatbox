@@ -7,6 +7,7 @@ import { useApplyDrop } from '@/features/palette/dnd/useApplyDrop'
 import { useDragState } from '@/features/palette/dnd/dragStore'
 import { acceptsDrop } from '@/features/palette/dnd/resolveDrop'
 import { DROP_TARGET_ATTR, usePointerDrag } from '@/features/palette/dnd/usePointerDrag'
+import { findSound } from '@/core/packs/sounds'
 import { useLocalizedText } from '@/i18n/useLocalizedText'
 import { usePrefersReducedMotion } from '@/ui/usePrefersReducedMotion'
 import { useStatusMotion } from './useStatusMotion'
@@ -23,7 +24,14 @@ const controlClass =
 const controlIdle =
   'bg-(--stage-ink)/8 text-(--stage-ink) hover:bg-(--stage-ink)/15 disabled:opacity-30 disabled:hover:bg-(--stage-ink)/8'
 
-export function CharacterSlot({ character, color }: { character: CharacterDef; color: string }) {
+export function CharacterSlot({
+  character,
+  color: homeColor,
+}: {
+  character: CharacterDef
+  /** The character's own role color, used while it is silent. */
+  color: string
+}) {
   const { t } = useTranslation()
   const localize = useLocalizedText()
   const engine = useEngine()
@@ -31,7 +39,8 @@ export function CharacterSlot({ character, color }: { character: CharacterDef; c
   const reducedMotion = usePrefersReducedMotion()
   const applyDrop = useApplyDrop()
 
-  const packId = useAppStore((s) => s.manifest?.id)
+  const manifest = useAppStore((s) => s.manifest)
+  const packId = manifest?.id
   const slot = useAppStore((s) => s.slots[character.id])
   const hasSolo = useAppStore((s) => Object.values(s.slots).some((item) => item.solo))
   const clearSound = useAppStore((s) => s.clearSound)
@@ -54,7 +63,7 @@ export function CharacterSlot({ character, color }: { character: CharacterDef; c
 
   const target = slot?.target ?? null
   const drag = usePointerDrag(
-    target ? { kind: 'remove', characterId: character.id } : null,
+    target ? { kind: 'remove', characterId: character.id, soundId: target } : null,
     applyDrop,
   )
 
@@ -65,7 +74,10 @@ export function CharacterSlot({ character, color }: { character: CharacterDef; c
   const muted = slot.muted || excludedBySolo
   // While stopping, the old sound is still audible until the bar line, so keep naming it.
   const shownSoundId = target ?? slot.playing
-  const sound = character.sounds.find((s) => s.id === shownSoundId)
+  // Any character can play any sound: name and color come from the sound's own section.
+  const entry = manifest && shownSoundId ? findSound(manifest, shownSoundId) : undefined
+  const sound = entry?.sound
+  const color = entry ? theme.roles[entry.section.role] : homeColor
   const playing = slot.status === 'playing' || slot.status === 'stopping'
   const singing = playing && !excludedBySolo
   const status =

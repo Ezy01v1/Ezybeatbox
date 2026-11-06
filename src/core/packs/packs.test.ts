@@ -14,10 +14,21 @@ function expectInvalid(data: unknown, detailPattern: RegExp) {
 }
 
 describe('parseManifest', () => {
-  it('rejects a base that uses a sound from another character', () => {
+  it('accepts a base with a sound from another section, but not unknown or repeated ones', () => {
+    expect(() =>
+      parseManifest(
+        makeTestManifest({ bases: [{ id: 'b', name: 'B', sounds: { kick: 'snare-1' } }] }),
+      ),
+    ).not.toThrow()
     expectInvalid(
-      makeTestManifest({ bases: [{ id: 'b', name: 'B', sounds: { kick: 'snare-1' } }] }),
-      /unknown sound "kick.snare-1"/,
+      makeTestManifest({ bases: [{ id: 'b', name: 'B', sounds: { kick: 'nope' } }] }),
+      /unknown sound "nope"/,
+    )
+    expectInvalid(
+      makeTestManifest({
+        bases: [{ id: 'b', name: 'B', sounds: { kick: 'snare-1', snare: 'snare-1' } }],
+      }),
+      /on two characters/,
     )
   })
 

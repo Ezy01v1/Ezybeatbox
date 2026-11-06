@@ -13,6 +13,12 @@ Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editori
 
 ## 1. Próximo paso de código (en este orden)
 
+- [x] **Cualquier sonido en cualquier personaje** (2026-11-06). Un mismo sonido no puede estar en dos personajes; si se suelta en otro, se mueve. Cada personaje conserva su aspecto, y el color viene del sonido.
+- [ ] **Paleta sonora propia por género, con voz y FX menos genéricos** (siguiente). Voz: chops con cambio de vocal, talkbox/vocoder, armonías y frases. FX por género: vinilo/scratch, tape stop, sirena/bocina, barridos de filtro, rewind, silbato/talking drum. Más adelante, golpes CC0 de Freesound o grabados por Daniel.
+- [ ] **Más combinaciones por género:** de 10 a 12 sonidos por sección, con fills.
+- [ ] **Nombres de los personajes:** hoy se llaman "Kick", "Snare"…, aunque ya pueden tocar cualquier cosa. Decidir si llevan nombres propios.
+- [ ] **Teclado:** al tocar un sonido, la app elige el personaje (`placeSound`). Para poner dos bombos con teclado hay que mover el primero; falta una forma de elegir el personaje con teclado.
+
 Foco de Daniel (2026-11-06): **diseño, animaciones, funcionalidades, variedad de ritmo y de géneros**. "Mis mixes" queda para después.
 
 - [x] **Variedad de géneros:** Reggaetón/Dembow (95), House (124), Drum & Bass (174) y Afrobeat (105), con sonidos sintéticos propios.
@@ -111,6 +117,14 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-06:** se dejaron los roles fijos: ahora cualquier personaje toca cualquier sonido del pack, un personaje por sonido.
+  - **Motor:** los `Tone.Player` de cada canal se crean bajo demanda desde los buffers del pack, que se comparten entre canales.
+  - **Store:** `setSound` mueve el sonido si otro personaje ya lo tenía.
+  - **Tocar un sonido en la paleta:** `placeSound` (`core/packs/sounds.ts`) elige el personaje: su sección si está libre o toca algo de esa sección; si no, el primer libre.
+  - **Arrastrar:** un sonido de la paleta se puede soltar en cualquier personaje, y uno ya asignado se puede arrastrar a otro para moverlo.
+  - **Validación:** mezclas, links y bases se validan contra todo el pack y descartan repetidos.
+  - **Aspecto:** cada personaje conserva el suyo y se pinta con el color de la sección del sonido.
 
 - **2026-11-06:** 72 loops nuevos, dos por personaje en los seis packs, así que cada personaje pasa de 5 a 7 sonidos. Se derivan de los sonidos existentes con `withVariations` en `scripts/placeholders/recipes.ts`:
   - **"swing"** atrasa las semicorcheas y corcheas a contratiempo;

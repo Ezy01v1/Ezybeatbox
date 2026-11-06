@@ -1,3 +1,4 @@
+import { findSound } from '../packs/sounds'
 import { AUDIO_CONFIG } from '../audio/config'
 import type { PackManifest } from '../packs/schema'
 import { idSchema } from '../packs/schema'
@@ -163,7 +164,8 @@ export function resolveSharedMix(shared: SharedMix, manifest: PackManifest): Res
   for (const [characterId, soundId] of Object.entries(shared.sounds)) {
     const character = manifest.characters.find((c) => c.id === characterId)
     const target = mix.characters[characterId]
-    if (target && character?.sounds.some((s) => s.id === soundId)) target.soundId = soundId
+    const taken = Object.values(mix.characters).some((c) => c.soundId === soundId)
+    if (target && character && findSound(manifest, soundId) && !taken) target.soundId = soundId
     else missingCount++
   }
   for (const id of shared.muted) {

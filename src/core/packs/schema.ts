@@ -158,13 +158,22 @@ export const packManifestSchema = z
         })
       }
       baseIds.add(base.id)
+      const used = new Set<string>()
       for (const [characterId, soundId] of Object.entries(base.sounds)) {
-        const character = pack.characters.find((c) => c.id === characterId)
-        if (!character?.sounds.some((s) => s.id === soundId)) {
+        // Any character may play any sound of the pack, but each sound on one character only.
+        const problem = !pack.characters.some((c) => c.id === characterId)
+          ? `unknown character "${characterId}"`
+          : !soundIds.has(soundId)
+            ? `unknown sound "${soundId}"`
+            : used.has(soundId)
+              ? `sound "${soundId}" on two characters`
+              : null
+        used.add(soundId)
+        if (problem) {
           ctx.addIssue({
             code: 'custom',
             path: ['bases', bi, 'sounds', characterId],
-            message: `base "${base.id}" uses unknown sound "${characterId}.${soundId}"`,
+            message: `base "${base.id}": ${problem}`,
           })
         }
       }
