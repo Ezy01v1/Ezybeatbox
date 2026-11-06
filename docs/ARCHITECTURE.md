@@ -144,6 +144,20 @@ animationLoop (un solo rAF) ──► SvgCharacter × 6: followLevel → compute
 - **"Reintentar"** reintenta el último pack pedido, no el de por defecto.
 - **Placeholders:** `scripts/placeholders/packs.ts` define cada pack (datos, tema, recetas). `npm run generate:placeholders -- --pack trap-01` genera uno solo.
 
+### Personajes streetwear de Boom Bap (Rive, 2026-11-05)
+
+- **El arte se genera, no se dibuja a mano en RML:** `scripts/rive/streetwearArt.ts` describe los 6 personajes como SVG (conceptos aprobados en `docs/design/characters-v1/`). `scripts/rive/svgToRml.ts` (con pruebas) traduce ese SVG a `PointsPath` y vértices de Rive. `scripts/rive/build-streetwear.ts` arma `assets/rive/<rol>/scene.rml` con el rig.
+- **Comandos:**
+  - `npm run rive:streetwear -- --verify`: regenera las escenas y las compila.
+  - `npm run rive:streetwear -- --publish`: escribe `public/packs/boom-bap-01/<rol>.riv`. Necesita el CLI de Rive con sesión iniciada (`rive login`, una vez por PC).
+- **Mismo contrato que antes:** los ids `0:20`–`0:24` y las entradas `level`, `beat`, `status` y `muted` del state machine `Performance` no cambian, así que `RiveCharacter.tsx` no se tocó.
+- **Lo nuevo del rig:**
+  - Estados de expresión por `status`: en reposo (ojos cerrados, sonrisa, figura atenuada), en espera (boca "o" y anillo punteado) y cantando (boca que sigue al nivel).
+  - Brillo del color del rol que sigue al nivel.
+  - Lienzo de cuerpo entero de 120 × 226 (antes eran bustos de 100 × 130).
+- **Colores:** la ropa usa los colores de rol del tema del pack, y los tonos (oscuro, más oscuro, claro y suave) se derivan de cada uno. Boom Bap pasó a los colores de los conceptos (magenta, violeta, verde y cian), que también pasan la prueba de contraste.
+- **Trap** sigue con sus escenas originales en `assets/rive/trap/`.
+
 ## Puntos de extensión (Fase 5)
 
 `src/extensions/` contiene solo contratos tipados: `LoopRecorder`, `LatencyCalibrator`, `UserSound`/`UserSoundStore`/`UserSoundHost`, `BeatRecognizer`/`PatternQuantizer`/`PatternRenderer` y `MixOperation`/`MixSyncTransport`/`SharedClock`. Ningún módulo de la app los importa. Un sonido de usuario usa un id `user-<uuid>` y entra al modelo como cualquier sonido de pack, a través de `UserSoundHost`, que implementará `AudioEngine`. El diseño completo, la API del backend y las notas de móvil están en [`EXTENSIONS.md`](EXTENSIONS.md).

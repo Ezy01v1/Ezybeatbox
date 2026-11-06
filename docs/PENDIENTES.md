@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-05**, `feat/editorial-themes` fusionada en `main` (interfaz editorial, multi-pack, Trap y personajes en Rive). En la PC1 se rescataron las referencias de diseño de una sesión anterior (ver "Ideas rescatadas").
+> Última actualización: **2026-11-05**, personajes streetwear de Boom Bap en Rive (después de fusionar `feat/editorial-themes` en `main`). En la PC1 se rescataron las referencias de diseño de una sesión anterior (ver "Ideas rescatadas").
 
 ## Estado en una línea
 
@@ -15,6 +15,10 @@ Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editori
 
 - [ ] **Personajes en Rive:** un renderer `RiveCharacter` con el contrato de `CharacterRenderer` (inputs `level`, `beat`, `status`, `muted`). Referencia de arte: las hojas de 6 personajes de Stitch. CLI 1.9.0 instalado. Primera pasada de los seis personajes de Boom Bap y los seis de Trap integrada. Ambos escenarios comprobados en el navegador. Primera afinación de la respuesta al audio por rol. Pendiente personalizar el arte y probar la sincronía con Bluetooth.
   - [x] **Cargar el arte de cada temática al abrir su pack.** El renderer mantiene el SVG como respaldo.
+  - [x] **Boom Bap con los personajes streetwear** (2026-11-05), generados por script desde los conceptos aprobados: `npm run rive:streetwear`. Ver `docs/ARCHITECTURE.md`.
+  - [ ] **Tamaño en escritorio:** los personajes de cuerpo entero quedan chicos en las tarjetas (pensadas para bustos). En el celular se ven bien. Evaluar tarjetas más altas o recortar a medio cuerpo.
+  - [ ] **Respaldo SVG:** mientras carga Rive (o si falla) se ve el `SvgCharacter` viejo, de estilo distinto. Se podría reemplazar por la versión streetwear.
+  - [ ] **Parpadeo escalonado** en Rive (la versión SVG anterior lo tenía).
 - [ ] **Loop Station** (contratos en `src/extensions/loopStation.ts` y `userSounds.ts`, diseño en `docs/EXTENSIONS.md`). Conviene hacerla con la app ya publicada, para probar el micrófono en el celular.
 
 ### Ideas rescatadas de la PC1 (sesión del 2026-11-04, sin implementar todavía)
@@ -25,7 +29,7 @@ Esa sesión hizo una portada neutra y personajes SVG streetwear **que nunca se s
 - [ ] **"Mis mixes" desde la portada:** abrir la biblioteca antes de elegir pack (solo cargar, sin el formulario de guardar). Al cargar un mix se prepara su pack.
 - [ ] **Bases por temática:** después de elegir el género, elegir una base (se propusieron **tres por temática**) o **"Crear desde cero"**. Las bases deben sonar bien juntas y compartir tempo y duración.
 - [ ] **Personaje piloto:** pulir **solo Kick** al nivel de su concepto (`docs/design/characters-v1/kick.webp`), comparándolo en escritorio y móvil, antes de rehacer los seis.
-- [ ] **Detalles de animación:** parpadeo escalonado entre personajes y pulso del cuerpo con el audio. Verificar si Rive ya los cubre.
+- [x] **Pulso del cuerpo con el audio:** cubierto por el rig de Rive. El parpadeo escalonado quedó como pendiente en la sección de Rive.
 - [ ] **Robustez de carga:** evitar dos cargas de pack simultáneas y, si falla, reintentar el pack pedido en vez de volver al predeterminado. Verificar contra el código actual, que ya maneja "pack inexistente".
 - [ ] **Controles en móvil:** M/S debajo del personaje y quitar sonido junto a él, sin que tocar ese botón inicie un arrastre. Se relaciona con el punto de los botones de 32 px de la sección 5.
 
@@ -36,7 +40,8 @@ Esa sesión hizo una portada neutra y personajes SVG streetwear **que nunca se s
 - [ ] **Seguir revisando la interfaz nueva** con `npm run dev` (selector, escenario hip hop y trap, "Cambiar estilo"). Aprobada y fusionada en `main` el 2026-11-05; anotar aquí los ajustes que aparezcan.
 - [ ] **Generar más ritmos sintéticos** para ampliar la variedad de loops de prueba de Boom Bap y Trap.
 - [ ] **Grabar los samples reales del pack trap** (140 BPM, 2 compases). Los nombres de los sonidos están en `scripts/placeholders/trapRecipes.ts`; para regenerar los placeholders hace falta `ffmpeg` en el `PATH`.
-- [ ] **Animar los avatares en Rive** (o pedirle a Claude que lo haga con el CLI).
+- [ ] **Animar los avatares de Trap en Rive** (o pedirle a Claude que lo haga con el CLI). Los de Boom Bap ya usan los streetwear.
+- [ ] **CLI de Rive en la otra PC:** para regenerar o publicar personajes, instalarlo (`irm https://releases.rive.app/cli/install.ps1 | iex`) y hacer `rive login`. En la PC1 ya está.
 - [ ] **Grabar los samples reales** del pack hip hop siguiendo `docs/SAMPLES.md` (90 BPM, 2 compases exactos, ~−18 LUFS). Basta reemplazar los archivos: el script de placeholders no los vuelve a pisar.
 - [ ] **Publicar la app (deploy)** desde la otra cuenta/PC, en Vercel o Netlify conectado al repo de GitHub, para que cada push se publique solo.
   - Desbloquea la QA en el celular, la instalación de la PWA (necesita HTTPS) y, después, el micrófono de la Loop Station.
@@ -92,6 +97,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-05:** los personajes de Boom Bap ahora son los **streetwear** aprobados, en Rive: conversor SVG→RML con pruebas, generador `npm run rive:streetwear`, colores de rol de Boom Bap actualizados a los de los conceptos y 6 `.riv` publicados. Probados cantando en escritorio y celular: la boca y el brillo siguen al audio.
 
 - **2026-11-05:** `feat/editorial-themes` fusionada en `main` (fast-forward, 10 commits). Pasaron el lint, 232 pruebas y el build. El trabajo nuevo sigue en `main`.
 
