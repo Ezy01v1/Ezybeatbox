@@ -116,7 +116,10 @@ export interface AppActions {
   begin(packId?: string): Promise<void>
   /** Loads the pack list for the picker. Safe to call repeatedly. */
   loadCatalog(): Promise<void>
-  /** "Cambiar estilo": stops playback and shows the pack picker (the current pack stays loaded). */
+  /**
+   * Shows the pack picker ("Inicio" / "Cambiar estilo"). The current pack stays loaded and keeps
+   * playing, so "Continuar mi beat" returns to it as it was. Opening another pack stops it.
+   */
   openPackPicker(): void
   /** Resumes a suspended/interrupted AudioContext. Call from a user gesture. */
   resumeAudio(): Promise<void>
@@ -200,6 +203,20 @@ export function createAppStore({
       })
     }
 
+    /**
+     * Self-heal: Tone.Draw drops callbacks that run over 0.25 s late (e.g. the main thread is busy
+     * mounting the stage's Rive canvases right at a bar start), so a `soundStarted` can be lost and
+     * a slot stays "En espera". Each beat re-reads the engine and fixes only the slots that drifted.
+     */
+    const syncDriftedSlots = () => {
+      const { slots } = get()
+      for (const id of Object.keys(slots)) {
+        const known = slots[id]
+        const actual = engine.getSlot(id)
+        if (known?.playing !== actual.playing || known.target !== actual.target) refreshSlot(id)
+      }
+    }
+
     const notify = (tone: Notice['tone'], key: NoticeKey, params?: Notice['params']) =>
       set((state) => ({
         notices: [...state.notices, { id: nextNoticeId++, tone, key, ...(params && { params }) }],
@@ -230,7 +247,10 @@ export function createAppStore({
     engine.on('soundQueued', ({ characterId }) => refreshSlot(characterId))
     engine.on('soundStarted', ({ characterId }) => refreshSlot(characterId))
     engine.on('soundStopped', ({ characterId }) => refreshSlot(characterId))
-    engine.on('beat', (position) => set({ position }))
+    engine.on('beat', (position) => {
+      set({ position })
+      syncDriftedSlots()
+    })
     engine.on('transportChanged', ({ playing }) => {
       set({ playing, ...(playing ? {} : { position: { bar: 0, beat: 0 } }) })
       refreshAllSlots()
@@ -398,7 +418,6 @@ export function createAppStore({
 
       openPackPicker() {
         if (get().phase !== 'ready') return
-        if (engine.isPlaying) engine.stop()
         set({ phase: 'start' })
         void get().loadCatalog()
       },

@@ -52,6 +52,16 @@ describe('appStore', () => {
     expect(store.getState().slots.kick?.status).toBe('empty')
   })
 
+  it('recovers a slot whose start event was lost (Tone.Draw ran too late)', async () => {
+    const { engine, store } = setup()
+    await store.getState().begin()
+    await store.getState().togglePlay()
+    store.getState().setSound('kick', 'kick-1')
+
+    engine.advanceBar({ dropSlotEvents: true })
+    expect(store.getState().slots.kick).toMatchObject({ status: 'playing', playing: 'kick-1' })
+  })
+
   it('keeps selections queued after stopping, and resets the position', async () => {
     const { engine, store } = setup()
     await store.getState().begin()

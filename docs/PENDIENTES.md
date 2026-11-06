@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-06**, respaldo SVG streetwear y parpadeo escalonado en Boom Bap; CLI de Rive en la PC2. En la PC1 se rescataron las referencias de diseño de una sesión anterior (ver "Ideas rescatadas").
+> Última actualización: **2026-11-06**, inicio sin perder el beat, respaldo SVG streetwear y parpadeo escalonado en Boom Bap; CLI de Rive en la PC2. En la PC1 se rescataron las referencias de diseño de una sesión anterior (ver "Ideas rescatadas").
 
 ## Estado en una línea
 
@@ -20,14 +20,14 @@ Las 6 fases del plan (0–5) y la PWA están terminadas. Ya hay interfaz editori
   - [ ] **Probar el arrastre con el dedo** en el escenario nuevo: el destino ya no es una tarjeta, sino el área del personaje.
   - [x] **Respaldo SVG streetwear en Boom Bap** (2026-11-06): mientras carga Rive, o si falla, se ve `StreetwearCharacter` (mismo arte, boca que sigue el audio). Trap sigue con el `SvgCharacter` clásico hasta que tenga su propio arte.
   - [x] **Parpadeo escalonado en Boom Bap** (2026-11-06): capa `Blink` en bucle, con periodo y desfase propios por rol (`BLINK` en `scripts/rive/build-streetwear.ts`). Trap no lo tiene: su rig no se genera con este script.
-  - [ ] **Marca de agua de Rive:** al publicar, el CLI avisa "watermarked": con el plan gratuito, los `.riv` incluyen la pantalla de presentación de Rive. Los de la PC1 salieron igual (misma cuenta). Revisar si se nota en la app; para quitarla hace falta un plan pago (y `rive push` para vincular cada proyecto).
+  - [ ] **Marca de agua de Rive (se nota mucho):** cada vez que se monta el escenario, cada personaje muestra ~1 s un cuadro negro con el logo "RIVE" (pantalla de presentación del plan gratuito). Pasa también con los `.riv` de la PC1. Opciones: (a) plan pago de Rive y volver a publicar, (b) mantener el respaldo SVG visible hasta que termine la presentación (parche), (c) aceptarlo por ahora. **Decide Daniel.**
 - [ ] **Loop Station** (contratos en `src/extensions/loopStation.ts` y `userSounds.ts`, diseño en `docs/EXTENSIONS.md`). Conviene hacerla con la app ya publicada, para probar el micrófono en el celular.
 
 ### Ideas rescatadas de la PC1 (sesión del 2026-11-04, sin implementar todavía)
 
 Esa sesión hizo una portada neutra y personajes SVG streetwear **que nunca se subieron**. La interfaz actual los reemplazó con el selector de packs y Rive. Las referencias visuales están ahora en `docs/design/` (`characters-v1/` y `home-neutral-v1/`). El código completo quedó solo en la rama local `respaldo/portada-neutra-pc1` de la PC1 (no está en GitHub). Ideas que valen la pena evaluar:
 
-- [ ] **Botón "Inicio" en el escenario** que vuelve a la portada **sin perder el beat**, y desde ahí **"Continuar mi beat"** sin recargar sonidos.
+- [x] **Inicio sin perder el beat** (2026-11-06): el logo del escenario es "Ir al inicio"; el beat sigue sonando en la portada, con una franja para pausarlo o reanudarlo y **"Continuar mi beat"**. "Cambiar estilo" también deja de detenerlo; solo se detiene al abrir otro pack.
 - [ ] **"Mis mixes" desde la portada:** abrir la biblioteca antes de elegir pack (solo cargar, sin el formulario de guardar). Al cargar un mix se prepara su pack.
 - [ ] **Bases por temática:** después de elegir el género, elegir una base (se propusieron **tres por temática**) o **"Crear desde cero"**. Las bases deben sonar bien juntas y compartir tempo y duración.
 - [ ] **Personaje piloto:** pulir **solo Kick** al nivel de su concepto (`docs/design/characters-v1/kick.webp`), comparándolo en escritorio y móvil, antes de rehacer los seis.
@@ -99,6 +99,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-06:** inicio sin perder el beat y "Continuar mi beat". Se corrigió además un error: si el escenario se montaba justo al empezar un compás, un personaje podía quedarse en "En espera" aunque ya sonaba (Tone.Draw descarta avisos con más de 0,25 s de retraso). Ahora el store se corrige solo en cada tiempo.
 
 - **2026-11-06:** parpadeo escalonado en los seis personajes de Boom Bap (Rive). Cada uno parpadea a su ritmo; comprobado renderizando el cuadro a mitad del parpadeo. `.riv` republicados.
 

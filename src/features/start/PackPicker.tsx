@@ -90,6 +90,62 @@ function PackCard({ pack, current }: { pack: PackSummary; current: boolean }) {
   )
 }
 
+/**
+ * The beat left on the stage keeps sounding on the home screen: this bar plays/pauses it and goes
+ * back to it ("Continuar mi beat") without reloading anything.
+ */
+function ContinueBanner() {
+  const { t } = useTranslation()
+  const localize = useLocalizedText()
+  const manifest = useAppStore((s) => s.manifest)
+  const playing = useAppStore((s) => s.playing)
+  const togglePlay = useAppStore((s) => s.togglePlay)
+  const begin = useAppStore((s) => s.begin)
+  if (!manifest) return null
+  const theme = manifest.theme ?? DEFAULT_THEME
+
+  return (
+    <section
+      aria-label={t('picker.continue')}
+      className="border-line bg-card flex flex-wrap items-center gap-4 rounded-2xl border p-4 shadow-xs sm:p-5"
+    >
+      <button
+        type="button"
+        onClick={() => void togglePlay()}
+        aria-label={playing ? t('transport.pause') : t('transport.play')}
+        className="bg-ink text-paper grid size-12 shrink-0 place-items-center rounded-full transition active:scale-95 motion-reduce:transition-none"
+      >
+        <svg viewBox="0 0 24 24" className="size-5" fill="currentColor" aria-hidden>
+          {playing ? (
+            <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" />
+          ) : (
+            <path d="M8 5.5v13l11-6.5z" />
+          )}
+        </svg>
+      </button>
+      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+        <p className="font-bold">{t('picker.continueTitle', { name: localize(manifest.name) })}</p>
+        <p className="text-ink-muted inline-flex items-center gap-2 text-sm">
+          <span
+            aria-hidden
+            className={`size-2 rounded-full ${playing ? 'motion-safe:animate-pulse' : ''}`}
+            style={{ backgroundColor: playing ? theme.roles.kick : 'currentColor' }}
+          />
+          {playing ? t('picker.continuePlaying') : t('picker.continuePaused')}
+        </p>
+      </div>
+      <button
+        type="button"
+        onClick={() => void begin(manifest.id)}
+        className="bg-accent hover:bg-accent-hover inline-flex min-h-11 items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold text-white transition-colors motion-reduce:transition-none"
+      >
+        {t('picker.continue')}
+        <ArrowIcon />
+      </button>
+    </section>
+  )
+}
+
 /** "¿Qué vas a crear hoy?": the editorial home. Choosing a pack is the gesture that unlocks audio. */
 export function PackPicker() {
   const { t } = useTranslation()
@@ -120,6 +176,8 @@ export function PackPicker() {
           </h1>
           <p className="text-ink-muted text-lg sm:text-xl">{t('picker.subtitle')}</p>
         </section>
+
+        <ContinueBanner />
 
         {catalog.state === 'ready' ? (
           <section className="grid grid-cols-1 gap-6 md:grid-cols-2">

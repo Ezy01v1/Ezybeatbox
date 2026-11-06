@@ -67,6 +67,21 @@ describe('App', () => {
       await screen.findByRole('main', { name: 'Escenario' })
       expect(screen.getByRole('button', { name: 'kick 1 para kick (elegido)' })).toBeInTheDocument()
     })
+
+    it('the logo goes home with the beat still loaded, and "Continuar mi beat" comes back', async () => {
+      const { user } = renderApp(undefined, withCatalog)
+      await user.click(await screen.findByRole('button', { name: 'Explorar Test Pack' }))
+      await screen.findByRole('main', { name: 'Escenario' })
+      await user.click(screen.getByRole('button', { name: 'kick 1 para kick' }))
+
+      await user.click(screen.getByRole('button', { name: 'Ir al inicio' }))
+      const banner = await screen.findByRole('region', { name: 'Continuar mi beat' })
+      expect(banner).toHaveTextContent('Tu beat de Test Pack sigue aquí')
+
+      await user.click(screen.getByRole('button', { name: 'Continuar mi beat' }))
+      await screen.findByRole('main', { name: 'Escenario' })
+      expect(screen.getByRole('button', { name: 'kick 1 para kick (elegido)' })).toBeInTheDocument()
+    })
   })
 
   it('enters the stage with 6 silent characters and a palette', async () => {

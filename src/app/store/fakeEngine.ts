@@ -51,6 +51,8 @@ export class FakeEngine implements EngineLike {
     options?: { onProgress?: (p: number) => void },
   ) {
     this.loadedPackUrls.push(packUrl)
+    // Like the real engine: loading a pack stops whatever was playing.
+    if (this.isPlaying) this.stop()
     if (this.failLoad) throw this.failLoad
     options?.onProgress?.(0.5)
     this.manifest = manifest
@@ -149,12 +151,16 @@ export class FakeEngine implements EngineLike {
     return new Blob(['fake audio'], { type: 'audio/webm' })
   }
 
-  /** Simulates the next bar line: applies queued changes and emits the engine events. */
-  advanceBar() {
+  /**
+   * Simulates the next bar line: applies queued changes and emits the engine events. With
+   * `dropSlotEvents`, the start/stop events are lost (as Tone.Draw does when it runs too late).
+   */
+  advanceBar({ dropSlotEvents = false } = {}) {
     this.bar++
     const states = [...this.slots].map(([characterId, s]) => ({ characterId, ...s }))
     for (const { characterId, from, to } of planBarTransitions(states)) {
       this.slot(characterId).playing = to
+      if (dropSlotEvents) continue
       if (from) this.emitter.emit('soundStopped', { characterId, soundId: from })
       if (to) this.emitter.emit('soundStarted', { characterId, soundId: to })
     }

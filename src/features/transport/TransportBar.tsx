@@ -94,12 +94,21 @@ export function TransportBar({ manifest }: { manifest: PackManifest }) {
   const togglePlay = useAppStore((s) => s.togglePlay)
   const masterVolumeDb = useAppStore((s) => s.masterVolumeDb)
   const setMasterVolume = useAppStore((s) => s.setMasterVolume)
+  const openPackPicker = useAppStore((s) => s.openPackPicker)
 
   return (
     <header className="border-line bg-paper flex flex-wrap items-center gap-x-4 gap-y-2 border-b px-3 py-2 pt-[max(0.5rem,env(safe-area-inset-top))] sm:px-5">
       <div className="flex items-center gap-3">
         <h1>
-          <Logo />
+          <button
+            type="button"
+            onClick={openPackPicker}
+            aria-label={t('transport.home')}
+            title={t('transport.home')}
+            className="rounded-lg"
+          >
+            <Logo />
+          </button>
         </h1>
         <PackChip manifest={manifest} />
       </div>

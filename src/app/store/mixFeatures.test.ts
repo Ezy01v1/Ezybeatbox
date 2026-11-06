@@ -190,7 +190,7 @@ describe('pack picker', () => {
     expect(app.store.getState()).toMatchObject({ phase: 'ready', manifest: { id: 'other-pack' } })
   })
 
-  it('"Cambiar estilo" stops playback; picking the same pack keeps the mix without reloading', async () => {
+  it('going home keeps the beat playing; "Continuar mi beat" returns without reloading', async () => {
     const app = createTestApp()
     const state = await ready(app)
     await state.togglePlay()
@@ -198,10 +198,11 @@ describe('pack picker', () => {
 
     app.store.getState().openPackPicker()
     expect(app.store.getState().phase).toBe('start')
-    expect(app.engine.isPlaying).toBe(false)
+    expect(app.engine.isPlaying).toBe(true)
 
     await app.store.getState().begin('test-pack')
     expect(app.store.getState().phase).toBe('ready')
+    expect(app.engine.isPlaying).toBe(true)
     expect(app.store.getState().slots.kick?.target).toBe('kick-2')
     expect(app.engine.loadedPackUrls).toEqual(['/packs/test-pack/'])
   })
@@ -209,11 +210,13 @@ describe('pack picker', () => {
   it('picking another pack loads it with an empty stage', async () => {
     const app = createTestApp({ extraPacks: [makeOtherPack()] })
     const state = await ready(app)
+    await state.togglePlay()
     state.setSound('kick', 'kick-2')
     app.store.getState().openPackPicker()
 
     await app.store.getState().begin('other-pack')
     expect(app.store.getState().manifest?.id).toBe('other-pack')
+    expect(app.engine.isPlaying).toBe(false)
     expect(Object.values(app.store.getState().slots).every((s) => s.target === null)).toBe(true)
   })
 

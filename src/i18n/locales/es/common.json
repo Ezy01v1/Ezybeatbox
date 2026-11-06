@@ -28,7 +28,8 @@
     "position": "Compás {{bar}}, tiempo {{beat}}",
     "bar": "Compás {{bar}}",
     "pack": "{{name}} · {{bpm}} BPM",
-    "changePack": "Cambiar estilo"
+    "changePack": "Cambiar estilo",
+    "home": "Ir al inicio"
   },
   "stage": {
     "label": "Escenario",
@@ -130,6 +131,10 @@
     "backToStage": "Volver al escenario",
     "coverAlt": "Ilustración de la temática {{name}}",
     "footer": "Hecho con la boca. Creado por ti.",
-    "headphones": "Mejor con audífonos"
+    "headphones": "Mejor con audífonos",
+    "continueTitle": "Tu beat de {{name}} sigue aquí",
+    "continuePlaying": "Sonando",
+    "continuePaused": "En pausa",
+    "continue": "Continuar mi beat"
   }
 }
