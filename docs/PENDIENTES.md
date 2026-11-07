@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-06 (PC1, casa)**: botón "Sorpréndeme" y 11 sonidos por sección, con remates, corte y ×2. Antes, en la PC2: Seis géneros con paleta sonora propia, cualquier sonido en cualquier personaje, bases, animaciones al compás, y todo en SVG (ya no hay Rive). Daniel sigue desde la PC1 en casa.
+> Última actualización: **2026-11-06 (PC1, casa)**: botones "Drop" y "Sorpréndeme" y 11 sonidos por sección, con remates, corte y ×2. Antes, en la PC2: Seis géneros con paleta sonora propia, cualquier sonido en cualquier personaje, bases, animaciones al compás, y todo en SVG (ya no hay Rive). Daniel sigue desde la PC1 en casa.
 
 ## Estado en una línea
 
@@ -30,7 +30,7 @@ Cualquier personaje toca cualquier sonido, uno por personaje. **Falta:** que Dan
    - Queda **1 lugar libre por sección** (el máximo del manifest es 12). Agregar ids nuevos solo al final, para no romper las mezclas guardadas.
 3. [ ] **Funcionalidades** (recomendado en este orden):
    - [x] **"Sorpréndeme"** (2026-11-06): botón junto a las bases. Falta que Daniel lo pruebe varias veces y diga si las mezclas le suenan bien.
-   - **Drops:** solo bombo y bajo durante un compás, y luego vuelven todos.
+   - [x] **Drops** (2026-11-06): botón "Drop" junto a las bases. Falta que Daniel lo escuche. Si gusta, se podría agregar un atajo de teclado o un drop de dos compases.
    - **BPM en vivo:** cuantizado al compás. Es delicado porque toca el `loopEnd` y el `Transport` del motor.
 4. [ ] **Nombres de los personajes:** siguen llamándose "Kick", "Snare"…, aunque ya pueden tocar cualquier cosa. Preguntarle a Daniel si quiere nombres propios.
 5. [ ] **Teclado:** al tocar un sonido, la app elige el personaje (`placeSound`). Falta una forma de elegir el personaje con teclado, por ejemplo para poner dos bombos.
@@ -127,6 +127,12 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-06 (PC1):** botón **"Drop"** en el escenario, junto a "Sorpréndeme". Solo funciona mientras suena el beat.
+  - Desde el siguiente compás, durante un compás, solo suenan los personajes que tocan un bombo o un bajo, y luego vuelven todos.
+  - El botón muestra el estado: "Drop en espera…", "¡Drop!" y "Drop".
+  - Usa una ganancia propia por personaje programada con el Transport, así que no toca el mute, el solo ni el volumen. Al detener el beat se cancela.
+  - Probado en Boom Bap: en espera en el compás 2, suena en el 3 y vuelve en el 4. Durante el drop solo brillan Kick y Bass.
 
 - **2026-11-06 (PC1):** botón **"Sorpréndeme"** junto a las bases del escenario, con borde punteado para no confundirlo con una base elegida. Arma un beat al azar distinto del actual:
   - cada personaje toca un sonido de su propia sección;

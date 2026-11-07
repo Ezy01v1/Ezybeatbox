@@ -8,6 +8,7 @@ import { TransportBar } from '@/features/transport/TransportBar'
 import { StagePattern } from '@/visuals'
 import { BasePicker } from './BasePicker'
 import { BeatPulse } from './BeatPulse'
+import { DropButton } from './DropButton'
 import { CharacterSlot } from './CharacterSlot'
 import { ResumeOverlay } from './ResumeOverlay'
 import { StageBackdrop } from './StageBackdrop'
@@ -27,7 +28,10 @@ export function StageScreen({ manifest }: { manifest: PackManifest }) {
             <StagePattern theme={theme} />
           </BeatPulse>
           <StageBackdrop color={theme.stage.glow} />
-          <BasePicker manifest={manifest} />
+          <div className="relative flex flex-wrap items-center justify-center gap-2">
+            <BasePicker manifest={manifest} />
+            <DropButton />
+          </div>
           {/*
            * Characters stand side by side, cut at the waist by the stage floor: a strip of
            * height --floor at the bottom of every row (one row on wide screens, two on phones),

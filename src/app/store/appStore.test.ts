@@ -101,6 +101,26 @@ describe('appStore', () => {
     expect(store.getState().slots.voice?.playing).toBe('kick-2')
   })
 
+  it('drop() runs for one bar from the next bar line, only while playing', async () => {
+    const { engine, store } = setup()
+    await store.getState().begin()
+    store.getState().drop()
+    expect(store.getState().dropState).toBe('idle')
+
+    await store.getState().togglePlay()
+    store.getState().drop()
+    expect(store.getState().dropState).toBe('queued')
+    store.getState().drop() // already queued: ignored
+    engine.advanceBar()
+    expect(store.getState().dropState).toBe('dropping')
+    engine.advanceBar()
+    expect(store.getState().dropState).toBe('idle')
+
+    store.getState().drop()
+    await store.getState().togglePlay() // stopping cancels it
+    expect(store.getState().dropState).toBe('idle')
+  })
+
   it('surprise() queues a new beat with the rhythm section, each from its own section', async () => {
     const { store } = setup()
     await store.getState().begin()

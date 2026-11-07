@@ -1,5 +1,6 @@
 import type { AudioEngineEvents, ContextState, SlotSnapshot } from '@/core/audio/AudioEngine'
 import { AUDIO_CONFIG } from '@/core/audio/config'
+import type { DropState } from '@/core/audio/drop'
 import { planBarTransitions, slotStatus } from '@/core/audio/transitions'
 import { TypedEmitter } from '@/core/events'
 import { MIX_SCHEMA_VERSION, type Mix } from '@/core/mix/types'
@@ -24,6 +25,7 @@ export class FakeEngine implements EngineLike {
   private manifest: PackManifest | null = null
   private bar = -1
   private masterVolumeDb: number = AUDIO_CONFIG.defaultMasterVolumeDb
+  dropState: DropState = 'idle'
   contextState: ContextState = 'suspended'
   isPlaying = false
   failLoad: Error | null = null
@@ -77,6 +79,7 @@ export class FakeEngine implements EngineLike {
 
   stop() {
     this.isPlaying = false
+    this.setDropState('idle')
     this.slots.forEach((slot) => (slot.playing = null))
     this.emitter.emit('transportChanged', { playing: false })
   }
@@ -91,6 +94,13 @@ export class FakeEngine implements EngineLike {
 
   clearSound(characterId: string) {
     this.setTarget(characterId, null)
+  }
+
+  /** Like the real engine: only while playing and idle; lasts one `advanceBar`. */
+  queueDrop() {
+    if (!this.isPlaying || this.dropState !== 'idle') return false
+    this.setDropState('queued')
+    return true
   }
 
   setMute(characterId: string, muted: boolean) {
@@ -168,6 +178,8 @@ export class FakeEngine implements EngineLike {
       if (from) this.emitter.emit('soundStopped', { characterId, soundId: from })
       if (to) this.emitter.emit('soundStarted', { characterId, soundId: to })
     }
+    if (this.dropState === 'dropping') this.setDropState('idle')
+    else if (this.dropState === 'queued') this.setDropState('dropping')
     this.emitter.emit('barStart', { bar: this.bar })
     this.emitter.emit('beat', { bar: this.bar, beat: 0 })
   }
@@ -177,6 +189,12 @@ export class FakeEngine implements EngineLike {
     if (slot.target === target) return
     slot.target = target
     this.emitter.emit('soundQueued', { characterId, soundId: target, status: slotStatus(slot) })
+  }
+
+  private setDropState(state: DropState) {
+    if (this.dropState === state) return
+    this.dropState = state
+    this.emitter.emit('dropChanged', { state })
   }
 
   private slot(characterId: string): FakeSlot {

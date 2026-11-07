@@ -5,6 +5,7 @@ import { browserCanPlayType } from '../packs/browserFormats'
 import { type CanPlayType, PackLoadError, pickSoundFile } from '../packs/loader'
 import type { CharacterDef, PackManifest } from '../packs/schema'
 import { AUDIO_CONFIG, clampVolumeDb } from './config'
+import { DROP_BARS, type DropState, dropKeeps } from './drop'
 import { type MeterConfig, loopOffsetAtBar, loopSeconds, quarterNotesPerBar } from './timing'
 import { type SlotStatus, planBarTransitions, slotStatus } from './transitions'
 
@@ -31,6 +32,8 @@ export interface AudioEngineEvents extends Record<string, unknown> {
   barStart: { bar: number }
   beat: { bar: number; beat: number }
   transportChanged: { playing: boolean }
+  /** `queued` right away; `dropping` and `idle` when heard. */
+  dropChanged: { state: DropState }
   contextStateChanged: { state: ContextState }
 }
 
@@ -71,6 +74,11 @@ interface Slot {
   readonly def: CharacterDef
   readonly channel: Tone.Channel
   readonly meter: Tone.Meter
+  /**
+   * Drop automation, between the players and the channel, so it never touches the user's
+   * mute, solo or volume.
+   */
+  readonly dropGain: Tone.Gain
   /** Created on demand: any character can play any sound of the pack. */
   readonly players: Map<string, Tone.Player>
   playing: string | null
@@ -117,6 +125,7 @@ export class AudioEngine {
   private pack: LoadedPack | null = null
   private loadToken = 0
   private playing = false
+  private dropState: DropState = 'idle'
 
   constructor() {
     this.master = new Tone.Volume(AUDIO_CONFIG.defaultMasterVolumeDb)
@@ -216,6 +225,7 @@ export class AudioEngine {
         normalRange: true,
         smoothing: AUDIO_CONFIG.meterSmoothing,
       })
+      const dropGain = new Tone.Gain(1).connect(channel)
       channel.connect(this.master)
       channel.connect(channelMeter)
 
@@ -223,6 +233,7 @@ export class AudioEngine {
         def,
         channel,
         meter: channelMeter,
+        dropGain,
         players: new Map(),
         playing: null,
         target: null,
@@ -258,6 +269,7 @@ export class AudioEngine {
     const now = Tone.now()
     Tone.getTransport().stop(now)
     Tone.getDraw().cancel(0)
+    this.resetDrop(now)
     this.pack?.slots.forEach((slot) => {
       if (slot.playing !== null) {
         slot.players.get(slot.playing)?.stop(now)
@@ -279,6 +291,18 @@ export class AudioEngine {
   /** Queues silence on a character; the current loop stops on the next bar line. */
   clearSound(characterId: string): void {
     this.setTarget(this.requireSlot(characterId), null)
+  }
+
+  /**
+   * Queues a drop: from the next bar line, only characters playing a kick or bass sound keep
+   * sounding for `DROP_BARS` bar(s), then everyone comes back. Ignored while stopped or while
+   * another drop is queued or running. Returns whether it was queued.
+   */
+  queueDrop(): boolean {
+    this.requirePack()
+    if (!this.playing || this.dropState !== 'idle') return false
+    this.setDropState('queued')
+    return true
   }
 
   setMute(characterId: string, muted: boolean): void {
@@ -456,6 +480,43 @@ export class AudioEngine {
         if (to !== null) this.emitter.emit('soundStarted', { characterId, soundId: to })
       }, time)
     }
+
+    if (this.dropState === 'queued') this.startDrop(pack, time)
+  }
+
+  /** Silences every character outside `dropKeeps` for `DROP_BARS`, from `time` (a bar line). */
+  private startDrop(pack: LoadedPack, time: number): void {
+    const playing = Object.fromEntries([...pack.slots].map(([id, slot]) => [id, slot.playing]))
+    const keep = dropKeeps(pack.manifest, playing)
+    const end = time + loopSeconds(pack.meter, DROP_BARS)
+    const fade = AUDIO_CONFIG.dropFadeSeconds
+    for (const [id, { dropGain }] of pack.slots) {
+      if (keep.has(id)) continue
+      const gain = dropGain.gain
+      gain.cancelScheduledValues(time)
+      gain.setValueAtTime(1, time)
+      gain.linearRampToValueAtTime(0, time + fade)
+      gain.setValueAtTime(0, end - fade)
+      gain.linearRampToValueAtTime(1, end)
+    }
+    this.dropState = 'dropping'
+    Tone.getDraw().schedule(() => this.emitter.emit('dropChanged', { state: 'dropping' }), time)
+    Tone.getDraw().schedule(() => this.setDropState('idle'), end)
+  }
+
+  /** Cancels a queued or running drop and brings every character back at `time`. */
+  private resetDrop(time: number): void {
+    this.pack?.slots.forEach(({ dropGain }) => {
+      dropGain.gain.cancelScheduledValues(time)
+      dropGain.gain.setValueAtTime(1, time)
+    })
+    this.setDropState('idle')
+  }
+
+  private setDropState(state: DropState): void {
+    if (this.dropState === state) return
+    this.dropState = state
+    this.emitter.emit('dropChanged', { state })
   }
 
   private requirePack(): LoadedPack {
@@ -485,7 +546,7 @@ export class AudioEngine {
       loopEnd: pack.loopDuration,
       fadeIn: AUDIO_CONFIG.playerFadeSeconds,
       fadeOut: AUDIO_CONFIG.playerFadeSeconds,
-    }).connect(slot.channel)
+    }).connect(slot.dropGain)
     slot.players.set(soundId, player)
     return player
   }
@@ -497,9 +558,11 @@ export class AudioEngine {
     pack.slots.forEach((slot) => {
       slot.players.forEach((player) => player.dispose())
       slot.meter.dispose()
+      slot.dropGain.dispose()
       slot.channel.dispose()
     })
     pack.buffers.forEach((buffer) => buffer.dispose())
     this.pack = null
+    this.setDropState('idle')
   }
 }

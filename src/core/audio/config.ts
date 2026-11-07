@@ -4,6 +4,8 @@ export const AUDIO_CONFIG = {
   startDelaySeconds: 0.1,
   /** Fade applied when a loop starts/stops; avoids clicks without softening transients. */
   playerFadeSeconds: 0.004,
+  /** Fade out/in of the characters silenced by a drop; short, but long enough not to click. */
+  dropFadeSeconds: 0.01,
   defaultChannelVolumeDb: -6,
   defaultMasterVolumeDb: 0,
   minVolumeDb: -60,

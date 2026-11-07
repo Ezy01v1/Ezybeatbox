@@ -4,6 +4,7 @@ import { createStore } from 'zustand/vanilla'
 // Type-only import of the engine keeps Tone.js out of this module (and out of jsdom tests).
 import type { AudioEngine, ContextState, SlotSnapshot } from '@/core/audio/AudioEngine'
 import { AUDIO_CONFIG } from '@/core/audio/config'
+import type { DropState } from '@/core/audio/drop'
 import type { MixRepository, SavedMixSummary } from '@/core/mix/repository'
 import {
   type SharedMix,
@@ -27,6 +28,7 @@ export type EngineLike = Pick<
   | 'stop'
   | 'setSound'
   | 'clearSound'
+  | 'queueDrop'
   | 'setMute'
   | 'setSolo'
   | 'setVolume'
@@ -98,6 +100,8 @@ export interface AppState {
   catalog: CatalogState
   slots: Record<string, SlotSnapshot>
   playing: boolean
+  /** Drop (core/audio/drop): queued for the next bar, sounding, or idle. */
+  dropState: DropState
   /** Zero-based; updated once per beat (never per frame). */
   position: { bar: number; beat: number }
   contextState: ContextState
@@ -144,6 +148,8 @@ export interface AppActions {
    * current one. Like a base, it keeps mute, solo and volumes and lands on the next bar.
    */
   surprise(): void
+  /** Drop: one bar of only kick and bass from the next bar line, then everyone is back. */
+  drop(): void
   /** Applies a whole mix; sound changes land on the next bar as usual. */
   applyMix(mix: Mix): { missingCount: number }
   getShareUrl(): string
@@ -284,6 +290,7 @@ export function createAppStore({
       refreshAllSlots()
     })
     engine.on('contextStateChanged', ({ state }) => set({ contextState: state }))
+    engine.on('dropChanged', ({ state }) => set({ dropState: state }))
 
     const applySharedLink = (manifest: PackManifest) => {
       if (pendingLinkError) {
@@ -397,6 +404,7 @@ export function createAppStore({
       notices: [],
       savedMixes: [],
       exportStatus: { state: 'idle' },
+      dropState: 'idle',
 
       openLink(hash) {
         if (!receiveHash(hash)) return
@@ -506,6 +514,10 @@ export function createAppStore({
         const base = baseId ? manifest.bases?.find((b) => b.id === baseId) : undefined
         if (baseId && !base) return
         applyTargets(manifest, base?.sounds ?? {})
+      },
+
+      drop() {
+        if (get().manifest) engine.queueDrop()
       },
 
       surprise() {
