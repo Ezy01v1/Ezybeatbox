@@ -100,4 +100,17 @@ describe('appStore', () => {
     expect(store.getState().slots.bass?.playing).toBe('kick-1')
     expect(store.getState().slots.voice?.playing).toBe('kick-2')
   })
+
+  it('surprise() queues a new beat with the rhythm section, each from its own section', async () => {
+    const { store } = setup()
+    await store.getState().begin()
+    const before = Object.values(store.getState().slots).map((s) => s.target)
+
+    store.getState().surprise()
+    const { slots } = store.getState()
+    for (const id of ['kick', 'snare', 'hihat', 'bass']) {
+      expect(slots[id]?.target).toMatch(new RegExp(`^${id}-\\d+$`))
+    }
+    expect(Object.values(slots).map((s) => s.target)).not.toEqual(before)
+  })
 })

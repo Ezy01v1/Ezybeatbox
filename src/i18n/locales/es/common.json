@@ -139,6 +139,8 @@
   },
   "bases": {
     "label": "Bases",
-    "scratch": "Desde cero"
+    "scratch": "Desde cero",
+    "surprise": "Sorpréndeme",
+    "surpriseHint": "Arma un beat al azar con los sonidos del pack"
   }
 }

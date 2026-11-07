@@ -30,10 +30,43 @@ function BaseButton({ manifest, base }: { manifest: PackManifest; base: PackBase
   )
 }
 
-/** Ready-made beats for the pack plus "start from scratch". Changes land on the next bar. */
+/** "Sorpréndeme": a random beat that sounds good, different from the current one. */
+function SurpriseButton() {
+  const { t } = useTranslation()
+  const surprise = useAppStore((s) => s.surprise)
+
+  return (
+    <button
+      type="button"
+      onClick={surprise}
+      title={t('bases.surpriseHint')}
+      className="focus-visible:outline-accent inline-flex min-h-9 items-center gap-1.5 rounded-full border-2 border-dashed border-(--stage-ink) bg-(--stage-panel) px-3.5 text-xs font-bold transition-transform hover:-rotate-2 focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-95 motion-reduce:transition-none motion-reduce:hover:rotate-0"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        className="size-4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <rect x="3.5" y="3.5" width="17" height="17" rx="4" />
+        <circle cx="8.5" cy="8.5" r="1.3" fill="currentColor" stroke="none" />
+        <circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none" />
+        <circle cx="15.5" cy="15.5" r="1.3" fill="currentColor" stroke="none" />
+      </svg>
+      {t('bases.surprise')}
+    </button>
+  )
+}
+
+/**
+ * Ready-made beats for the pack, "start from scratch" and "Sorpréndeme". Changes land on the
+ * next bar.
+ */
 export function BasePicker({ manifest }: { manifest: PackManifest }) {
   const { t } = useTranslation()
-  if (!manifest.bases?.length) return null
+  const bases = manifest.bases ?? []
 
   return (
     <div
@@ -42,10 +75,11 @@ export function BasePicker({ manifest }: { manifest: PackManifest }) {
       className="flex flex-wrap items-center justify-center gap-2"
     >
       <span className="text-xs font-bold tracking-wider uppercase">{t('bases.label')}</span>
-      {manifest.bases.map((base) => (
+      {bases.map((base) => (
         <BaseButton key={base.id} manifest={manifest} base={base} />
       ))}
       <BaseButton manifest={manifest} base={null} />
+      <SurpriseButton />
     </div>
   )
 }

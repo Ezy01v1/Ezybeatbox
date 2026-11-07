@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-06 (PC1, casa)**: 11 sonidos por sección, con remates, corte y ×2. Antes, en la PC2: Seis géneros con paleta sonora propia, cualquier sonido en cualquier personaje, bases, animaciones al compás, y todo en SVG (ya no hay Rive). Daniel sigue desde la PC1 en casa.
+> Última actualización: **2026-11-06 (PC1, casa)**: botón "Sorpréndeme" y 11 sonidos por sección, con remates, corte y ×2. Antes, en la PC2: Seis géneros con paleta sonora propia, cualquier sonido en cualquier personaje, bases, animaciones al compás, y todo en SVG (ya no hay Rive). Daniel sigue desde la PC1 en casa.
 
 ## Estado en una línea
 
@@ -29,7 +29,7 @@ Cualquier personaje toca cualquier sonido, uno por personaje. **Falta:** que Dan
    - Falta que Daniel los escuche: si algún remate o "×2" suena mal, se cambia su fuente en `withFills` (`scripts/placeholders/packs.ts`) o se reemplaza con `overrideSounds` por uno escrito a mano.
    - Queda **1 lugar libre por sección** (el máximo del manifest es 12). Agregar ids nuevos solo al final, para no romper las mezclas guardadas.
 3. [ ] **Funcionalidades** (recomendado en este orden):
-   - **"Sorpréndeme":** una mezcla al azar que suene bien. Por ejemplo, un sonido por sección, con algo de variedad.
+   - [x] **"Sorpréndeme"** (2026-11-06): botón junto a las bases. Falta que Daniel lo pruebe varias veces y diga si las mezclas le suenan bien.
    - **Drops:** solo bombo y bajo durante un compás, y luego vuelven todos.
    - **BPM en vivo:** cuantizado al compás. Es delicado porque toca el `loopEnd` y el `Transport` del motor.
 4. [ ] **Nombres de los personajes:** siguen llamándose "Kick", "Snare"…, aunque ya pueden tocar cualquier cosa. Preguntarle a Daniel si quiere nombres propios.
@@ -127,6 +127,13 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-06 (PC1):** botón **"Sorpréndeme"** junto a las bases del escenario, con borde punteado para no confundirlo con una base elegida. Arma un beat al azar distinto del actual:
+  - cada personaje toca un sonido de su propia sección;
+  - kick, snare, hi-hat y bajo siempre suenan; la voz entra el 60 % de las veces y el FX el 50 %;
+  - como máximo dos personajes tocan una variación (swing, ½, remate, corte o ×2).
+
+  Lógica en `src/core/packs/surprise.ts`, con pruebas. Probado en Trap: el beat cambia en el siguiente compás y no hay errores en la consola.
 
 - **2026-11-06 (PC1):** 144 loops nuevos, cuatro por personaje en los seis packs, así que cada sección pasa de 7 a 11 sonidos. Los genera `withFills` (`scripts/placeholders/recipes.ts`), también a partir de sonidos existentes:
   - **"+ remate"** (dos por sección): el último tiempo se reemplaza por los dos primeros tiempos del patrón al doble de velocidad, con la voz del mismo personaje y en la misma tonalidad.

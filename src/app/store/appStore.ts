@@ -1,4 +1,5 @@
 import { placeSound } from '@/core/packs/sounds'
+import { surpriseMix } from '@/core/packs/surprise'
 import { createStore } from 'zustand/vanilla'
 // Type-only import of the engine keeps Tone.js out of this module (and out of jsdom tests).
 import type { AudioEngine, ContextState, SlotSnapshot } from '@/core/audio/AudioEngine'
@@ -138,6 +139,11 @@ export interface AppActions {
    * are kept; sound changes land on the next bar as usual.
    */
   applyBase(baseId: string | null): void
+  /**
+   * "Sorpréndeme": a random beat that sounds good (core/packs/surprise), different from the
+   * current one. Like a base, it keeps mute, solo and volumes and lands on the next bar.
+   */
+  surprise(): void
   /** Applies a whole mix; sound changes land on the next bar as usual. */
   applyMix(mix: Mix): { missingCount: number }
   getShareUrl(): string
@@ -210,6 +216,19 @@ export function createAppStore({
       set({
         slots: Object.fromEntries(manifest.characters.map((c) => [c.id, engine.getSlot(c.id)])),
       })
+    }
+
+    /** Sets every character to its sound in `targets` (missing = silent): bases and surprise. */
+    const applyTargets = (
+      manifest: PackManifest,
+      targets: Readonly<Record<string, string | null | undefined>>,
+    ) => {
+      for (const { id } of manifest.characters) {
+        const soundId = targets[id]
+        if (soundId) engine.setSound(id, soundId)
+        else engine.clearSound(id)
+      }
+      refreshAllSlots()
     }
 
     /**
@@ -486,12 +505,16 @@ export function createAppStore({
         if (!manifest) return
         const base = baseId ? manifest.bases?.find((b) => b.id === baseId) : undefined
         if (baseId && !base) return
-        for (const { id } of manifest.characters) {
-          const soundId = base?.sounds[id]
-          if (soundId) engine.setSound(id, soundId)
-          else engine.clearSound(id)
-        }
-        refreshAllSlots()
+        applyTargets(manifest, base?.sounds ?? {})
+      },
+
+      surprise() {
+        const manifest = get().manifest
+        if (!manifest) return
+        const current = Object.fromEntries(
+          Object.entries(get().slots).map(([id, slot]) => [id, slot.target]),
+        )
+        applyTargets(manifest, surpriseMix(manifest, current))
       },
 
       applyMix(source) {
