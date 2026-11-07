@@ -112,6 +112,30 @@
           "label": "Profundo ½",
           "file": "kick/house-kick-7.ogg",
           "fallback": "kick/house-kick-7.m4a"
+        },
+        {
+          "id": "house-kick-8",
+          "label": "Four + remate",
+          "file": "kick/house-kick-8.ogg",
+          "fallback": "kick/house-kick-8.m4a"
+        },
+        {
+          "id": "house-kick-9",
+          "label": "Golpe + remate",
+          "file": "kick/house-kick-9.ogg",
+          "fallback": "kick/house-kick-9.m4a"
+        },
+        {
+          "id": "house-kick-10",
+          "label": "Four con corte",
+          "file": "kick/house-kick-10.ogg",
+          "fallback": "kick/house-kick-10.m4a"
+        },
+        {
+          "id": "house-kick-11",
+          "label": "Profundo ×2",
+          "file": "kick/house-kick-11.ogg",
+          "fallback": "kick/house-kick-11.m4a"
         }
       ]
     },
@@ -161,6 +185,30 @@
           "label": "Caja ½",
           "file": "snare/house-snare-7.ogg",
           "fallback": "snare/house-snare-7.m4a"
+        },
+        {
+          "id": "house-snare-8",
+          "label": "Clap + remate",
+          "file": "snare/house-snare-8.ogg",
+          "fallback": "snare/house-snare-8.m4a"
+        },
+        {
+          "id": "house-snare-9",
+          "label": "Doble + remate",
+          "file": "snare/house-snare-9.ogg",
+          "fallback": "snare/house-snare-9.m4a"
+        },
+        {
+          "id": "house-snare-10",
+          "label": "Clap con corte",
+          "file": "snare/house-snare-10.ogg",
+          "fallback": "snare/house-snare-10.m4a"
+        },
+        {
+          "id": "house-snare-11",
+          "label": "Caja ×2",
+          "file": "snare/house-snare-11.ogg",
+          "fallback": "snare/house-snare-11.m4a"
         }
       ]
     },
@@ -210,6 +258,30 @@
           "label": "Cerrado ½",
           "file": "hihat/house-hihat-7.ogg",
           "fallback": "hihat/house-hihat-7.m4a"
+        },
+        {
+          "id": "house-hihat-8",
+          "label": "Abierto + remate",
+          "file": "hihat/house-hihat-8.ogg",
+          "fallback": "hihat/house-hihat-8.m4a"
+        },
+        {
+          "id": "house-hihat-9",
+          "label": "Shaker + remate",
+          "file": "hihat/house-hihat-9.ogg",
+          "fallback": "hihat/house-hihat-9.m4a"
+        },
+        {
+          "id": "house-hihat-10",
+          "label": "Abierto con corte",
+          "file": "hihat/house-hihat-10.ogg",
+          "fallback": "hihat/house-hihat-10.m4a"
+        },
+        {
+          "id": "house-hihat-11",
+          "label": "Cerrado ×2",
+          "file": "hihat/house-hihat-11.ogg",
+          "fallback": "hihat/house-hihat-11.m4a"
         }
       ]
     },
@@ -259,6 +331,30 @@
           "label": "Octavas ½",
           "file": "bass/house-bass-7.ogg",
           "fallback": "bass/house-bass-7.m4a"
+        },
+        {
+          "id": "house-bass-8",
+          "label": "Contra + remate",
+          "file": "bass/house-bass-8.ogg",
+          "fallback": "bass/house-bass-8.m4a"
+        },
+        {
+          "id": "house-bass-9",
+          "label": "Rodante + remate",
+          "file": "bass/house-bass-9.ogg",
+          "fallback": "bass/house-bass-9.m4a"
+        },
+        {
+          "id": "house-bass-10",
+          "label": "Contra con corte",
+          "file": "bass/house-bass-10.ogg",
+          "fallback": "bass/house-bass-10.m4a"
+        },
+        {
+          "id": "house-bass-11",
+          "label": "Octavas ×2",
+          "file": "bass/house-bass-11.ogg",
+          "fallback": "bass/house-bass-11.m4a"
         }
       ]
     },
@@ -308,6 +404,30 @@
           "label": "Diva ½",
           "file": "voice/house-voice-7.ogg",
           "fallback": "voice/house-voice-7.m4a"
+        },
+        {
+          "id": "house-voice-8",
+          "label": "Piano + remate",
+          "file": "voice/house-voice-8.ogg",
+          "fallback": "voice/house-voice-8.m4a"
+        },
+        {
+          "id": "house-voice-9",
+          "label": "Pad + remate",
+          "file": "voice/house-voice-9.ogg",
+          "fallback": "voice/house-voice-9.m4a"
+        },
+        {
+          "id": "house-voice-10",
+          "label": "Piano con corte",
+          "file": "voice/house-voice-10.ogg",
+          "fallback": "voice/house-voice-10.m4a"
+        },
+        {
+          "id": "house-voice-11",
+          "label": "Diva ×2",
+          "file": "voice/house-voice-11.ogg",
+          "fallback": "voice/house-voice-11.m4a"
         }
       ]
     },
@@ -357,6 +477,30 @@
           "label": "Barrido ½",
           "file": "fx/house-fx-7.ogg",
           "fallback": "fx/house-fx-7.m4a"
+        },
+        {
+          "id": "house-fx-8",
+          "label": "Filtro + remate",
+          "file": "fx/house-fx-8.ogg",
+          "fallback": "fx/house-fx-8.m4a"
+        },
+        {
+          "id": "house-fx-9",
+          "label": "Cierre + remate",
+          "file": "fx/house-fx-9.ogg",
+          "fallback": "fx/house-fx-9.m4a"
+        },
+        {
+          "id": "house-fx-10",
+          "label": "Redoble con corte",
+          "file": "fx/house-fx-10.ogg",
+          "fallback": "fx/house-fx-10.m4a"
+        },
+        {
+          "id": "house-fx-11",
+          "label": "Barrido ×2",
+          "file": "fx/house-fx-11.ogg",
+          "fallback": "fx/house-fx-11.m4a"
         }
       ]
     }

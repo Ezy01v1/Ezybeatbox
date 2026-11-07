@@ -111,6 +111,30 @@
           "label": "Perreo ½",
           "file": "kick/reggaeton-kick-7.ogg",
           "fallback": "kick/reggaeton-kick-7.m4a"
+        },
+        {
+          "id": "reggaeton-kick-8",
+          "label": "Dembow + remate",
+          "file": "kick/reggaeton-kick-8.ogg",
+          "fallback": "kick/reggaeton-kick-8.m4a"
+        },
+        {
+          "id": "reggaeton-kick-9",
+          "label": "Seco + remate",
+          "file": "kick/reggaeton-kick-9.ogg",
+          "fallback": "kick/reggaeton-kick-9.m4a"
+        },
+        {
+          "id": "reggaeton-kick-10",
+          "label": "Dembow con corte",
+          "file": "kick/reggaeton-kick-10.ogg",
+          "fallback": "kick/reggaeton-kick-10.m4a"
+        },
+        {
+          "id": "reggaeton-kick-11",
+          "label": "Perreo ×2",
+          "file": "kick/reggaeton-kick-11.ogg",
+          "fallback": "kick/reggaeton-kick-11.m4a"
         }
       ]
     },
@@ -160,6 +184,30 @@
           "label": "Palmas ½",
           "file": "snare/reggaeton-snare-7.ogg",
           "fallback": "snare/reggaeton-snare-7.m4a"
+        },
+        {
+          "id": "reggaeton-snare-8",
+          "label": "Dembow + remate",
+          "file": "snare/reggaeton-snare-8.ogg",
+          "fallback": "snare/reggaeton-snare-8.m4a"
+        },
+        {
+          "id": "reggaeton-snare-9",
+          "label": "Aro + remate",
+          "file": "snare/reggaeton-snare-9.ogg",
+          "fallback": "snare/reggaeton-snare-9.m4a"
+        },
+        {
+          "id": "reggaeton-snare-10",
+          "label": "Dembow con corte",
+          "file": "snare/reggaeton-snare-10.ogg",
+          "fallback": "snare/reggaeton-snare-10.m4a"
+        },
+        {
+          "id": "reggaeton-snare-11",
+          "label": "Palmas ×2",
+          "file": "snare/reggaeton-snare-11.ogg",
+          "fallback": "snare/reggaeton-snare-11.m4a"
         }
       ]
     },
@@ -209,6 +257,30 @@
           "label": "Contratiempo ½",
           "file": "hihat/reggaeton-hihat-7.ogg",
           "fallback": "hihat/reggaeton-hihat-7.m4a"
+        },
+        {
+          "id": "reggaeton-hihat-8",
+          "label": "Corcheas + remate",
+          "file": "hihat/reggaeton-hihat-8.ogg",
+          "fallback": "hihat/reggaeton-hihat-8.m4a"
+        },
+        {
+          "id": "reggaeton-hihat-9",
+          "label": "Shaker + remate",
+          "file": "hihat/reggaeton-hihat-9.ogg",
+          "fallback": "hihat/reggaeton-hihat-9.m4a"
+        },
+        {
+          "id": "reggaeton-hihat-10",
+          "label": "Corcheas con corte",
+          "file": "hihat/reggaeton-hihat-10.ogg",
+          "fallback": "hihat/reggaeton-hihat-10.m4a"
+        },
+        {
+          "id": "reggaeton-hihat-11",
+          "label": "Contratiempo ×2",
+          "file": "hihat/reggaeton-hihat-11.ogg",
+          "fallback": "hihat/reggaeton-hihat-11.m4a"
         }
       ]
     },
@@ -258,6 +330,30 @@
           "label": "Sub ½",
           "file": "bass/reggaeton-bass-7.ogg",
           "fallback": "bass/reggaeton-bass-7.m4a"
+        },
+        {
+          "id": "reggaeton-bass-8",
+          "label": "Tumbao + remate",
+          "file": "bass/reggaeton-bass-8.ogg",
+          "fallback": "bass/reggaeton-bass-8.m4a"
+        },
+        {
+          "id": "reggaeton-bass-9",
+          "label": "Rebote + remate",
+          "file": "bass/reggaeton-bass-9.ogg",
+          "fallback": "bass/reggaeton-bass-9.m4a"
+        },
+        {
+          "id": "reggaeton-bass-10",
+          "label": "Tumbao con corte",
+          "file": "bass/reggaeton-bass-10.ogg",
+          "fallback": "bass/reggaeton-bass-10.m4a"
+        },
+        {
+          "id": "reggaeton-bass-11",
+          "label": "Sub ×2",
+          "file": "bass/reggaeton-bass-11.ogg",
+          "fallback": "bass/reggaeton-bass-11.m4a"
         }
       ]
     },
@@ -307,6 +403,30 @@
           "label": "Ad-lib ½",
           "file": "voice/reggaeton-voice-7.ogg",
           "fallback": "voice/reggaeton-voice-7.m4a"
+        },
+        {
+          "id": "reggaeton-voice-8",
+          "label": "Coro + remate",
+          "file": "voice/reggaeton-voice-8.ogg",
+          "fallback": "voice/reggaeton-voice-8.m4a"
+        },
+        {
+          "id": "reggaeton-voice-9",
+          "label": "Piano + remate",
+          "file": "voice/reggaeton-voice-9.ogg",
+          "fallback": "voice/reggaeton-voice-9.m4a"
+        },
+        {
+          "id": "reggaeton-voice-10",
+          "label": "Coro con corte",
+          "file": "voice/reggaeton-voice-10.ogg",
+          "fallback": "voice/reggaeton-voice-10.m4a"
+        },
+        {
+          "id": "reggaeton-voice-11",
+          "label": "Ad-lib ×2",
+          "file": "voice/reggaeton-voice-11.ogg",
+          "fallback": "voice/reggaeton-voice-11.m4a"
         }
       ]
     },
@@ -356,6 +476,30 @@
           "label": "Bocina ½",
           "file": "fx/reggaeton-fx-7.ogg",
           "fallback": "fx/reggaeton-fx-7.m4a"
+        },
+        {
+          "id": "reggaeton-fx-8",
+          "label": "Timbales + remate",
+          "file": "fx/reggaeton-fx-8.ogg",
+          "fallback": "fx/reggaeton-fx-8.m4a"
+        },
+        {
+          "id": "reggaeton-fx-9",
+          "label": "Bajón + remate",
+          "file": "fx/reggaeton-fx-9.ogg",
+          "fallback": "fx/reggaeton-fx-9.m4a"
+        },
+        {
+          "id": "reggaeton-fx-10",
+          "label": "Bajón con corte",
+          "file": "fx/reggaeton-fx-10.ogg",
+          "fallback": "fx/reggaeton-fx-10.m4a"
+        },
+        {
+          "id": "reggaeton-fx-11",
+          "label": "Bocina ×2",
+          "file": "fx/reggaeton-fx-11.ogg",
+          "fallback": "fx/reggaeton-fx-11.m4a"
         }
       ]
     }

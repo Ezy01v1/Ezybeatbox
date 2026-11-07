@@ -112,6 +112,30 @@
           "label": "Suave ½",
           "file": "kick/afrobeat-kick-7.ogg",
           "fallback": "kick/afrobeat-kick-7.m4a"
+        },
+        {
+          "id": "afrobeat-kick-8",
+          "label": "Tresillo + remate",
+          "file": "kick/afrobeat-kick-8.ogg",
+          "fallback": "kick/afrobeat-kick-8.m4a"
+        },
+        {
+          "id": "afrobeat-kick-9",
+          "label": "Amapiano + remate",
+          "file": "kick/afrobeat-kick-9.ogg",
+          "fallback": "kick/afrobeat-kick-9.m4a"
+        },
+        {
+          "id": "afrobeat-kick-10",
+          "label": "Tresillo con corte",
+          "file": "kick/afrobeat-kick-10.ogg",
+          "fallback": "kick/afrobeat-kick-10.m4a"
+        },
+        {
+          "id": "afrobeat-kick-11",
+          "label": "Suave ×2",
+          "file": "kick/afrobeat-kick-11.ogg",
+          "fallback": "kick/afrobeat-kick-11.m4a"
         }
       ]
     },
@@ -161,6 +185,30 @@
           "label": "Palmas ½",
           "file": "snare/afrobeat-snare-7.ogg",
           "fallback": "snare/afrobeat-snare-7.m4a"
+        },
+        {
+          "id": "afrobeat-snare-8",
+          "label": "Aro + remate",
+          "file": "snare/afrobeat-snare-8.ogg",
+          "fallback": "snare/afrobeat-snare-8.m4a"
+        },
+        {
+          "id": "afrobeat-snare-9",
+          "label": "Caja + remate",
+          "file": "snare/afrobeat-snare-9.ogg",
+          "fallback": "snare/afrobeat-snare-9.m4a"
+        },
+        {
+          "id": "afrobeat-snare-10",
+          "label": "Aro con corte",
+          "file": "snare/afrobeat-snare-10.ogg",
+          "fallback": "snare/afrobeat-snare-10.m4a"
+        },
+        {
+          "id": "afrobeat-snare-11",
+          "label": "Palmas ×2",
+          "file": "snare/afrobeat-snare-11.ogg",
+          "fallback": "snare/afrobeat-snare-11.m4a"
         }
       ]
     },
@@ -210,6 +258,30 @@
           "label": "Cencerro ½",
           "file": "hihat/afrobeat-hihat-7.ogg",
           "fallback": "hihat/afrobeat-hihat-7.m4a"
+        },
+        {
+          "id": "afrobeat-hihat-8",
+          "label": "Shekere + remate",
+          "file": "hihat/afrobeat-hihat-8.ogg",
+          "fallback": "hihat/afrobeat-hihat-8.m4a"
+        },
+        {
+          "id": "afrobeat-hihat-9",
+          "label": "Hi-hat + remate",
+          "file": "hihat/afrobeat-hihat-9.ogg",
+          "fallback": "hihat/afrobeat-hihat-9.m4a"
+        },
+        {
+          "id": "afrobeat-hihat-10",
+          "label": "Shekere con corte",
+          "file": "hihat/afrobeat-hihat-10.ogg",
+          "fallback": "hihat/afrobeat-hihat-10.m4a"
+        },
+        {
+          "id": "afrobeat-hihat-11",
+          "label": "Cencerro ×2",
+          "file": "hihat/afrobeat-hihat-11.ogg",
+          "fallback": "hihat/afrobeat-hihat-11.m4a"
         }
       ]
     },
@@ -259,6 +331,30 @@
           "label": "Log drum ½",
           "file": "bass/afrobeat-bass-7.ogg",
           "fallback": "bass/afrobeat-bass-7.m4a"
+        },
+        {
+          "id": "afrobeat-bass-8",
+          "label": "Groove + remate",
+          "file": "bass/afrobeat-bass-8.ogg",
+          "fallback": "bass/afrobeat-bass-8.m4a"
+        },
+        {
+          "id": "afrobeat-bass-9",
+          "label": "Sub + remate",
+          "file": "bass/afrobeat-bass-9.ogg",
+          "fallback": "bass/afrobeat-bass-9.m4a"
+        },
+        {
+          "id": "afrobeat-bass-10",
+          "label": "Groove con corte",
+          "file": "bass/afrobeat-bass-10.ogg",
+          "fallback": "bass/afrobeat-bass-10.m4a"
+        },
+        {
+          "id": "afrobeat-bass-11",
+          "label": "Log drum ×2",
+          "file": "bass/afrobeat-bass-11.ogg",
+          "fallback": "bass/afrobeat-bass-11.m4a"
         }
       ]
     },
@@ -308,6 +404,30 @@
           "label": "Coro ½",
           "file": "voice/afrobeat-voice-7.ogg",
           "fallback": "voice/afrobeat-voice-7.m4a"
+        },
+        {
+          "id": "afrobeat-voice-8",
+          "label": "Guitarra + remate",
+          "file": "voice/afrobeat-voice-8.ogg",
+          "fallback": "voice/afrobeat-voice-8.m4a"
+        },
+        {
+          "id": "afrobeat-voice-9",
+          "label": "Piano + remate",
+          "file": "voice/afrobeat-voice-9.ogg",
+          "fallback": "voice/afrobeat-voice-9.m4a"
+        },
+        {
+          "id": "afrobeat-voice-10",
+          "label": "Guitarra con corte",
+          "file": "voice/afrobeat-voice-10.ogg",
+          "fallback": "voice/afrobeat-voice-10.m4a"
+        },
+        {
+          "id": "afrobeat-voice-11",
+          "label": "Coro ×2",
+          "file": "voice/afrobeat-voice-11.ogg",
+          "fallback": "voice/afrobeat-voice-11.m4a"
         }
       ]
     },
@@ -357,6 +477,30 @@
           "label": "Silbato ½",
           "file": "fx/afrobeat-fx-7.ogg",
           "fallback": "fx/afrobeat-fx-7.m4a"
+        },
+        {
+          "id": "afrobeat-fx-8",
+          "label": "Subida + remate",
+          "file": "fx/afrobeat-fx-8.ogg",
+          "fallback": "fx/afrobeat-fx-8.m4a"
+        },
+        {
+          "id": "afrobeat-fx-9",
+          "label": "Silbato + remate",
+          "file": "fx/afrobeat-fx-9.ogg",
+          "fallback": "fx/afrobeat-fx-9.m4a"
+        },
+        {
+          "id": "afrobeat-fx-10",
+          "label": "Subida con corte",
+          "file": "fx/afrobeat-fx-10.ogg",
+          "fallback": "fx/afrobeat-fx-10.m4a"
+        },
+        {
+          "id": "afrobeat-fx-11",
+          "label": "Talking drum ×2",
+          "file": "fx/afrobeat-fx-11.ogg",
+          "fallback": "fx/afrobeat-fx-11.m4a"
         }
       ]
     }

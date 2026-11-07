@@ -113,6 +113,30 @@
           "label": "Rodante ½",
           "file": "kick/dnb-kick-7.ogg",
           "fallback": "kick/dnb-kick-7.m4a"
+        },
+        {
+          "id": "dnb-kick-8",
+          "label": "Two-step + remate",
+          "file": "kick/dnb-kick-8.ogg",
+          "fallback": "kick/dnb-kick-8.m4a"
+        },
+        {
+          "id": "dnb-kick-9",
+          "label": "Jungla + remate",
+          "file": "kick/dnb-kick-9.ogg",
+          "fallback": "kick/dnb-kick-9.m4a"
+        },
+        {
+          "id": "dnb-kick-10",
+          "label": "Two-step con corte",
+          "file": "kick/dnb-kick-10.ogg",
+          "fallback": "kick/dnb-kick-10.m4a"
+        },
+        {
+          "id": "dnb-kick-11",
+          "label": "Rodante ×2",
+          "file": "kick/dnb-kick-11.ogg",
+          "fallback": "kick/dnb-kick-11.m4a"
         }
       ]
     },
@@ -162,6 +186,30 @@
           "label": "Fantasma ½",
           "file": "snare/dnb-snare-7.ogg",
           "fallback": "snare/dnb-snare-7.m4a"
+        },
+        {
+          "id": "dnb-snare-8",
+          "label": "Golpe + remate",
+          "file": "snare/dnb-snare-8.ogg",
+          "fallback": "snare/dnb-snare-8.m4a"
+        },
+        {
+          "id": "dnb-snare-9",
+          "label": "Amen + remate",
+          "file": "snare/dnb-snare-9.ogg",
+          "fallback": "snare/dnb-snare-9.m4a"
+        },
+        {
+          "id": "dnb-snare-10",
+          "label": "Golpe con corte",
+          "file": "snare/dnb-snare-10.ogg",
+          "fallback": "snare/dnb-snare-10.m4a"
+        },
+        {
+          "id": "dnb-snare-11",
+          "label": "Fantasma ×2",
+          "file": "snare/dnb-snare-11.ogg",
+          "fallback": "snare/dnb-snare-11.m4a"
         }
       ]
     },
@@ -211,6 +259,30 @@
           "label": "Rápido ½",
           "file": "hihat/dnb-hihat-7.ogg",
           "fallback": "hihat/dnb-hihat-7.m4a"
+        },
+        {
+          "id": "dnb-hihat-8",
+          "label": "Corcheas + remate",
+          "file": "hihat/dnb-hihat-8.ogg",
+          "fallback": "hihat/dnb-hihat-8.m4a"
+        },
+        {
+          "id": "dnb-hihat-9",
+          "label": "Ride + remate",
+          "file": "hihat/dnb-hihat-9.ogg",
+          "fallback": "hihat/dnb-hihat-9.m4a"
+        },
+        {
+          "id": "dnb-hihat-10",
+          "label": "Corcheas con corte",
+          "file": "hihat/dnb-hihat-10.ogg",
+          "fallback": "hihat/dnb-hihat-10.m4a"
+        },
+        {
+          "id": "dnb-hihat-11",
+          "label": "Rápido ×2",
+          "file": "hihat/dnb-hihat-11.ogg",
+          "fallback": "hihat/dnb-hihat-11.m4a"
         }
       ]
     },
@@ -260,6 +332,30 @@
           "label": "Sub ½",
           "file": "bass/dnb-bass-7.ogg",
           "fallback": "bass/dnb-bass-7.m4a"
+        },
+        {
+          "id": "dnb-bass-8",
+          "label": "Reese + remate",
+          "file": "bass/dnb-bass-8.ogg",
+          "fallback": "bass/dnb-bass-8.m4a"
+        },
+        {
+          "id": "dnb-bass-9",
+          "label": "Rodante + remate",
+          "file": "bass/dnb-bass-9.ogg",
+          "fallback": "bass/dnb-bass-9.m4a"
+        },
+        {
+          "id": "dnb-bass-10",
+          "label": "Reese con corte",
+          "file": "bass/dnb-bass-10.ogg",
+          "fallback": "bass/dnb-bass-10.m4a"
+        },
+        {
+          "id": "dnb-bass-11",
+          "label": "Sub ×2",
+          "file": "bass/dnb-bass-11.ogg",
+          "fallback": "bass/dnb-bass-11.m4a"
         }
       ]
     },
@@ -309,6 +405,30 @@
           "label": "MC ½",
           "file": "voice/dnb-voice-7.ogg",
           "fallback": "voice/dnb-voice-7.m4a"
+        },
+        {
+          "id": "dnb-voice-8",
+          "label": "Pad + remate",
+          "file": "voice/dnb-voice-8.ogg",
+          "fallback": "voice/dnb-voice-8.m4a"
+        },
+        {
+          "id": "dnb-voice-9",
+          "label": "Etéreo + remate",
+          "file": "voice/dnb-voice-9.ogg",
+          "fallback": "voice/dnb-voice-9.m4a"
+        },
+        {
+          "id": "dnb-voice-10",
+          "label": "MC con corte",
+          "file": "voice/dnb-voice-10.ogg",
+          "fallback": "voice/dnb-voice-10.m4a"
+        },
+        {
+          "id": "dnb-voice-11",
+          "label": "MC ×2",
+          "file": "voice/dnb-voice-11.ogg",
+          "fallback": "voice/dnb-voice-11.m4a"
         }
       ]
     },
@@ -358,6 +478,30 @@
           "label": "Barrido ½",
           "file": "fx/dnb-fx-7.ogg",
           "fallback": "fx/dnb-fx-7.m4a"
+        },
+        {
+          "id": "dnb-fx-8",
+          "label": "Subida + remate",
+          "file": "fx/dnb-fx-8.ogg",
+          "fallback": "fx/dnb-fx-8.m4a"
+        },
+        {
+          "id": "dnb-fx-9",
+          "label": "Bajón + remate",
+          "file": "fx/dnb-fx-9.ogg",
+          "fallback": "fx/dnb-fx-9.m4a"
+        },
+        {
+          "id": "dnb-fx-10",
+          "label": "Subida con corte",
+          "file": "fx/dnb-fx-10.ogg",
+          "fallback": "fx/dnb-fx-10.m4a"
+        },
+        {
+          "id": "dnb-fx-11",
+          "label": "Rewind ×2",
+          "file": "fx/dnb-fx-11.ogg",
+          "fallback": "fx/dnb-fx-11.m4a"
         }
       ]
     }

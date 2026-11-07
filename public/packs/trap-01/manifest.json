@@ -112,6 +112,30 @@
           "label": "Corto ½",
           "file": "kick/trap-kick-7.ogg",
           "fallback": "kick/trap-kick-7.m4a"
+        },
+        {
+          "id": "trap-kick-8",
+          "label": "808 Largo + remate",
+          "file": "kick/trap-kick-8.ogg",
+          "fallback": "kick/trap-kick-8.m4a"
+        },
+        {
+          "id": "trap-kick-9",
+          "label": "Doble + remate",
+          "file": "kick/trap-kick-9.ogg",
+          "fallback": "kick/trap-kick-9.m4a"
+        },
+        {
+          "id": "trap-kick-10",
+          "label": "808 Largo con corte",
+          "file": "kick/trap-kick-10.ogg",
+          "fallback": "kick/trap-kick-10.m4a"
+        },
+        {
+          "id": "trap-kick-11",
+          "label": "Corto ×2",
+          "file": "kick/trap-kick-11.ogg",
+          "fallback": "kick/trap-kick-11.m4a"
         }
       ]
     },
@@ -161,6 +185,30 @@
           "label": "Caja ½",
           "file": "snare/trap-snare-7.ogg",
           "fallback": "snare/trap-snare-7.m4a"
+        },
+        {
+          "id": "trap-snare-8",
+          "label": "Clap + remate",
+          "file": "snare/trap-snare-8.ogg",
+          "fallback": "snare/trap-snare-8.m4a"
+        },
+        {
+          "id": "trap-snare-9",
+          "label": "Rimshot + remate",
+          "file": "snare/trap-snare-9.ogg",
+          "fallback": "snare/trap-snare-9.m4a"
+        },
+        {
+          "id": "trap-snare-10",
+          "label": "Clap con corte",
+          "file": "snare/trap-snare-10.ogg",
+          "fallback": "snare/trap-snare-10.m4a"
+        },
+        {
+          "id": "trap-snare-11",
+          "label": "Caja ×2",
+          "file": "snare/trap-snare-11.ogg",
+          "fallback": "snare/trap-snare-11.m4a"
         }
       ]
     },
@@ -210,6 +258,30 @@
           "label": "Tresillos ½",
           "file": "hihat/trap-hihat-7.ogg",
           "fallback": "hihat/trap-hihat-7.m4a"
+        },
+        {
+          "id": "trap-hihat-8",
+          "label": "Rápido + remate",
+          "file": "hihat/trap-hihat-8.ogg",
+          "fallback": "hihat/trap-hihat-8.m4a"
+        },
+        {
+          "id": "trap-hihat-9",
+          "label": "Rodada + remate",
+          "file": "hihat/trap-hihat-9.ogg",
+          "fallback": "hihat/trap-hihat-9.m4a"
+        },
+        {
+          "id": "trap-hihat-10",
+          "label": "Rápido con corte",
+          "file": "hihat/trap-hihat-10.ogg",
+          "fallback": "hihat/trap-hihat-10.m4a"
+        },
+        {
+          "id": "trap-hihat-11",
+          "label": "Tresillos ×2",
+          "file": "hihat/trap-hihat-11.ogg",
+          "fallback": "hihat/trap-hihat-11.m4a"
         }
       ]
     },
@@ -259,6 +331,30 @@
           "label": "808 Pulso ½",
           "file": "bass/trap-bass-7.ogg",
           "fallback": "bass/trap-bass-7.m4a"
+        },
+        {
+          "id": "trap-bass-8",
+          "label": "808 + remate",
+          "file": "bass/trap-bass-8.ogg",
+          "fallback": "bass/trap-bass-8.m4a"
+        },
+        {
+          "id": "trap-bass-9",
+          "label": "Grave + remate",
+          "file": "bass/trap-bass-9.ogg",
+          "fallback": "bass/trap-bass-9.m4a"
+        },
+        {
+          "id": "trap-bass-10",
+          "label": "808 con corte",
+          "file": "bass/trap-bass-10.ogg",
+          "fallback": "bass/trap-bass-10.m4a"
+        },
+        {
+          "id": "trap-bass-11",
+          "label": "808 Deslizado ×2",
+          "file": "bass/trap-bass-11.ogg",
+          "fallback": "bass/trap-bass-11.m4a"
         }
       ]
     },
@@ -308,6 +404,30 @@
           "label": "Coro ½",
           "file": "voice/trap-voice-7.ogg",
           "fallback": "voice/trap-voice-7.m4a"
+        },
+        {
+          "id": "trap-voice-8",
+          "label": "Ad-lib + remate",
+          "file": "voice/trap-voice-8.ogg",
+          "fallback": "voice/trap-voice-8.m4a"
+        },
+        {
+          "id": "trap-voice-9",
+          "label": "Eco + remate",
+          "file": "voice/trap-voice-9.ogg",
+          "fallback": "voice/trap-voice-9.m4a"
+        },
+        {
+          "id": "trap-voice-10",
+          "label": "Ad-lib con corte",
+          "file": "voice/trap-voice-10.ogg",
+          "fallback": "voice/trap-voice-10.m4a"
+        },
+        {
+          "id": "trap-voice-11",
+          "label": "Coro ×2",
+          "file": "voice/trap-voice-11.ogg",
+          "fallback": "voice/trap-voice-11.m4a"
         }
       ]
     },
@@ -357,6 +477,30 @@
           "label": "Sirena ½",
           "file": "fx/trap-fx-7.ogg",
           "fallback": "fx/trap-fx-7.m4a"
+        },
+        {
+          "id": "trap-fx-8",
+          "label": "Riser + remate",
+          "file": "fx/trap-fx-8.ogg",
+          "fallback": "fx/trap-fx-8.m4a"
+        },
+        {
+          "id": "trap-fx-9",
+          "label": "Sirena + remate",
+          "file": "fx/trap-fx-9.ogg",
+          "fallback": "fx/trap-fx-9.m4a"
+        },
+        {
+          "id": "trap-fx-10",
+          "label": "Riser con corte",
+          "file": "fx/trap-fx-10.ogg",
+          "fallback": "fx/trap-fx-10.m4a"
+        },
+        {
+          "id": "trap-fx-11",
+          "label": "Tape stop ×2",
+          "file": "fx/trap-fx-11.ogg",
+          "fallback": "fx/trap-fx-11.m4a"
         }
       ]
     }

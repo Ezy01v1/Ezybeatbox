@@ -112,6 +112,30 @@
           "label": "Doble ½",
           "file": "kick/kick-7.ogg",
           "fallback": "kick/kick-7.m4a"
+        },
+        {
+          "id": "kick-8",
+          "label": "Clásico + remate",
+          "file": "kick/kick-8.ogg",
+          "fallback": "kick/kick-8.m4a"
+        },
+        {
+          "id": "kick-9",
+          "label": "Sincopado + remate",
+          "file": "kick/kick-9.ogg",
+          "fallback": "kick/kick-9.m4a"
+        },
+        {
+          "id": "kick-10",
+          "label": "Clásico con corte",
+          "file": "kick/kick-10.ogg",
+          "fallback": "kick/kick-10.m4a"
+        },
+        {
+          "id": "kick-11",
+          "label": "Doble ×2",
+          "file": "kick/kick-11.ogg",
+          "fallback": "kick/kick-11.m4a"
         }
       ]
     },
@@ -161,6 +185,30 @@
           "label": "Rimshot ½",
           "file": "snare/snare-7.ogg",
           "fallback": "snare/snare-7.m4a"
+        },
+        {
+          "id": "snare-8",
+          "label": "Caja + remate",
+          "file": "snare/snare-8.ogg",
+          "fallback": "snare/snare-8.m4a"
+        },
+        {
+          "id": "snare-9",
+          "label": "Aplauso + remate",
+          "file": "snare/snare-9.ogg",
+          "fallback": "snare/snare-9.m4a"
+        },
+        {
+          "id": "snare-10",
+          "label": "Caja con corte",
+          "file": "snare/snare-10.ogg",
+          "fallback": "snare/snare-10.m4a"
+        },
+        {
+          "id": "snare-11",
+          "label": "Rimshot ×2",
+          "file": "snare/snare-11.ogg",
+          "fallback": "snare/snare-11.m4a"
         }
       ]
     },
@@ -210,6 +258,30 @@
           "label": "Semicorcheas ½",
           "file": "hihat/hihat-7.ogg",
           "fallback": "hihat/hihat-7.m4a"
+        },
+        {
+          "id": "hihat-8",
+          "label": "Corcheas + remate",
+          "file": "hihat/hihat-8.ogg",
+          "fallback": "hihat/hihat-8.m4a"
+        },
+        {
+          "id": "hihat-9",
+          "label": "Abierto + remate",
+          "file": "hihat/hihat-9.ogg",
+          "fallback": "hihat/hihat-9.m4a"
+        },
+        {
+          "id": "hihat-10",
+          "label": "Corcheas con corte",
+          "file": "hihat/hihat-10.ogg",
+          "fallback": "hihat/hihat-10.m4a"
+        },
+        {
+          "id": "hihat-11",
+          "label": "Semicorcheas ×2",
+          "file": "hihat/hihat-11.ogg",
+          "fallback": "hihat/hihat-11.m4a"
         }
       ]
     },
@@ -259,6 +331,30 @@
           "label": "Caminante ½",
           "file": "bass/bass-7.ogg",
           "fallback": "bass/bass-7.m4a"
+        },
+        {
+          "id": "bass-8",
+          "label": "Raíz + remate",
+          "file": "bass/bass-8.ogg",
+          "fallback": "bass/bass-8.m4a"
+        },
+        {
+          "id": "bass-9",
+          "label": "Sub + remate",
+          "file": "bass/bass-9.ogg",
+          "fallback": "bass/bass-9.m4a"
+        },
+        {
+          "id": "bass-10",
+          "label": "Raíz con corte",
+          "file": "bass/bass-10.ogg",
+          "fallback": "bass/bass-10.m4a"
+        },
+        {
+          "id": "bass-11",
+          "label": "Caminante ×2",
+          "file": "bass/bass-11.ogg",
+          "fallback": "bass/bass-11.m4a"
         }
       ]
     },
@@ -308,6 +404,30 @@
           "label": "Coro soul ½",
           "file": "voice/voice-7.ogg",
           "fallback": "voice/voice-7.m4a"
+        },
+        {
+          "id": "voice-8",
+          "label": "Yeah + remate",
+          "file": "voice/voice-8.ogg",
+          "fallback": "voice/voice-8.m4a"
+        },
+        {
+          "id": "voice-9",
+          "label": "Respuesta + remate",
+          "file": "voice/voice-9.ogg",
+          "fallback": "voice/voice-9.m4a"
+        },
+        {
+          "id": "voice-10",
+          "label": "Yeah con corte",
+          "file": "voice/voice-10.ogg",
+          "fallback": "voice/voice-10.m4a"
+        },
+        {
+          "id": "voice-11",
+          "label": "Coro soul ×2",
+          "file": "voice/voice-11.ogg",
+          "fallback": "voice/voice-11.m4a"
         }
       ]
     },
@@ -357,6 +477,30 @@
           "label": "Scratch ½",
           "file": "fx/fx-7.ogg",
           "fallback": "fx/fx-7.m4a"
+        },
+        {
+          "id": "fx-8",
+          "label": "Scratch baby + remate",
+          "file": "fx/fx-8.ogg",
+          "fallback": "fx/fx-8.m4a"
+        },
+        {
+          "id": "fx-9",
+          "label": "Scratch + remate",
+          "file": "fx/fx-9.ogg",
+          "fallback": "fx/fx-9.m4a"
+        },
+        {
+          "id": "fx-10",
+          "label": "Scratch baby con corte",
+          "file": "fx/fx-10.ogg",
+          "fallback": "fx/fx-10.m4a"
+        },
+        {
+          "id": "fx-11",
+          "label": "Rewind ×2",
+          "file": "fx/fx-11.ogg",
+          "fallback": "fx/fx-11.m4a"
         }
       ]
     }

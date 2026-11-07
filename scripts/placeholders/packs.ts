@@ -16,7 +16,7 @@ import {
   trapFinish,
 } from './finish'
 import type { PackBase, PackManifest } from '../../src/core/packs/schema'
-import { BOOM_BAP_RECIPES, type CharacterRecipe, withVariations } from './recipes'
+import { BOOM_BAP_RECIPES, type CharacterRecipe, withFills, withVariations } from './recipes'
 import { AFROBEAT_RECIPES } from './afrobeatRecipes'
 import { DNB_RECIPES } from './dnbRecipes'
 import { HOUSE_RECIPES } from './houseRecipes'
@@ -88,7 +88,10 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
         base('', 'pesada', 'Pesada', [4, 1, 2, 3, 4, 4]),
       ],
     },
-    recipes: withVariations(boomBapPalette(BOOM_BAP_RECIPES), '', { fx: { half: 3 } }),
+    recipes: withFills(
+      withVariations(boomBapPalette(BOOM_BAP_RECIPES), '', { fx: { half: 3 } }),
+      '',
+    ),
     finish: boomBapFinish,
   },
   {
@@ -126,10 +129,13 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
         base('trap-', 'oscura', 'Oscura', [4, 4, 2, 3, 4, 1]),
       ],
     },
-    recipes: withVariations(trapPalette(TRAP_RECIPES), 'trap-', {
-      bass: { half: 4 },
-      fx: { half: 3, swing: 4 },
-    }),
+    recipes: withFills(
+      withVariations(trapPalette(TRAP_RECIPES), 'trap-', {
+        bass: { half: 4 },
+        fx: { half: 3, swing: 4 },
+      }),
+      'trap-',
+    ),
     finish: trapFinish,
   },
   {
@@ -167,10 +173,15 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
         base('reggaeton-', 'romantico', 'Romántico', [3, 3, 4, 5, 5, 0]),
       ],
     },
-    recipes: withVariations(reggaetonPalette(REGGAETON_RECIPES), 'reggaeton-', {
-      voice: { swing: 5 },
-      fx: { swing: 2 },
-    }),
+    recipes: withFills(
+      withVariations(reggaetonPalette(REGGAETON_RECIPES), 'reggaeton-', {
+        voice: { swing: 5 },
+        fx: { swing: 2 },
+      }),
+      'reggaeton-',
+      // The siren holds through the loop: fill on the timbales and stop on the drop instead.
+      { fx: { fill: 5, stop: 3 } },
+    ),
     finish: reggaetonFinish,
   },
   {
@@ -208,7 +219,11 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
         base('house-', 'pista', 'Pista', [3, 5, 5, 2, 5, 1]),
       ],
     },
-    recipes: withVariations(housePalette(HOUSE_RECIPES), 'house-', { fx: { swing: 5 } }),
+    recipes: withFills(
+      withVariations(housePalette(HOUSE_RECIPES), 'house-', { fx: { swing: 5 } }),
+      'house-',
+      { fx: { stop: 5 } },
+    ),
     finish: houseFinish,
   },
   {
@@ -246,10 +261,15 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
         base('dnb-', 'medio-tiempo', 'Medio tiempo', [5, 5, 3, 4, 4, 3]),
       ],
     },
-    recipes: withVariations(dnbPalette(DNB_RECIPES), 'dnb-', {
-      voice: { swing: 2 },
-      fx: { half: 4 },
-    }),
+    recipes: withFills(
+      withVariations(dnbPalette(DNB_RECIPES), 'dnb-', {
+        voice: { swing: 2 },
+        fx: { half: 4 },
+      }),
+      'dnb-',
+      // The pad holds through the loop: stop the MC instead.
+      { voice: { stop: 2 } },
+    ),
     finish: dnbFinish,
   },
   {
@@ -287,7 +307,10 @@ export const PLACEHOLDER_PACKS: PlaceholderPack[] = [
         base('afrobeat-', 'fiesta', 'Fiesta', [4, 5, 4, 4, 5, 2]),
       ],
     },
-    recipes: withVariations(afrobeatPalette(AFROBEAT_RECIPES), 'afrobeat-', { fx: { half: 3 } }),
+    recipes: withFills(
+      withVariations(afrobeatPalette(AFROBEAT_RECIPES), 'afrobeat-', { fx: { half: 3 } }),
+      'afrobeat-',
+    ),
     finish: afrobeatFinish,
   },
 ]

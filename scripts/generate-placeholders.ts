@@ -11,7 +11,7 @@
  */
 import { spawnSync } from 'node:child_process'
 import ffmpegStatic from 'ffmpeg-static'
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { type PackManifest, type SoundDef, packManifestSchema } from '../src/core/packs/schema'
@@ -101,7 +101,13 @@ function generatePack({ meta, recipes, finish }: PlaceholderPack): void {
   packManifestSchema.parse(manifest)
 
   const manifestPath = join(packDir, 'manifest.json')
-  if (force || !existsSync(manifestPath)) {
+  // New or renamed sounds in the recipes also rewrite the manifest, so they show up without --force.
+  const soundList = (m: PackManifest) =>
+    m.characters.flatMap((c) => c.sounds.map((s) => `${s.id}=${s.label}`)).join()
+  const stale =
+    existsSync(manifestPath) &&
+    soundList(JSON.parse(readFileSync(manifestPath, 'utf8')) as PackManifest) !== soundList(manifest)
+  if (force || stale || !existsSync(manifestPath)) {
     writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`)
     console.log(`  ✓ manifest.json`)
   } else {

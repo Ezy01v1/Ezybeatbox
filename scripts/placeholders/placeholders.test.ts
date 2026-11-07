@@ -20,9 +20,9 @@ describe.each(PLACEHOLDER_PACKS.map((pack) => [pack.meta.id, pack] as const))(
       renderPlaceholder(recipe, meta, finish && { role: roleOf(recipe.id), apply: finish })
     const expectedLength = loopSampleCount(meta, meta.loopBars, PLACEHOLDER_SAMPLE_RATE)
 
-    it('define the 6 roles in order with 7 sounds each (5 + swing and half-time)', () => {
+    it('define the 6 roles in order with 11 sounds each (5 + swing, half-time, two fills, stop and double time)', () => {
       expect(recipes.map((c) => c.role)).toEqual(['kick', 'snare', 'hihat', 'bass', 'voice', 'fx'])
-      for (const character of recipes) expect(character.sounds).toHaveLength(7)
+      for (const character of recipes) expect(character.sounds).toHaveLength(11)
     })
 
     it.each(recipes.map((c) => [c.id, c] as const))(
@@ -36,8 +36,8 @@ describe.each(PLACEHOLDER_PACKS.map((pack) => [pack.meta.id, pack] as const))(
           }
         }
       },
-      // Seven full loops per character; the richer instruments take a few seconds.
-      30_000,
+      // Eleven full loops per character; the richer instruments take a few seconds.
+      60_000,
     )
 
     it.each(allRecipes.map((recipe) => [recipe.id, recipe] as const))(

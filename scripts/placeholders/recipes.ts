@@ -125,6 +125,87 @@ export function withVariations(
   })
 }
 
+export interface FillSources {
+  /** Sound whose last beat is replaced by its first half bar at double speed (default 1). */
+  fill?: number
+  /** Second fill, on another sound (default 3). */
+  fill2?: number
+  /** Sound that stops for the last half bar (default 1). */
+  stop?: number
+  /** Sound whose whole loop is played twice as fast, twice over (default 2). */
+  double?: number
+}
+
+const loopSteps = (c: RenderContext) =>
+  Math.round(c.buffer.data.length / c.buffer.sampleRate / c.step)
+
+/**
+ * Four more sounds per character, appended after the swing and half-time ones (ids n+1…n+4):
+ * two fills ("+ remate"), a stop ("con corte") and the loop at double speed ("×2"). Like `withVariations`,
+ * they re-time an existing sound through `at`, so every fill uses the character's own voice and
+ * stays in key. Ids are only ever appended, so saved mixes keep pointing at the same sounds.
+ */
+export function withFills(
+  recipes: CharacterRecipe[],
+  prefix: string,
+  sources: Partial<Record<CharacterRole, FillSources>> = {},
+): CharacterRecipe[] {
+  return recipes.map((character) => {
+    const pick = (n: number) => {
+      const sound = character.sounds[n - 1]
+      if (!sound) throw new Error(`${character.id} has no sound ${n}`)
+      return sound
+    }
+    const from = sources[character.role] ?? {}
+    const n = character.sounds.length
+    const id = (k: number) => `${prefix}${character.id}-${n + k}`
+
+    const fill = (source: SoundRecipe, k: number): SoundRecipe => ({
+      id: id(k),
+      label: `${source.label} + remate`,
+      render: (c) => {
+        const end = loopSteps(c) - 4
+        // The groove up to the last beat…
+        source.render({ ...c, at: (s) => (s < end ? s * c.step : null) })
+        // …then its first two beats squeezed into the last one.
+        source.render({ ...c, at: (s) => (s >= 0 && s < 8 ? (end + s / 2) * c.step : null) })
+      },
+    })
+
+    const stopFrom = pick(from.stop ?? 1)
+    const doubleFrom = pick(from.double ?? 2)
+    return {
+      ...character,
+      sounds: [
+        ...character.sounds,
+        fill(pick(from.fill ?? 1), 1),
+        fill(pick(from.fill2 ?? 3), 2),
+        {
+          id: id(3),
+          label: `${stopFrom.label} con corte`,
+          render: (c) => {
+            const end = loopSteps(c) - 8
+            stopFrom.render({ ...c, at: (s) => (s < end ? s * c.step : null) })
+          },
+        },
+        {
+          id: id(4),
+          label: `${doubleFrom.label} ×2`,
+          render: (c) => {
+            const half = loopSteps(c) / 2
+            for (const offset of [0, half]) {
+              doubleFrom.render({
+                ...c,
+                at: (s) => (s >= 0 && s < 2 * half ? (offset + s / 2) * c.step : null),
+              })
+            }
+          },
+        },
+      ],
+    }
+  })
+}
+
 /**
  * Replaces sounds by id (label and render), keeping ids so saved mixes, links and bases still
  * point at the same slot. Fails loudly on an unknown id.

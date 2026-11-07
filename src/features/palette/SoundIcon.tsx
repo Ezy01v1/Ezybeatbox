@@ -52,7 +52,7 @@ export function SoundIcon({
       })}
       onPointerDown={drag.onPointerDown}
       onClick={drag.onClick}
-      className="flex w-16 shrink-0 cursor-grab touch-pan-x flex-col items-center gap-1 rounded-xl p-1 select-none active:cursor-grabbing"
+      className="flex w-[4.5rem] shrink-0 cursor-grab touch-pan-x flex-col items-center gap-1 rounded-xl p-1 select-none active:cursor-grabbing"
     >
       <span
         className={`grid size-12 place-items-center rounded-full border-2 transition-transform motion-reduce:transition-none ${
@@ -67,7 +67,8 @@ export function SoundIcon({
       >
         <RoleGlyph role={character.role} className="size-6" />
       </span>
-      <span className="text-ink-muted w-full truncate text-center text-[11px] leading-tight font-medium">
+      {/* Two lines, so variations ("Clásico + remate", "Clásico swing") stay distinguishable. */}
+      <span className="text-ink-muted line-clamp-2 min-h-[2.5em] w-full text-center text-[11px] leading-tight font-medium hyphens-auto">
         {label}
       </span>
     </button>

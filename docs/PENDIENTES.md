@@ -3,14 +3,15 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-06 (PC2, trabajo)**. Seis géneros con paleta sonora propia, cualquier sonido en cualquier personaje, bases, animaciones al compás, y todo en SVG (ya no hay Rive). Daniel sigue desde la PC1 en casa.
+> Última actualización: **2026-11-06 (PC1, casa)**: 11 sonidos por sección, con remates, corte y ×2. Antes, en la PC2: Seis géneros con paleta sonora propia, cualquier sonido en cualquier personaje, bases, animaciones al compás, y todo en SVG (ya no hay Rive). Daniel sigue desde la PC1 en casa.
 
 ## Estado en una línea
 
 Las 6 fases del plan (0–5) y la PWA están terminadas. Hay seis géneros: Boom Bap 90, Trap 140, Reggaetón 95, House 124, Drum & Bass 174 y Afrobeat 105. Cada uno tiene:
+
 - sus colores, su escenario con patrón que late al compás y su portada;
 - tres bases prearmadas;
-- 7 sonidos por sección (5 propios más swing y ½);
+- 11 sonidos por sección (5 propios más swing, ½, dos remates, corte y ×2);
 - su paleta sonora propia.
 
 Cualquier personaje toca cualquier sonido, uno por personaje. **Falta:** que Daniel escuche y ajuste los sonidos, más combinaciones, las funcionalidades nuevas, publicar la app y la QA en el celular.
@@ -24,7 +25,9 @@ Cualquier personaje toca cualquier sonido, uno por personaje. **Falta:** que Dan
 1. [ ] **Ajustar los sonidos según lo que escuche Daniel.** Le gustaron en general (2026-11-06), pero falta su lista concreta.
    - Los sonidos de cada género están en `scripts/placeholders/palettes.ts`, los instrumentos en `voices.ts` e `instruments.ts`, y el color de mezcla en `finish.ts`.
    - Para regenerar un pack: `npx tsx scripts/generate-placeholders.ts --force --pack <id>`. Después, `git checkout` de los `.ogg`/`.m4a` de los packs que no se tocaron, porque `--force` vuelve a codificar todo y cambia los bytes.
-2. [ ] **Más combinaciones por género:** pasar de 7 a 10–12 sonidos por sección y agregar **fills**, es decir redobles o remates al final del loop, escritos a mano. Agregar ids nuevos al final de cada sección, sin cambiar los existentes, para no romper las mezclas guardadas.
+2. [ ] **Más combinaciones por género:** ya hay 11 sonidos por sección (2026-11-06), con remates automáticos (ver "Hecho recientemente").
+   - Falta que Daniel los escuche: si algún remate o "×2" suena mal, se cambia su fuente en `withFills` (`scripts/placeholders/packs.ts`) o se reemplaza con `overrideSounds` por uno escrito a mano.
+   - Queda **1 lugar libre por sección** (el máximo del manifest es 12). Agregar ids nuevos solo al final, para no romper las mezclas guardadas.
 3. [ ] **Funcionalidades** (recomendado en este orden):
    - **"Sorpréndeme":** una mezcla al azar que suene bien. Por ejemplo, un sonido por sección, con algo de variedad.
    - **Drops:** solo bombo y bajo durante un compás, y luego vuelven todos.
@@ -124,6 +127,15 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-06 (PC1):** 144 loops nuevos, cuatro por personaje en los seis packs, así que cada sección pasa de 7 a 11 sonidos. Los genera `withFills` (`scripts/placeholders/recipes.ts`), también a partir de sonidos existentes:
+  - **"+ remate"** (dos por sección): el último tiempo se reemplaza por los dos primeros tiempos del patrón al doble de velocidad, con la voz del mismo personaje y en la misma tonalidad.
+  - **"con corte"**: el patrón se calla en la última mitad del compás 2.
+  - **"×2"**: el loop entero al doble de velocidad, dos veces.
+  - Donde la fuente por defecto sonaba igual o quedaba muda (sirena de Reggaetón, filtro de House, pad de DnB), se eligió otra fuente.
+  - `generate-placeholders` ahora reescribe el manifest si cambian los ids o los nombres de los sonidos, sin necesidad de `--force`.
+  - En la paleta, el nombre del sonido ocupa hasta dos líneas (antes se cortaba con "…", y "Clásico + remate" no se distinguía de "Clásico con corte").
+  - La precarga de la PWA queda en 12 MB.
 
 - **2026-11-06:** paleta sonora propia para Boom Bap, Drum & Bass y Afrobeat. Instrumentos nuevos: bombo polvoriento, caja de break, shekere y log drum.
   - **Boom Bap:** todo pasa por un "sampler viejo" (filtro y saturación). Tiene voces soul ("Yeah", "Coro soul", "Hook"), "Scratch baby", "Rewind" y "Tape stop".
