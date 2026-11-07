@@ -64,7 +64,8 @@
   "palette": {
     "label": "Sonidos",
     "sound": "{{sound}} ({{section}})",
-    "selected": "{{sound}} ({{section}}), lo toca {{character}}"
+    "selected": "{{sound}} ({{section}}), lo toca {{character}}",
+    "keysHint": "Enter lo pone donde corresponde. Con un número eliges quién lo toca: {{characters}}"
   },
   "common": {
     "close": "Cerrar"

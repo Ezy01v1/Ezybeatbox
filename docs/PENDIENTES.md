@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-06 (PC1, casa)**: nombres de los personajes, tempo en vivo, botones "Drop" y "Sorpréndeme" y 11 sonidos por sección, con remates, corte y ×2. Antes, en la PC2: Seis géneros con paleta sonora propia, cualquier sonido en cualquier personaje, bases, animaciones al compás, y todo en SVG (ya no hay Rive). Daniel sigue desde la PC1 en casa.
+> Última actualización: **2026-11-06 (PC1, casa)**: teclas 1–6 en la paleta, nombres de los personajes, tempo en vivo, botones "Drop" y "Sorpréndeme" y 11 sonidos por sección, con remates, corte y ×2. Antes, en la PC2: Seis géneros con paleta sonora propia, cualquier sonido en cualquier personaje, bases, animaciones al compás, y todo en SVG (ya no hay Rive). Daniel sigue desde la PC1 en casa.
 
 ## Estado en una línea
 
@@ -35,7 +35,7 @@ Cualquier personaje toca cualquier sonido, uno por personaje. **Falta:** que Dan
      - Que Daniel lo escuche. Al cambiar de tempo, el último instante antes del compás puede sonar con el tono nuevo, porque Tone aplica el `playbackRate` con anticipación.
      - Decidir si el rango de ±15 % alcanza o si quiere conservar el tono. Eso requeriría `GrainPlayer`, que en baterías suena peor.
 4. [x] **Nombres de los personajes** (2026-11-06): nombres al azar y neutros, un elenco distinto por género. Si alguno no le gusta a Daniel, se cambia en `scripts/placeholders/names.ts`.
-5. [ ] **Teclado:** al tocar un sonido, la app elige el personaje (`placeSound`). Falta una forma de elegir el personaje con teclado, por ejemplo para poner dos bombos.
+5. [x] **Teclado** (2026-11-06): con un sonido enfocado, las teclas 1–6 eligen el personaje que lo toca.
 6. [ ] **Ropa o accesorios por género:** hoy todos los géneros comparten el personaje streetwear y solo cambian los colores.
 7. [ ] **Golpes CC0 o grabados por Daniel** para las voces y los FX (como beatboxer), y algunos golpes de batería. Solo con licencia CC0 (por ejemplo, Freesound filtrado por "Creative Commons 0"), porque la app redistribuye los sonidos. Los ritmos los compone Claude.
 
@@ -129,6 +129,10 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-06 (PC1):** **teclado en la paleta**. Con un sonido enfocado, Enter lo pone donde decide `placeSound` (como antes) y las teclas 1–6 lo ponen en ese personaje, en el orden del escenario. Así se pueden poner dos bombos.
+  - La pista con los números y los nombres ("1 Tali · 2 Luca…") aparece solo al navegar con el teclado. Los lectores de pantalla la leen siempre (`aria-describedby`, `aria-keyshortcuts`).
+  - Probado en Boom Bap: Clásico en Uri (4) y Doble en Tali (1).
 
 - **2026-11-06 (PC1):** **nombres propios** para los personajes. Se eligieron al azar de una lista de 40 nombres neutros (`scripts/placeholders/names.ts`), con una semilla fija: no cambian al regenerar y no se repiten entre géneros.
   - Boom Bap: Tali, Luca, Gabi, Uri, Nao, Isa. Trap: Mika, Vic, Sasha, Sol, Oli, Toni. Reggaetón: Jesse, Pau, Fran, Juni, Ilan, Jade. House: Eli, Sam, Coco, Max, Río, Ale. Drum & Bass: Andy, Lou, Ari, Cris, Mar, Alex. Afrobeat: Ren, Remy, Noa, Charlie, Robin, Zuri.

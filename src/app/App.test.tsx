@@ -122,6 +122,21 @@ describe('App', () => {
     expect(characterRegion(/^bass: bass 2, En espera/)).toBeInTheDocument()
   })
 
+  it('keyboard: a number puts the sound on that character, e.g. two kicks at once', async () => {
+    const { user } = renderApp()
+    await enterStage(user)
+
+    screen.getByRole('button', { name: 'kick 1 (kick)' }).focus()
+    await user.keyboard('1')
+    screen.getByRole('button', { name: 'kick 2 (kick)' }).focus()
+    await user.keyboard('5')
+    expect(characterRegion(/^kick: kick 1, En espera/)).toBeInTheDocument()
+    expect(characterRegion(/^voice: kick 2, En espera/)).toBeInTheDocument()
+    expect(
+      screen.getByText(/Con un número eliges quién lo toca: 1 kick · 2 snare/),
+    ).toBeInTheDocument()
+  })
+
   it('the remove button clears a character on the next bar', async () => {
     const { user, engine } = renderApp()
     await enterStage(user)

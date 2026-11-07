@@ -3,6 +3,7 @@ import { useTheme } from '@/app/useTheme'
 import type { PackManifest } from '@/core/packs/schema'
 import { useLocalizedText } from '@/i18n/useLocalizedText'
 import { SoundIcon } from './SoundIcon'
+import { PALETTE_KEYS_HINT_ID } from './keys'
 
 /** Bottom tray with every sound, grouped by character. Scrolls horizontally on small screens. */
 export function Palette({ manifest }: { manifest: PackManifest }) {
@@ -13,8 +14,22 @@ export function Palette({ manifest }: { manifest: PackManifest }) {
   return (
     <nav
       aria-label={t('palette.label')}
-      className="border-line bg-card border-t pb-[env(safe-area-inset-bottom)]"
+      className="group/palette border-line bg-card border-t pb-[env(safe-area-inset-bottom)]"
     >
+      {/*
+       * Keyboard hint: always read by screen readers (aria-describedby on every sound), shown
+       * only while a sound has keyboard focus, so it never clutters touch screens.
+       */}
+      <p
+        id={PALETTE_KEYS_HINT_ID}
+        className="text-ink-muted sr-only mx-auto max-w-6xl px-3 pt-2 text-xs group-has-[button:focus-visible]/palette:not-sr-only sm:px-5"
+      >
+        {t('palette.keysHint', {
+          characters: manifest.characters
+            .map((c, i) => `${i + 1} ${localize(c.name ?? c.label)}`)
+            .join(' · '),
+        })}
+      </p>
       <div className="mx-auto flex max-w-6xl [scrollbar-width:thin] gap-2 overflow-x-auto px-3 py-2 sm:px-5">
         {manifest.characters.map((character) => (
           <div

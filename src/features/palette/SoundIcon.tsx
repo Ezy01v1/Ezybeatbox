@@ -5,10 +5,12 @@ import { useLocalizedText } from '@/i18n/useLocalizedText'
 import { RoleGlyph, readableInk } from '@/visuals'
 import { useApplyDrop } from './dnd/useApplyDrop'
 import { usePointerDrag } from './dnd/usePointerDrag'
+import { PALETTE_KEYS_HINT_ID } from './keys'
 
 /**
  * A palette sound. Drag it onto any character, or tap/click it (or press Enter/Space) to
- * place it where `placeSound` decides: that is the accessible fallback to drag & drop.
+ * place it where `placeSound` decides: that is the accessible fallback to drag & drop. With the
+ * keyboard, 1–6 put it on that character instead (stage order), e.g. two kicks at once.
  * `character` is the sound's section (color, glyph), not where it must go.
  */
 export function SoundIcon({
@@ -25,6 +27,8 @@ export function SoundIcon({
   const localize = useLocalizedText()
   const applyDrop = useApplyDrop()
   const placeSound = useAppStore((s) => s.placeSound)
+  const setSound = useAppStore((s) => s.setSound)
+  const characters = useAppStore((s) => s.manifest?.characters)
   // Any character may hold it (one at a time); name that one in the label.
   const holderId = useAppStore(
     (s) => Object.entries(s.slots).find(([, slot]) => slot.target === sound.id)?.[0],
@@ -41,6 +45,14 @@ export function SoundIcon({
   const label = localize(sound.label)
   const characterName = holder ? localize(holder.name ?? holder.label) : ''
 
+  const onKeyDown = (event: React.KeyboardEvent) => {
+    if (event.altKey || event.ctrlKey || event.metaKey) return
+    const target = characters?.[Number(event.key) - 1]
+    if (!/^[1-9]$/.test(event.key) || !target) return
+    event.preventDefault()
+    setSound(target.id, sound.id)
+  }
+
   return (
     <button
       type="button"
@@ -50,8 +62,11 @@ export function SoundIcon({
         section: localize(character.label),
         character: characterName,
       })}
+      aria-keyshortcuts={characters?.map((_, i) => String(i + 1)).join(' ')}
+      aria-describedby={PALETTE_KEYS_HINT_ID}
       onPointerDown={drag.onPointerDown}
       onClick={drag.onClick}
+      onKeyDown={onKeyDown}
       className="flex w-[4.5rem] shrink-0 cursor-grab touch-pan-x flex-col items-center gap-1 rounded-xl p-1 select-none active:cursor-grabbing"
     >
       <span
