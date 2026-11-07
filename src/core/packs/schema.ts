@@ -55,7 +55,10 @@ export const soundSchema = z.object({
 export const characterSchema = z.object({
   id: idSchema,
   role: z.enum(CHARACTER_ROLES),
+  /** Section name ("Kick", "Bajo"…): heads the character's sounds in the palette. */
   label: localizedTextSchema,
+  /** The character's own name on stage ("Kai"). Any character can play any sound. */
+  name: localizedTextSchema.optional(),
   sounds: z.array(soundSchema).min(1).max(12),
 })
 

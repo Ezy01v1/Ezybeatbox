@@ -71,6 +71,7 @@
       "id": "kick",
       "role": "kick",
       "label": "Kick",
+      "name": "Andy",
       "sounds": [
         {
           "id": "dnb-kick-1",
@@ -144,6 +145,7 @@
       "id": "snare",
       "role": "snare",
       "label": "Snare",
+      "name": "Lou",
       "sounds": [
         {
           "id": "dnb-snare-1",
@@ -217,6 +219,7 @@
       "id": "hihat",
       "role": "hihat",
       "label": "Hi-hat",
+      "name": "Ari",
       "sounds": [
         {
           "id": "dnb-hihat-1",
@@ -290,6 +293,7 @@
       "id": "bass",
       "role": "bass",
       "label": "Bass",
+      "name": "Cris",
       "sounds": [
         {
           "id": "dnb-bass-1",
@@ -363,6 +367,7 @@
       "id": "voice",
       "role": "voice",
       "label": "Voice",
+      "name": "Mar",
       "sounds": [
         {
           "id": "dnb-voice-1",
@@ -436,6 +441,7 @@
       "id": "fx",
       "role": "fx",
       "label": "FX",
+      "name": "Alex",
       "sounds": [
         {
           "id": "dnb-fx-1",

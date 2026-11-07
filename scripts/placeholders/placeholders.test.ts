@@ -76,6 +76,14 @@ describe.each(PLACEHOLDER_PACKS.map((pack) => [pack.meta.id, pack] as const))(
   },
 )
 
+describe('character names', () => {
+  it('gives every character a name, never repeated across packs', () => {
+    const names = PLACEHOLDER_PACKS.flatMap((pack) => pack.names)
+    expect(names).toHaveLength(PLACEHOLDER_PACKS.length * 6)
+    expect(new Set(names).size).toBe(names.length)
+  })
+})
+
 describe('pack catalog', () => {
   it('lists every generated pack', () => {
     const catalog = JSON.parse(readFileSync(join(packsDir, 'index.json'), 'utf8'))

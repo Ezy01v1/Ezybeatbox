@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-06 (PC1, casa)**: tempo en vivo, botones "Drop" y "Sorpréndeme" y 11 sonidos por sección, con remates, corte y ×2. Antes, en la PC2: Seis géneros con paleta sonora propia, cualquier sonido en cualquier personaje, bases, animaciones al compás, y todo en SVG (ya no hay Rive). Daniel sigue desde la PC1 en casa.
+> Última actualización: **2026-11-06 (PC1, casa)**: nombres de los personajes, tempo en vivo, botones "Drop" y "Sorpréndeme" y 11 sonidos por sección, con remates, corte y ×2. Antes, en la PC2: Seis géneros con paleta sonora propia, cualquier sonido en cualquier personaje, bases, animaciones al compás, y todo en SVG (ya no hay Rive). Daniel sigue desde la PC1 en casa.
 
 ## Estado en una línea
 
@@ -34,7 +34,7 @@ Cualquier personaje toca cualquier sonido, uno por personaje. **Falta:** que Dan
    - [x] **BPM en vivo** (2026-11-06): control − / BPM / + en la barra superior. Pendiente:
      - Que Daniel lo escuche. Al cambiar de tempo, el último instante antes del compás puede sonar con el tono nuevo, porque Tone aplica el `playbackRate` con anticipación.
      - Decidir si el rango de ±15 % alcanza o si quiere conservar el tono. Eso requeriría `GrainPlayer`, que en baterías suena peor.
-4. [ ] **Nombres de los personajes:** siguen llamándose "Kick", "Snare"…, aunque ya pueden tocar cualquier cosa. Preguntarle a Daniel si quiere nombres propios.
+4. [x] **Nombres de los personajes** (2026-11-06): nombres al azar y neutros, un elenco distinto por género. Si alguno no le gusta a Daniel, se cambia en `scripts/placeholders/names.ts`.
 5. [ ] **Teclado:** al tocar un sonido, la app elige el personaje (`placeSound`). Falta una forma de elegir el personaje con teclado, por ejemplo para poner dos bombos.
 6. [ ] **Ropa o accesorios por género:** hoy todos los géneros comparten el personaje streetwear y solo cambian los colores.
 7. [ ] **Golpes CC0 o grabados por Daniel** para las voces y los FX (como beatboxer), y algunos golpes de batería. Solo con licencia CC0 (por ejemplo, Freesound filtrado por "Creative Commons 0"), porque la app redistribuye los sonidos. Los ritmos los compone Claude.
@@ -129,6 +129,11 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-06 (PC1):** **nombres propios** para los personajes. Se eligieron al azar de una lista de 40 nombres neutros (`scripts/placeholders/names.ts`), con una semilla fija: no cambian al regenerar y no se repiten entre géneros.
+  - Boom Bap: Tali, Luca, Gabi, Uri, Nao, Isa. Trap: Mika, Vic, Sasha, Sol, Oli, Toni. Reggaetón: Jesse, Pau, Fran, Juni, Ilan, Jade. House: Eli, Sam, Coco, Max, Río, Ale. Drum & Bass: Andy, Lou, Ari, Cris, Mar, Alex. Afrobeat: Ren, Remy, Noa, Charlie, Robin, Zuri.
+  - El manifest tiene el campo opcional `name` por personaje. El escenario muestra el nombre; la paleta sigue agrupando por sección (Kick, Snare…).
+  - `generate-placeholders` reescribe un manifest cuando cambia cualquier parte de su contenido.
 
 - **2026-11-06 (PC1):** **tempo en vivo**. En la barra superior hay − / BPM / + (de a 2 BPM, dentro de ±15 % del tempo del pack). Al tocar el número vuelve al tempo original.
   - Mientras suena, el cambio entra en el siguiente compás; mientras tanto el número se ve resaltado.

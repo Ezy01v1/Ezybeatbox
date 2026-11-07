@@ -69,6 +69,7 @@
       "id": "kick",
       "role": "kick",
       "label": "Kick",
+      "name": "Jesse",
       "sounds": [
         {
           "id": "reggaeton-kick-1",
@@ -142,6 +143,7 @@
       "id": "snare",
       "role": "snare",
       "label": "Snare",
+      "name": "Pau",
       "sounds": [
         {
           "id": "reggaeton-snare-1",
@@ -215,6 +217,7 @@
       "id": "hihat",
       "role": "hihat",
       "label": "Hi-hat",
+      "name": "Fran",
       "sounds": [
         {
           "id": "reggaeton-hihat-1",
@@ -288,6 +291,7 @@
       "id": "bass",
       "role": "bass",
       "label": "Bass",
+      "name": "Juni",
       "sounds": [
         {
           "id": "reggaeton-bass-1",
@@ -361,6 +365,7 @@
       "id": "voice",
       "role": "voice",
       "label": "Voice",
+      "name": "Ilan",
       "sounds": [
         {
           "id": "reggaeton-voice-1",
@@ -434,6 +439,7 @@
       "id": "fx",
       "role": "fx",
       "label": "FX",
+      "name": "Jade",
       "sounds": [
         {
           "id": "reggaeton-fx-1",

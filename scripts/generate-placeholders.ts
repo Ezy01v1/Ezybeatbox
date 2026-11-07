@@ -53,7 +53,7 @@ function writeFile(path: string, data: Uint8Array | string): void {
   writeFileSync(path, data)
 }
 
-function generatePack({ meta, recipes, finish }: PlaceholderPack): void {
+function generatePack({ meta, recipes, finish, names }: PlaceholderPack): void {
   const packDir = join(root, 'public', 'packs', meta.id)
   let written = 0
   let skipped = 0
@@ -61,10 +61,11 @@ function generatePack({ meta, recipes, finish }: PlaceholderPack): void {
 
   const manifest: PackManifest = {
     ...meta,
-    characters: recipes.map((character) => ({
+    characters: recipes.map((character, i) => ({
       id: character.id,
       role: character.role,
       label: character.label,
+      ...(names[i] ? { name: names[i] } : {}),
       sounds: character.sounds.map((recipe) => {
         const base = `${character.id}/${recipe.id}`
         const sound: SoundDef = hasFfmpeg
@@ -101,14 +102,11 @@ function generatePack({ meta, recipes, finish }: PlaceholderPack): void {
   packManifestSchema.parse(manifest)
 
   const manifestPath = join(packDir, 'manifest.json')
-  // New or renamed sounds in the recipes also rewrite the manifest, so they show up without --force.
-  const soundList = (m: PackManifest) =>
-    m.characters.flatMap((c) => c.sounds.map((s) => `${s.id}=${s.label}`)).join()
-  const stale =
-    existsSync(manifestPath) &&
-    soundList(JSON.parse(readFileSync(manifestPath, 'utf8')) as PackManifest) !== soundList(manifest)
+  // Any change in the recipes (new sounds, labels, names…) rewrites the manifest without --force.
+  const content = `${JSON.stringify(manifest, null, 2)}\n`
+  const stale = existsSync(manifestPath) && readFileSync(manifestPath, 'utf8') !== content
   if (force || stale || !existsSync(manifestPath)) {
-    writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`)
+    writeFile(manifestPath, content)
     console.log(`  ✓ manifest.json`)
   } else {
     console.log('  · manifest.json exists, kept (use --force to regenerate)')

@@ -69,7 +69,7 @@ export function CharacterSlot({
 
   if (!slot) return null
 
-  const name = localize(character.label)
+  const name = localize(character.name ?? character.label)
   const excludedBySolo = hasSolo && !slot.solo
   const muted = slot.muted || excludedBySolo
   // While stopping, the old sound is still audible until the bar line, so keep naming it.

@@ -70,6 +70,7 @@
       "id": "kick",
       "role": "kick",
       "label": "Kick",
+      "name": "Mika",
       "sounds": [
         {
           "id": "trap-kick-1",
@@ -143,6 +144,7 @@
       "id": "snare",
       "role": "snare",
       "label": "Snare",
+      "name": "Vic",
       "sounds": [
         {
           "id": "trap-snare-1",
@@ -216,6 +218,7 @@
       "id": "hihat",
       "role": "hihat",
       "label": "Hi-hat",
+      "name": "Sasha",
       "sounds": [
         {
           "id": "trap-hihat-1",
@@ -289,6 +292,7 @@
       "id": "bass",
       "role": "bass",
       "label": "Bass",
+      "name": "Sol",
       "sounds": [
         {
           "id": "trap-bass-1",
@@ -362,6 +366,7 @@
       "id": "voice",
       "role": "voice",
       "label": "Voice",
+      "name": "Oli",
       "sounds": [
         {
           "id": "trap-voice-1",
@@ -435,6 +440,7 @@
       "id": "fx",
       "role": "fx",
       "label": "FX",
+      "name": "Toni",
       "sounds": [
         {
           "id": "trap-fx-1",

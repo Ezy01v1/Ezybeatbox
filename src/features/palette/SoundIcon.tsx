@@ -39,7 +39,7 @@ export function SoundIcon({
   )
 
   const label = localize(sound.label)
-  const characterName = holder ? localize(holder.label) : ''
+  const characterName = holder ? localize(holder.name ?? holder.label) : ''
 
   return (
     <button
