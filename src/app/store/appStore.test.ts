@@ -121,6 +121,31 @@ describe('appStore', () => {
     expect(store.getState().dropState).toBe('idle')
   })
 
+  it('setTempo() lands on the next bar while playing, is saved in the mix and comes back', async () => {
+    const { engine, store } = setup()
+    await store.getState().begin()
+    expect(store.getState().tempo).toEqual({ bpm: 90, target: 90 })
+
+    store.getState().setTempo(80) // stopped: right away
+    expect(store.getState().tempo).toEqual({ bpm: 80, target: 80 })
+
+    await store.getState().togglePlay()
+    store.getState().nudgeTempo(2)
+    store.getState().nudgeTempo(2) // quick taps add up before the bar line
+    expect(store.getState().tempo).toEqual({ bpm: 80, target: 84 })
+    store.getState().setTempo(200) // clamped to +15 %
+    expect(store.getState().tempo).toEqual({ bpm: 80, target: 103 })
+    engine.advanceBar()
+    expect(store.getState().tempo).toEqual({ bpm: 103, target: 103 })
+    expect(engine.getMix().bpm).toBe(103)
+
+    const mix = engine.getMix()
+    store.getState().setTempo(90)
+    engine.advanceBar()
+    store.getState().applyMix(mix)
+    expect(store.getState().tempo.target).toBe(103)
+  })
+
   it('surprise() queues a new beat with the rhythm section, each from its own section', async () => {
     const { store } = setup()
     await store.getState().begin()

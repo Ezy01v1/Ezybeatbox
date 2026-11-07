@@ -2,6 +2,7 @@ import { findSound } from '../packs/sounds'
 import { AUDIO_CONFIG } from '../audio/config'
 import type { PackManifest } from '../packs/schema'
 import { idSchema } from '../packs/schema'
+import { clampTempo } from '../audio/tempo'
 import { type Mix, createEmptyMix } from './types'
 
 /**
@@ -13,6 +14,7 @@ import { type Mix, createEmptyMix } from './types'
  *   v   link format version          p/pv  pack id / pack version
  *   s   character.sound pairs        m/o   muted / solo character ids
  *   vol character.volume (dB), only non-default                mv  master volume, if not 0
+ *   t   tempo (BPM), only when it differs from the pack's (older apps ignore it)
  *
  * Ids are kebab-case (validated), so "." and "~" can never appear inside them.
  */
@@ -32,6 +34,7 @@ export interface SharedMix {
   solo: string[]
   volumes: Record<string, number>
   masterVolumeDb: number
+  bpm?: number
 }
 
 export type DecodeResult = { ok: true; shared: SharedMix } | { ok: false; error: ShareLinkError }
@@ -76,6 +79,8 @@ export function encodeShareLink(mix: Mix): string {
 
   const master = roundDb(mix.masterVolumeDb)
   if (master !== AUDIO_CONFIG.defaultMasterVolumeDb) params.set('mv', String(master))
+
+  if (mix.bpm !== undefined) params.set('t', String(Math.round(mix.bpm)))
 
   return [...params].map(([key, value]) => `${key}=${value}`).join('&')
 }
@@ -128,6 +133,7 @@ export function decodeShareLink(hash: string): DecodeResult {
   const master = params.has('mv')
     ? parseDb(params.get('mv') ?? '')
     : AUDIO_CONFIG.defaultMasterVolumeDb
+  const bpm = params.has('t') ? Number(params.get('t')) : undefined
 
   if (
     !isId(packId) ||
@@ -137,13 +143,23 @@ export function decodeShareLink(hash: string): DecodeResult {
     !muted ||
     !solo ||
     !volumes ||
-    master === null
+    master === null ||
+    (bpm !== undefined && !(Number.isFinite(bpm) && bpm > 0))
   ) {
     return { ok: false, error: 'invalid' }
   }
   return {
     ok: true,
-    shared: { packId, packVersion, sounds, muted, solo, volumes, masterVolumeDb: master },
+    shared: {
+      packId,
+      packVersion,
+      sounds,
+      muted,
+      solo,
+      volumes,
+      masterVolumeDb: master,
+      ...(bpm === undefined ? {} : { bpm }),
+    },
   }
 }
 
@@ -159,6 +175,10 @@ export interface ResolvedMix {
 export function resolveSharedMix(shared: SharedMix, manifest: PackManifest): ResolvedMix {
   const mix = createEmptyMix(manifest)
   mix.masterVolumeDb = shared.masterVolumeDb
+  if (shared.bpm !== undefined) {
+    const bpm = clampTempo(shared.bpm, manifest.bpm)
+    if (bpm !== manifest.bpm) mix.bpm = bpm
+  }
   let missingCount = 0
 
   for (const [characterId, soundId] of Object.entries(shared.sounds)) {

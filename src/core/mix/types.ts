@@ -1,5 +1,6 @@
 import { findSound } from '../packs/sounds'
 import { AUDIO_CONFIG } from '../audio/config'
+import { clampTempo } from '../audio/tempo'
 import type { PackManifest } from '../packs/schema'
 
 /** Bumped whenever the serialized shape of `Mix` changes (Phase 4 adds migrations). */
@@ -18,6 +19,8 @@ export interface Mix {
   packId: string
   packVersion: number
   masterVolumeDb: number
+  /** Live tempo, only when it differs from the pack's (older mixes have none). */
+  bpm?: number | undefined
   characters: Record<string, CharacterMix>
 }
 
@@ -28,6 +31,8 @@ export interface Mix {
 export function fitMixToPack(mix: Mix, manifest: PackManifest): { mix: Mix; missingCount: number } {
   const fitted = createEmptyMix(manifest)
   fitted.masterVolumeDb = mix.masterVolumeDb
+  const bpm = mix.bpm === undefined ? manifest.bpm : clampTempo(mix.bpm, manifest.bpm)
+  if (bpm !== manifest.bpm) fitted.bpm = bpm
   let missingCount = 0
   for (const [characterId, source] of Object.entries(mix.characters)) {
     const character = manifest.characters.find((c) => c.id === characterId)

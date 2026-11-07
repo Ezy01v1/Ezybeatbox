@@ -32,4 +32,11 @@ describe('fitMixToPack', () => {
     expect(result.mix.characters.kick?.soundId).toBeNull()
     expect(result.mix.characters.ghost).toBeUndefined()
   })
+
+  it('keeps a live tempo inside the pack range and drops one equal to the pack tempo', () => {
+    const mix = createEmptyMix(manifest)
+    expect(fitMixToPack({ ...mix, bpm: 84 }, manifest).mix.bpm).toBe(84)
+    expect(fitMixToPack({ ...mix, bpm: 10 }, manifest).mix.bpm).toBe(77)
+    expect(fitMixToPack({ ...mix, bpm: 90 }, manifest).mix.bpm).toBeUndefined()
+  })
 })

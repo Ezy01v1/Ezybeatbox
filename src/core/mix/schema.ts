@@ -18,5 +18,6 @@ export const mixSchema = z.object({
   packId: idSchema,
   packVersion: z.number().int().positive(),
   masterVolumeDb: volumeSchema,
+  bpm: z.number().positive().optional(),
   characters: z.record(idSchema, characterMixSchema),
 }) satisfies z.ZodType<Mix>

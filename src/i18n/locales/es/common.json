@@ -31,6 +31,16 @@
     "changePack": "Cambiar estilo",
     "home": "Ir al inicio"
   },
+  "tempo": {
+    "label": "Tempo",
+    "value": "{{bpm}} BPM",
+    "slower": "Más lento",
+    "faster": "Más rápido",
+    "current": "Tempo: {{bpm}} BPM, el original del pack",
+    "reset": "Tempo: {{bpm}} BPM. Volver a {{packBpm}} BPM",
+    "resetHint": "Toca para volver al tempo original",
+    "waiting": "Cambia en el próximo compás"
+  },
   "stage": {
     "label": "Escenario",
     "hint": "Arrastra un sonido hasta su personaje o tócalo para asignarlo."

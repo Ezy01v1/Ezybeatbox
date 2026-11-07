@@ -6,6 +6,11 @@ export const AUDIO_CONFIG = {
   playerFadeSeconds: 0.004,
   /** Fade out/in of the characters silenced by a drop; short, but long enough not to click. */
   dropFadeSeconds: 0.01,
+  /** Live tempo range, as a ratio of the pack BPM (core/audio/tempo). */
+  tempoMinRatio: 0.85,
+  tempoMaxRatio: 1.15,
+  /** BPM added or removed by each tap on the tempo buttons. */
+  tempoStep: 2,
   defaultChannelVolumeDb: -6,
   defaultMasterVolumeDb: 0,
   minVolumeDb: -60,

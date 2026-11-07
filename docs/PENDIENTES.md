@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-06 (PC1, casa)**: botones "Drop" y "Sorpréndeme" y 11 sonidos por sección, con remates, corte y ×2. Antes, en la PC2: Seis géneros con paleta sonora propia, cualquier sonido en cualquier personaje, bases, animaciones al compás, y todo en SVG (ya no hay Rive). Daniel sigue desde la PC1 en casa.
+> Última actualización: **2026-11-06 (PC1, casa)**: tempo en vivo, botones "Drop" y "Sorpréndeme" y 11 sonidos por sección, con remates, corte y ×2. Antes, en la PC2: Seis géneros con paleta sonora propia, cualquier sonido en cualquier personaje, bases, animaciones al compás, y todo en SVG (ya no hay Rive). Daniel sigue desde la PC1 en casa.
 
 ## Estado en una línea
 
@@ -31,7 +31,9 @@ Cualquier personaje toca cualquier sonido, uno por personaje. **Falta:** que Dan
 3. [ ] **Funcionalidades** (recomendado en este orden):
    - [x] **"Sorpréndeme"** (2026-11-06): botón junto a las bases. Falta que Daniel lo pruebe varias veces y diga si las mezclas le suenan bien.
    - [x] **Drops** (2026-11-06): botón "Drop" junto a las bases. Falta que Daniel lo escuche. Si gusta, se podría agregar un atajo de teclado o un drop de dos compases.
-   - **BPM en vivo:** cuantizado al compás. Es delicado porque toca el `loopEnd` y el `Transport` del motor.
+   - [x] **BPM en vivo** (2026-11-06): control − / BPM / + en la barra superior. Pendiente:
+     - Que Daniel lo escuche. Al cambiar de tempo, el último instante antes del compás puede sonar con el tono nuevo, porque Tone aplica el `playbackRate` con anticipación.
+     - Decidir si el rango de ±15 % alcanza o si quiere conservar el tono. Eso requeriría `GrainPlayer`, que en baterías suena peor.
 4. [ ] **Nombres de los personajes:** siguen llamándose "Kick", "Snare"…, aunque ya pueden tocar cualquier cosa. Preguntarle a Daniel si quiere nombres propios.
 5. [ ] **Teclado:** al tocar un sonido, la app elige el personaje (`placeSound`). Falta una forma de elegir el personaje con teclado, por ejemplo para poner dos bombos.
 6. [ ] **Ropa o accesorios por género:** hoy todos los géneros comparten el personaje streetwear y solo cambian los colores.
@@ -127,6 +129,13 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-06 (PC1):** **tempo en vivo**. En la barra superior hay − / BPM / + (de a 2 BPM, dentro de ±15 % del tempo del pack). Al tocar el número vuelve al tempo original.
+  - Mientras suena, el cambio entra en el siguiente compás; mientras tanto el número se ve resaltado.
+  - Decisión: se cambia la **velocidad** de los loops, como en un tocadiscos. Es exacta y sin artefactos, pero el tono sube o baja un poco; de ahí el rango corto. Se puede revertir.
+  - Se guarda en las mezclas y en los links (`t=`). Los links viejos siguen funcionando, y las versiones viejas de la app ignoran el tempo.
+  - El chip del pack ahora muestra solo el nombre, porque el tempo está en su propio control.
+  - Probado en Boom Bap: de 90 a 100 BPM, los compases pasaron de 2,67 s a 2,40 s justo en el compás siguiente. El drop también dura un compás con el tempo nuevo.
 
 - **2026-11-06 (PC1):** botón **"Drop"** en el escenario, junto a "Sorpréndeme". Solo funciona mientras suena el beat.
   - Desde el siguiente compás, durante un compás, solo suenan los personajes que tocan un bombo o un bajo, y luego vuelven todos.

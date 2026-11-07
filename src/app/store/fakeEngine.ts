@@ -1,6 +1,7 @@
 import type { AudioEngineEvents, ContextState, SlotSnapshot } from '@/core/audio/AudioEngine'
 import { AUDIO_CONFIG } from '@/core/audio/config'
 import type { DropState } from '@/core/audio/drop'
+import { clampTempo } from '@/core/audio/tempo'
 import { planBarTransitions, slotStatus } from '@/core/audio/transitions'
 import { TypedEmitter } from '@/core/events'
 import { MIX_SCHEMA_VERSION, type Mix } from '@/core/mix/types'
@@ -26,6 +27,8 @@ export class FakeEngine implements EngineLike {
   private bar = -1
   private masterVolumeDb: number = AUDIO_CONFIG.defaultMasterVolumeDb
   dropState: DropState = 'idle'
+  bpm = 0
+  tempo = 0
   contextState: ContextState = 'suspended'
   isPlaying = false
   failLoad: Error | null = null
@@ -67,6 +70,9 @@ export class FakeEngine implements EngineLike {
         volumeDb: AUDIO_CONFIG.defaultChannelVolumeDb,
       })
     }
+    this.bpm = manifest.bpm
+    this.tempo = manifest.bpm
+    this.emitter.emit('tempoChanged', { bpm: this.bpm, target: this.tempo })
     options?.onProgress?.(1)
     return { warnings: [] }
   }
@@ -80,6 +86,10 @@ export class FakeEngine implements EngineLike {
   stop() {
     this.isPlaying = false
     this.setDropState('idle')
+    if (this.bpm !== this.tempo) {
+      this.bpm = this.tempo
+      this.emitter.emit('tempoChanged', { bpm: this.bpm, target: this.tempo })
+    }
     this.slots.forEach((slot) => (slot.playing = null))
     this.emitter.emit('transportChanged', { playing: false })
   }
@@ -94,6 +104,16 @@ export class FakeEngine implements EngineLike {
 
   clearSound(characterId: string) {
     this.setTarget(characterId, null)
+  }
+
+  /** Like the real engine: clamped; on the next `advanceBar` while playing, at once if not. */
+  setTempo(bpm: number) {
+    if (!this.manifest) throw new Error('No pack loaded')
+    const target = clampTempo(bpm, this.manifest.bpm)
+    if (target === this.tempo) return
+    this.tempo = target
+    if (!this.isPlaying) this.bpm = target
+    this.emitter.emit('tempoChanged', { bpm: this.bpm, target: this.tempo })
   }
 
   /** Like the real engine: only while playing and idle; lasts one `advanceBar`. */
@@ -131,6 +151,7 @@ export class FakeEngine implements EngineLike {
       packId: this.manifest.id,
       packVersion: this.manifest.version,
       masterVolumeDb: this.masterVolumeDb,
+      ...(this.tempo !== this.manifest.bpm ? { bpm: this.tempo } : {}),
       characters: Object.fromEntries(
         [...this.slots].map(([id, s]) => [
           id,
@@ -171,6 +192,10 @@ export class FakeEngine implements EngineLike {
    */
   advanceBar({ dropSlotEvents = false } = {}) {
     this.bar++
+    if (this.bpm !== this.tempo) {
+      this.bpm = this.tempo
+      this.emitter.emit('tempoChanged', { bpm: this.bpm, target: this.tempo })
+    }
     const states = [...this.slots].map(([characterId, s]) => ({ characterId, ...s }))
     for (const { characterId, from, to } of planBarTransitions(states)) {
       this.slot(characterId).playing = to

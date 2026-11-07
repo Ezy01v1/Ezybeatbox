@@ -79,4 +79,20 @@ describe('decodeShareLink + resolveSharedMix', () => {
     expect(resolved.mix.characters.bass?.soundId).toBe('bass-1')
     expect(resolved.mix.characters.kick?.soundId).toBeNull()
   })
+
+  it('carries the live tempo, clamped to the pack range, and omits the pack tempo', () => {
+    const mix = { ...sampleMix(), bpm: 96 }
+    const hash = encodeShareLink(mix)
+    expect(hash).toContain('&t=96')
+    expect(encodeShareLink(sampleMix())).not.toContain('t=')
+
+    const decoded = decodeShareLink(hash)
+    if (!decoded.ok) throw new Error('expected ok')
+    expect(resolveSharedMix(decoded.shared, manifest).mix.bpm).toBe(96)
+
+    const fast = decodeShareLink('#v=1&p=test-pack&pv=1&t=500')
+    if (!fast.ok) throw new Error('expected ok')
+    expect(resolveSharedMix(fast.shared, manifest).mix.bpm).toBe(103)
+    expect(decodeShareLink('#v=1&p=test-pack&pv=1&t=fast')).toEqual({ ok: false, error: 'invalid' })
+  })
 })

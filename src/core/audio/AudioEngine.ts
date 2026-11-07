@@ -6,6 +6,7 @@ import { type CanPlayType, PackLoadError, pickSoundFile } from '../packs/loader'
 import type { CharacterDef, PackManifest } from '../packs/schema'
 import { AUDIO_CONFIG, clampVolumeDb } from './config'
 import { DROP_BARS, type DropState, dropKeeps } from './drop'
+import { clampTempo, playbackRateFor } from './tempo'
 import { type MeterConfig, loopOffsetAtBar, loopSeconds, quarterNotesPerBar } from './timing'
 import { type SlotStatus, planBarTransitions, slotStatus } from './transitions'
 
@@ -34,6 +35,8 @@ export interface AudioEngineEvents extends Record<string, unknown> {
   transportChanged: { playing: boolean }
   /** `queued` right away; `dropping` and `idle` when heard. */
   dropChanged: { state: DropState }
+  /** `bpm` is what is heard; `target` differs from it until the next bar line. */
+  tempoChanged: { bpm: number; target: number }
   contextStateChanged: { state: ContextState }
 }
 
@@ -126,6 +129,9 @@ export class AudioEngine {
   private loadToken = 0
   private playing = false
   private dropState: DropState = 'idle'
+  /** Tempo being heard, and the one asked for (applied on the next bar line while playing). */
+  private bpm = 0
+  private targetBpm = 0
 
   constructor() {
     this.master = new Tone.Volume(AUDIO_CONFIG.defaultMasterVolumeDb)
@@ -245,11 +251,14 @@ export class AudioEngine {
     transport.stop()
     transport.position = 0
     transport.bpm.value = manifest.bpm
+    this.bpm = manifest.bpm
+    this.targetBpm = manifest.bpm
     transport.timeSignature = quarterNotesPerBar(manifest.timeSignature)
     const ticksPerBeat = (transport.PPQ * 4) / manifest.timeSignature[1]
     const repeatId = transport.scheduleRepeat((time) => this.onBeat(time), `${ticksPerBeat}i`, 0)
 
     this.pack = { manifest, meter, ticksPerBeat, slots, repeatId, buffers, loopDuration }
+    this.emitTempo()
     return { warnings }
   }
 
@@ -278,7 +287,27 @@ export class AudioEngine {
       }
     })
     this.playing = false
+    // Nothing is sounding, so a tempo still waiting for its bar line applies right away.
+    if (this.pack && this.targetBpm !== this.bpm) this.applyTempoNow(this.pack)
     this.emitter.emit('transportChanged', { playing: false })
+  }
+
+  /**
+   * Asks for a new tempo (clamped to the pack's range, see core/audio/tempo). While playing it
+   * lands on the next bar line, like every other change; while stopped, right away.
+   */
+  setTempo(bpm: number): void {
+    const pack = this.requirePack()
+    const target = clampTempo(bpm, pack.manifest.bpm)
+    if (target === this.targetBpm) return
+    this.targetBpm = target
+    if (this.playing) this.emitTempo()
+    else this.applyTempoNow(pack)
+  }
+
+  /** The tempo asked for (what `getMix` saves), which may still be waiting for a bar line. */
+  get tempo(): number {
+    return this.targetBpm
   }
 
   /** Queues `soundId` on a character; it starts on the next bar line. */
@@ -407,6 +436,7 @@ export class AudioEngine {
       packId: manifest.id,
       packVersion: manifest.version,
       masterVolumeDb: this.masterVolumeDb,
+      ...(this.targetBpm !== manifest.bpm ? { bpm: this.targetBpm } : {}),
       characters: Object.fromEntries(
         [...slots.values()].map((slot) => [
           slot.def.id,
@@ -461,7 +491,9 @@ export class AudioEngine {
   }
 
   private applyBarTransitions(pack: LoadedPack, bar: number, time: number): void {
+    // Offsets are in file time, so they use the pack's own tempo whatever is heard.
     const offset = loopOffsetAtBar(bar, pack.manifest.loopBars, pack.meter)
+    if (this.targetBpm !== this.bpm) this.applyTempoAtBar(pack, time, offset)
     const slotStates = [...pack.slots.values()].map((slot) => ({
       characterId: slot.def.id,
       playing: slot.playing,
@@ -488,7 +520,7 @@ export class AudioEngine {
   private startDrop(pack: LoadedPack, time: number): void {
     const playing = Object.fromEntries([...pack.slots].map(([id, slot]) => [id, slot.playing]))
     const keep = dropKeeps(pack.manifest, playing)
-    const end = time + loopSeconds(pack.meter, DROP_BARS)
+    const end = time + loopSeconds({ ...pack.meter, bpm: this.bpm }, DROP_BARS)
     const fade = AUDIO_CONFIG.dropFadeSeconds
     for (const [id, { dropGain }] of pack.slots) {
       if (keep.has(id)) continue
@@ -502,6 +534,39 @@ export class AudioEngine {
     this.dropState = 'dropping'
     Tone.getDraw().schedule(() => this.emitter.emit('dropChanged', { state: 'dropping' }), time)
     Tone.getDraw().schedule(() => this.setDropState('idle'), end)
+  }
+
+  /**
+   * New tempo from the bar line at `time`: the transport speeds up or slows down, and every loop
+   * that keeps playing restarts there at its phase with the new playback rate, so nothing drifts.
+   * (Tone applies a Player's rate as soon as it is set, so the old loop hears it a look-ahead
+   * early; restarting at the bar line is what keeps the phase exact.) Loops that change on this
+   * bar are started by the transitions right after, already at the new rate.
+   */
+  private applyTempoAtBar(pack: LoadedPack, time: number, offset: number): void {
+    Tone.getTransport().bpm.setValueAtTime(this.targetBpm, time)
+    this.bpm = this.targetBpm
+    const rate = playbackRateFor(this.bpm, pack.manifest.bpm)
+    for (const slot of pack.slots.values()) {
+      slot.players.forEach((player) => (player.playbackRate = rate))
+      if (slot.playing !== null && slot.playing === slot.target) {
+        slot.players.get(slot.playing)?.start(time, offset)
+      }
+    }
+    Tone.getDraw().schedule(() => this.emitTempo(), time)
+  }
+
+  /** New tempo while stopped: nothing is sounding, so it applies at once. */
+  private applyTempoNow(pack: LoadedPack): void {
+    Tone.getTransport().bpm.value = this.targetBpm
+    this.bpm = this.targetBpm
+    const rate = playbackRateFor(this.bpm, pack.manifest.bpm)
+    pack.slots.forEach((slot) => slot.players.forEach((player) => (player.playbackRate = rate)))
+    this.emitTempo()
+  }
+
+  private emitTempo(): void {
+    this.emitter.emit('tempoChanged', { bpm: this.bpm, target: this.targetBpm })
   }
 
   /** Cancels a queued or running drop and brings every character back at `time`. */
@@ -544,6 +609,7 @@ export class AudioEngine {
       // or a slightly long recording cannot drift out of sync.
       loopStart: 0,
       loopEnd: pack.loopDuration,
+      playbackRate: playbackRateFor(this.bpm, pack.manifest.bpm),
       fadeIn: AUDIO_CONFIG.playerFadeSeconds,
       fadeOut: AUDIO_CONFIG.playerFadeSeconds,
     }).connect(slot.dropGain)

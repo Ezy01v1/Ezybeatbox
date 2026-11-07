@@ -6,6 +6,7 @@ import type { PackManifest } from '@/core/packs/schema'
 import { MixActions } from '@/features/sharing/MixActions'
 import { useLocalizedText } from '@/i18n/useLocalizedText'
 import { Logo } from '@/ui/Logo'
+import { TempoControl } from './TempoControl'
 
 function PlayIcon({ playing }: { playing: boolean }) {
   return (
@@ -48,8 +49,10 @@ function BeatIndicator({ beatsPerBar }: { beatsPerBar: number }) {
   )
 }
 
-/** Which pack is loaded: name, tempo and the theme's stage color as a dot. */
-/** Loaded pack (name, tempo, theme dot). Tapping it opens the picker: "Cambiar estilo". */
+/**
+ * Loaded pack (name and theme dot; the live tempo sits in TempoControl). Tapping it opens the
+ * picker: "Cambiar estilo".
+ */
 function PackChip({ manifest }: { manifest: PackManifest }) {
   const { t } = useTranslation()
   const localize = useLocalizedText()
@@ -70,8 +73,7 @@ function PackChip({ manifest }: { manifest: PackManifest }) {
         className="size-2 rounded-full"
         style={{ backgroundColor: theme.roles.kick }}
       />
-      <span className="hidden sm:inline">{pack}</span>
-      <span className="sm:hidden">{localize(manifest.name)}</span>
+      <span>{localize(manifest.name)}</span>
       <svg
         viewBox="0 0 24 24"
         className="size-3.5"
@@ -123,6 +125,8 @@ export function TransportBar({ manifest }: { manifest: PackManifest }) {
       </button>
 
       <BeatIndicator beatsPerBar={manifest.timeSignature[0]} />
+
+      <TempoControl manifest={manifest} />
 
       <label className="text-ink-muted ml-auto flex items-center gap-2">
         <svg viewBox="0 0 24 24" className="size-5" aria-hidden>

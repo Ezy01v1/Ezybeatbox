@@ -29,6 +29,7 @@ export type EngineLike = Pick<
   | 'setSound'
   | 'clearSound'
   | 'queueDrop'
+  | 'setTempo'
   | 'setMute'
   | 'setSolo'
   | 'setVolume'
@@ -102,6 +103,8 @@ export interface AppState {
   playing: boolean
   /** Drop (core/audio/drop): queued for the next bar, sounding, or idle. */
   dropState: DropState
+  /** Live tempo: `bpm` is heard, `target` was asked for and lands on the next bar line. */
+  tempo: { bpm: number; target: number }
   /** Zero-based; updated once per beat (never per frame). */
   position: { bar: number; beat: number }
   contextState: ContextState
@@ -150,6 +153,10 @@ export interface AppActions {
   surprise(): void
   /** Drop: one bar of only kick and bass from the next bar line, then everyone is back. */
   drop(): void
+  /** Live tempo within the pack's range (core/audio/tempo); lands on the next bar line. */
+  setTempo(bpm: number): void
+  /** Adds `delta` BPM to the tempo asked for (so quick taps add up before the bar line). */
+  nudgeTempo(delta: number): void
   /** Applies a whole mix; sound changes land on the next bar as usual. */
   applyMix(mix: Mix): { missingCount: number }
   getShareUrl(): string
@@ -291,6 +298,7 @@ export function createAppStore({
     })
     engine.on('contextStateChanged', ({ state }) => set({ contextState: state }))
     engine.on('dropChanged', ({ state }) => set({ dropState: state }))
+    engine.on('tempoChanged', (tempo) => set({ tempo }))
 
     const applySharedLink = (manifest: PackManifest) => {
       if (pendingLinkError) {
@@ -405,6 +413,7 @@ export function createAppStore({
       savedMixes: [],
       exportStatus: { state: 'idle' },
       dropState: 'idle',
+      tempo: { bpm: 0, target: 0 },
 
       openLink(hash) {
         if (!receiveHash(hash)) return
@@ -516,6 +525,14 @@ export function createAppStore({
         applyTargets(manifest, base?.sounds ?? {})
       },
 
+      setTempo(bpm) {
+        if (get().manifest) engine.setTempo(bpm)
+      },
+
+      nudgeTempo(delta) {
+        get().setTempo(get().tempo.target + delta)
+      },
+
       drop() {
         if (get().manifest) engine.queueDrop()
       },
@@ -541,6 +558,7 @@ export function createAppStore({
           engine.setVolume(id, character.volumeDb)
         }
         get().setMasterVolume(mix.masterVolumeDb)
+        engine.setTempo(mix.bpm ?? manifest.bpm)
         refreshAllSlots()
         return { missingCount }
       },
