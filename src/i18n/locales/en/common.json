@@ -133,7 +133,8 @@
     "exportEmpty": "Add at least one sound before exporting.",
     "exportFailed": "Couldn't export the audio.",
     "exportCancelled": "Export canceled because playback stopped.",
-    "packUnavailable": "Couldn't open “{{pack}}”. Your current stage is still open."
+    "packUnavailable": "Couldn't open “{{pack}}”. Your current stage is still open.",
+    "mixPackUnavailable": "This mix uses “{{pack}}”, a pack that is no longer available."
   },
   "picker": {
     "eyebrow": "Your voice. Your rhythm.",

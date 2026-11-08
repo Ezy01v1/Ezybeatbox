@@ -3,7 +3,6 @@ import { stageCssVars, useTheme } from '@/app/useTheme'
 import type { PackManifest } from '@/core/packs/schema'
 import { DragLayer } from '@/features/palette/DragLayer'
 import { Palette } from '@/features/palette/Palette'
-import { Notices } from '@/features/sharing/Notices'
 import { TransportBar } from '@/features/transport/TransportBar'
 import { StagePattern } from '@/visuals'
 import { BasePicker } from './BasePicker'
@@ -65,7 +64,6 @@ export function StageScreen({ manifest }: { manifest: PackManifest }) {
 
       <Palette manifest={manifest} />
       <DragLayer manifest={manifest} />
-      <Notices />
       <ResumeOverlay />
     </div>
   )

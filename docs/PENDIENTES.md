@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-08**. Inicio carga Tone.js al elegir un género.
+> Última actualización: **2026-11-08**. «Mis mixes» ya se puede abrir desde Inicio.
 
 ## Estado en una línea
 
@@ -39,7 +39,7 @@ Cualquier personaje toca cualquier sonido, uno por personaje. Queda escuchar los
 6. [x] **Ropa o accesorios por género** (2026-11-08). Los seis géneros tienen un parche propio sobre la ropa streetwear.
 7. [ ] **Golpes CC0 o grabados por Daniel** para las voces y los FX (como beatboxer), y algunos golpes de batería. Solo con licencia CC0 (por ejemplo, Freesound filtrado por "Creative Commons 0"), porque la app redistribuye los sonidos. Los ritmos los compone Claude.
 
-Foco de Daniel (2026-11-06): **diseño, animaciones, funcionalidades, variedad de ritmo y de géneros**. "Mis mixes" desde la portada queda para después.
+Foco de Daniel (2026-11-06): **diseño, animaciones, funcionalidades, variedad de ritmo y de géneros**.
 
 ### Hecho en la sesión del 2026-11-06 (PC2)
 
@@ -58,7 +58,7 @@ Foco de Daniel (2026-11-06): **diseño, animaciones, funcionalidades, variedad d
 Esa sesión hizo una portada neutra y personajes SVG streetwear **que nunca se subieron**. La interfaz actual los reemplazó con el selector de packs y Rive. Las referencias visuales están ahora en `docs/design/` (`characters-v1/` y `home-neutral-v1/`). El código completo quedó solo en la rama local `respaldo/portada-neutra-pc1` de la PC1 (no está en GitHub). Ideas que valen la pena evaluar:
 
 - [x] **Inicio sin perder el beat** (2026-11-06): el logo del escenario es "Ir al inicio"; el beat sigue sonando en la portada, con una franja para pausarlo o reanudarlo y **"Continuar mi beat"**. "Cambiar estilo" también deja de detenerlo; solo se detiene al abrir otro pack.
-- [ ] **"Mis mixes" desde la portada:** abrir la biblioteca antes de elegir pack (solo cargar, sin el formulario de guardar). Al cargar un mix se prepara su pack.
+- [x] **«Mis mixes» desde la portada** (2026-11-08). La biblioteca permite cargar un mix antes de elegir pack.
 - [x] **Bases por temática:** hecho el 2026-11-06, en el escenario y no en un paso aparte. Detalle original: después de elegir el género, elegir una base (se propusieron **tres por temática**) o **"Crear desde cero"**. Las bases deben sonar bien juntas y compartir tempo y duración.
 - [ ] **Personaje piloto:** pulir **solo Kick** al nivel de su concepto (`docs/design/characters-v1/kick.webp`), comparándolo en escritorio y móvil, antes de rehacer los seis.
 - [x] **Pulso del cuerpo con el audio:** cubierto por el rig de Rive. El parpadeo escalonado quedó como pendiente en la sección de Rive.
@@ -129,6 +129,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-08.** «Mis mixes» desde Inicio abre una biblioteca de solo carga. Elegir un mix restaura su género y su mezcla. Si el pack ya no existe, vuelve a Inicio con un aviso. Guardar y eliminar siguen disponibles en el escenario.
 
 - **2026-11-08.** Tone.js se carga al abrir un pack. El primer toque reanuda el contexto nativo antes de esperar el módulo. Se verificó la reproducción en Chromium, incluso al recargar un mix compartido sin red con la caché de la PWA activa. Queda verificar el desbloqueo en Safari/iOS real.
 

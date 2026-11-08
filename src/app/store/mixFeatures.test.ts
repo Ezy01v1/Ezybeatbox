@@ -1,3 +1,4 @@
+import { createEmptyMix } from '@/core/mix/types'
 import { createTestApp, makeOtherPack } from './testing'
 
 const keys = (app: ReturnType<typeof createTestApp>) =>
@@ -122,6 +123,52 @@ describe('share links', () => {
 })
 
 describe('saved mixes', () => {
+  it('unlocks audio in the home gesture before looking up the mix', async () => {
+    const other = makeOtherPack()
+    const app = createTestApp({ extraPacks: [other] })
+    const saved = await app.repository.save({ name: 'Mi beat', mix: createEmptyMix(other) })
+    let contextWhenReading
+    vi.spyOn(app.repository, 'get').mockImplementationOnce(async () => {
+      contextWhenReading = app.engine.contextState
+      return saved
+    })
+
+    const loading = app.store.getState().loadSavedMix(saved.id)
+    expect(contextWhenReading).toBe('running')
+    expect(app.store.getState().phase).toBe('loading')
+    await loading
+    expect(app.store.getState().manifest?.id).toBe(other.id)
+  })
+
+  it('retries the saved mix from home after audio was blocked', async () => {
+    const other = makeOtherPack()
+    const app = createTestApp({ extraPacks: [other] })
+    const mix = createEmptyMix(other)
+    mix.characters.kick!.soundId = 'other-kick-2'
+    const saved = await app.repository.save({ name: 'Mi beat', mix })
+    app.engine.failUnlock = true
+
+    await app.store.getState().loadSavedMix(saved.id)
+    expect(app.store.getState()).toMatchObject({ phase: 'error', error: { kind: 'audio-blocked' } })
+    app.engine.failUnlock = false
+    await app.store.getState().begin()
+    expect(app.store.getState().manifest?.id).toBe(other.id)
+    expect(app.store.getState().slots.kick?.target).toBe('other-kick-2')
+  })
+
+  it('returns to home if the saved mix references a retired pack', async () => {
+    const app = createTestApp()
+    const saved = await app.repository.save({
+      name: 'Mi beat',
+      mix: createEmptyMix(makeOtherPack()),
+    })
+
+    await app.store.getState().loadSavedMix(saved.id)
+    expect(app.store.getState()).toMatchObject({ phase: 'start', manifest: null })
+    expect(keys(app)).toEqual(['mixPackUnavailable'])
+    expect(app.engine.loadedPackUrls).toEqual([])
+  })
+
   it('saves, lists, loads and deletes mixes', async () => {
     const app = createTestApp()
     const state = await ready(app)

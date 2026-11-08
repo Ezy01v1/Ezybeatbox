@@ -1,4 +1,5 @@
 import { UpdatePrompt } from '@/features/pwa/UpdatePrompt'
+import { Notices } from '@/features/sharing/Notices'
 import { StageScreen } from '@/features/stage/StageScreen'
 import { StartScreen } from '@/features/start/StartScreen'
 import { useAppStore } from './store/AppStoreContext'
@@ -10,6 +11,7 @@ export function App() {
   return (
     <>
       {phase === 'ready' && manifest ? <StageScreen manifest={manifest} /> : <StartScreen />}
+      <Notices />
       <UpdatePrompt />
     </>
   )

@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppStore } from '@/app/store/AppStoreContext'
 import type { PackSummary } from '@/core/packs/catalog'
+import { MixLibraryButton } from '@/features/sharing/MixLibraryButton'
 import { useLocalizedText } from '@/i18n/useLocalizedText'
 import { Logo } from '@/ui/Logo'
 import { DEFAULT_THEME } from '@/visuals'
@@ -177,6 +178,7 @@ export function PackPicker() {
             {t('picker.title')}
           </h1>
           <p className="text-ink-muted text-lg sm:text-xl">{t('picker.subtitle')}</p>
+          <MixLibraryButton />
         </section>
 
         <ContinueBanner />

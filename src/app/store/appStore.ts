@@ -66,6 +66,7 @@ export type NoticeKey =
   | 'mixLoaded'
   | 'mixDeleted'
   | 'packUnavailable'
+  | 'mixPackUnavailable'
   | 'mixNotFound'
   | 'storageError'
   | 'exportDone'
@@ -160,7 +161,7 @@ export interface AppActions {
   /** Applies a whole mix; sound changes land on the next bar as usual. */
   applyMix(mix: Mix): { missingCount: number }
   getShareUrl(): string
-  refreshSavedMixes(): Promise<void>
+  refreshSavedMixes(): Promise<boolean>
   saveCurrentMix(name: string): Promise<void>
   loadSavedMix(id: string): Promise<void>
   deleteSavedMix(id: string): Promise<void>
@@ -340,6 +341,16 @@ export function createAppStore({
       if (pendingSaved?.mix.packId === packId) pendingSaved = null
     }
 
+    const tryUnlockAudio = async () => {
+      try {
+        await engine.unlock()
+        return true
+      } catch {
+        return false
+      }
+    }
+    const startLoading = () => set({ phase: 'loading', progress: 0, error: null })
+
     /**
      * Loads `packId` and shows its stage. The manifest is fetched before the engine is touched,
      * so if another pack is already playing and the new one is missing, the user keeps the
@@ -349,14 +360,10 @@ export function createAppStore({
       requestedPackId = packId
       const previous = get().manifest
       // Claim the loading phase before the gesture's async unlock so a second click cannot enter.
-      set({ phase: 'loading', progress: 0, error: null })
-      if (unlockAudio) {
-        try {
-          await engine.unlock()
-        } catch {
-          set({ phase: 'error', error: { kind: 'audio-blocked' } })
-          return
-        }
+      startLoading()
+      if (unlockAudio && !(await tryUnlockAudio())) {
+        set({ phase: 'error', error: { kind: 'audio-blocked' } })
+        return
       }
       set({ contextState: engine.contextState })
       // Ids come from the catalog, a link or a saved mix; all are validated kebab-case (no paths).
@@ -367,11 +374,14 @@ export function createAppStore({
         manifest = await fetchManifest(packUrl, fetchFn)
       } catch (error) {
         const status = error instanceof PackLoadError ? error.httpStatus : undefined
-        if (previous && (status === 404 || status === 410)) {
+        if (
+          (previous || pendingSaved?.mix.packId === packId) &&
+          (status === 404 || status === 410)
+        ) {
           dropPendingFor(packId)
-          requestedPackId = previous.id
-          set({ phase: 'ready' })
-          notify('error', 'packUnavailable', { pack: packId })
+          requestedPackId = previous?.id ?? defaultPackId
+          set({ phase: previous ? 'ready' : 'start' })
+          notify('error', previous ? 'packUnavailable' : 'mixPackUnavailable', { pack: packId })
           return
         }
         set({
@@ -408,6 +418,26 @@ export function createAppStore({
       void get().refreshSavedMixes()
     }
 
+    const openOrResumePack = async (packId: string, unlockAudio: boolean) => {
+      const current = get().manifest
+      if (current?.id !== packId) {
+        await openPack(packId, unlockAudio)
+        return
+      }
+      if (unlockAudio && get().error?.kind === 'audio-blocked') {
+        startLoading()
+        if (!(await tryUnlockAudio())) {
+          set({ phase: 'error', error: { kind: 'audio-blocked' } })
+          return
+        }
+      }
+      // Returning to the loaded stage keeps its beat and applies any mix the user just chose.
+      requestedPackId = packId
+      set({ phase: 'ready', error: null, contextState: engine.contextState })
+      applySharedLink(current)
+      applyPendingSaved(current)
+    }
+
     return {
       phase: 'start',
       progress: 0,
@@ -441,19 +471,11 @@ export function createAppStore({
       },
 
       async begin(packId) {
-        const { phase, manifest: current } = get()
+        const { phase } = get()
         if (phase === 'loading') return
         const id =
           packId ?? (phase === 'error' ? requestedPackId : pendingShared?.packId) ?? requestedPackId
-        if (current && current.id === id) {
-          // Back from the picker to the pack that is still loaded: keep its mix.
-          requestedPackId = id
-          set({ phase: 'ready', error: null })
-          applySharedLink(current)
-          applyPendingSaved(current)
-          return
-        }
-        await openPack(id, true)
+        await openOrResumePack(id, true)
       },
 
       async loadCatalog() {
@@ -577,8 +599,11 @@ export function createAppStore({
       async refreshSavedMixes() {
         try {
           set({ savedMixes: await repository.list() })
+          return true
         } catch {
           set({ savedMixes: [] })
+          if (get().phase === 'start') notify('error', 'storageError')
+          return false
         }
       },
 
@@ -593,28 +618,33 @@ export function createAppStore({
       },
 
       async loadSavedMix(id) {
+        const phase = get().phase
+        if (phase === 'loading') return
+        const fromHome = phase === 'start'
+        if (fromHome) startLoading()
+        // On a fresh visit, Web Audio must resume in the click, before the async lookup.
+        const audioReady = fromHome ? tryUnlockAudio() : null
         let saved
         try {
           saved = await repository.get(id)
         } catch {
+          if (fromHome) set({ phase: 'start' })
           notify('error', 'storageError')
           return
         }
-        const { phase, manifest } = get()
-        if (phase === 'loading') return
-        if (!saved || !manifest) {
+        if (!fromHome && get().phase === 'loading') return
+        if (!saved) {
+          if (fromHome) set({ phase: 'start' })
           notify('error', 'mixNotFound')
           return
         }
-        if (saved.mix.packId !== manifest.id) {
-          // Switch to the mix's pack first; it is applied once that pack has loaded.
-          pendingSaved = { name: saved.name, mix: saved.mix }
-          await get().begin(saved.mix.packId)
+        pendingSaved = saved
+        if (audioReady && !(await audioReady)) {
+          requestedPackId = saved.mix.packId
+          set({ phase: 'error', error: { kind: 'audio-blocked' } })
           return
         }
-        const { missingCount } = get().applyMix(saved.mix)
-        notify('info', 'mixLoaded', { name: saved.name })
-        if (missingCount > 0) notify('error', 'missingSounds', { count: missingCount })
+        await openOrResumePack(saved.mix.packId, !fromHome)
       },
 
       async deleteSavedMix(id) {

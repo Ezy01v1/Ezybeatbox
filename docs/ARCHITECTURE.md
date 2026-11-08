@@ -125,7 +125,7 @@ animationLoop (un solo rAF) ──► SvgCharacter × 6: followLevel → compute
   - El formato depende del navegador: WebM/Opus en Chrome y Firefox, MP4 en Safari.
   - Si se detiene la reproducción a mitad de la exportación, se cancela limpio.
 - **Avisos:** el store emite `Notice` con claves independientes del idioma (`notices.<key>` en i18n). Los informativos se cierran solos a los 5 s; los errores se quedan hasta que el usuario los cierra.
-- **UI:** "Mis mixes", "Compartir" y "Exportar audio" en la barra superior. Los diálogos usan `ui/Modal` (accesible: foco inicial en el contenido, Tab no sale del diálogo, Escape lo cierra y el foco vuelve al botón que lo abrió).
+- **UI:** "Mis mixes", "Compartir" y "Exportar audio" en la barra superior. Inicio también ofrece «Mis mixes» en modo de solo carga. Elegir un mix desde Inicio desbloquea el audio durante el toque y después abre el pack del mix. Los diálogos usan `ui/Modal` (accesible: foco inicial en el contenido, Tab no sale del diálogo, Escape lo cierra y el foco vuelve al botón que lo abrió).
 
 ## Temáticas e interfaz editorial (2026-11-05)
 

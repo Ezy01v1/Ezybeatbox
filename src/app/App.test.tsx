@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { createEmptyMix } from '@/core/mix/types'
 import { PackLoadError } from '@/core/packs/loader'
 import i18n from '@/i18n'
 import { App } from './App'
@@ -11,14 +12,14 @@ function renderApp(
   configure?: (engine: FakeEngine) => void,
   options?: Parameters<typeof createTestApp>[0],
 ) {
-  const { engine, store } = createTestApp(options)
+  const { engine, store, repository } = createTestApp(options)
   configure?.(engine)
   render(
     <AppStoreProvider store={store} engine={engine}>
       <App />
     </AppStoreProvider>,
   )
-  return { engine, store, user: userEvent.setup() }
+  return { engine, store, repository, user: userEvent.setup() }
 }
 
 async function enterStage(user: ReturnType<typeof userEvent.setup>) {
@@ -39,6 +40,26 @@ describe('App', () => {
 
   describe('pack picker', () => {
     const withCatalog = { extraPacks: [makeOtherPack()], catalog: ['test-pack', 'other-pack'] }
+
+    it('restores a saved mix from home before a pack has been opened', async () => {
+      const { user, store, repository, engine } = renderApp(undefined, withCatalog)
+      await screen.findByRole('button', { name: 'Explorar Other Pack' })
+      const mix = createEmptyMix(makeOtherPack())
+      mix.characters.kick!.soundId = 'other-kick-2'
+      await repository.save({ name: 'Mi beat de prueba', mix })
+
+      await user.click(screen.getByRole('button', { name: 'Mis mixes' }))
+      const library = await screen.findByRole('dialog', { name: 'Mis mixes' })
+      expect(within(library).queryByRole('button', { name: 'Guardar mix actual' })).toBeNull()
+      expect(within(library).queryByRole('button', { name: /Eliminar/ })).toBeNull()
+      expect(engine.loadedPackUrls).toEqual([])
+
+      await user.click(within(library).getByRole('button', { name: 'Cargar «Mi beat de prueba»' }))
+      await screen.findByRole('main', { name: 'Escenario' })
+      expect(engine.loadedPackUrls).toEqual(['/packs/other-pack/'])
+      expect(store.getState().slots.kick?.target).toBe('other-kick-2')
+      expect(store.getState().playing).toBe(false)
+    })
 
     it('uses the language chosen on the home screen in the picker and on stage', async () => {
       const { user } = renderApp(undefined, withCatalog)

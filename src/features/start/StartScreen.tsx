@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { useAppStore } from '@/app/store/AppStoreContext'
+import { MixLibraryButton } from '@/features/sharing/MixLibraryButton'
 import { Logo } from '@/ui/Logo'
 import { LanguagePicker } from './LanguagePicker'
 import { PackPicker } from './PackPicker'
@@ -39,6 +40,7 @@ export function StartScreen() {
             {t('start.tap')}
           </button>
           <p className="text-ink-muted text-sm">{t('start.hint')}</p>
+          {!openingSharedMix && <MixLibraryButton />}
           {catalogFailed && !openingSharedMix && (
             <p className="text-ink-muted max-w-sm text-sm">{t('picker.error')}</p>
           )}
