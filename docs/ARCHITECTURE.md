@@ -44,7 +44,8 @@ Player × 5 ─┐
             │   × 6 personajes           └─► Meter (nivel 0–1)                  └─► Meter master
 ```
 
-- **Archivos:** `core/audio/AudioEngine.ts` (único archivo que importa Tone.js), `timing.ts` y `transitions.ts` (lógica pura, con pruebas), `config.ts` (todas las constantes de audio).
+- **Archivos:** `core/audio/AudioEngine.ts` administra el motor. `toneRuntime.ts` agrupa las importaciones de Tone.js en un módulo separado. `timing.ts` y `transitions.ts` contienen lógica pura con pruebas, y `config.ts` contiene las constantes de audio.
+- **Primer gesto:** `AudioEngine.unlock()` crea y reanuda el contexto nativo antes de esperar la descarga de Tone.js. El grafo se conecta a ese mismo contexto. La PWA guarda el módulo de Tone.js en la precaché para poder cargarlo sin conexión.
 - **Estado por personaje:** `target` (lo que pidió el usuario) y `playing` (lo que suena). Su diferencia da el estado visual: `empty`, `queued` ("en espera"), `playing`, `stopping`.
 - **Cuantización:** un único `Transport.scheduleRepeat` por tiempo de compás. En el primer tiempo de cada compás, `planBarTransitions` calcula los cambios y se programan con el `time` exacto del transporte. Nada de `setTimeout`.
 - **Fase de los loops:** un sonido entra en el siguiente compás, pero **alineado a la cuadrícula global de loops**. Un loop de 2 compases que entra en un compás par arranca desde su segundo compás, así el "compás 1" de todos los personajes coincide siempre (`loopOffsetAtBar`).

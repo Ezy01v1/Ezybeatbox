@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-08**. La interfaz está disponible en español e inglés.
+> Última actualización: **2026-11-08**. Inicio carga Tone.js al elegir un género.
 
 ## Estado en una línea
 
@@ -107,7 +107,7 @@ Detalle completo en `docs/QA.md`. Lo más importante:
 
 ## 5. Deuda técnica y mejoras menores
 
-- [ ] **Cargar Tone.js recién después de "Toca para empezar".** Hoy la app pesa 193 KB comprimida, casi todo es Tone.js.
+- [x] **Cargar Tone.js después del primer gesto** (2026-11-08). El JavaScript inicial pasó de unos 209 a 150 KB comprimidos con gzip.
 - [ ] **Comodidad de los botones M/S/✕ en un celular real.** La altura se mantiene en 32 px en móvil, 36 px en `sm` y 44 px desde `lg`. El ancho se ajusta si la columna es estrecha.
 - [ ] **Volver a TypeScript 7** cuando `typescript-eslint` lo soporte (hoy está fijado en 6.0 por eso).
 - [ ] **Alertas moderadas de `npm audit`:** solo en herramientas de desarrollo (ESLint/minimatch, workbox-build). Revisar cuando salgan versiones arregladas, sin forzar un downgrade.
@@ -129,6 +129,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-08.** Tone.js se carga al abrir un pack. El primer toque reanuda el contexto nativo antes de esperar el módulo. Se verificó la reproducción en Chromium, incluso al recargar un mix compartido sin red con la caché de la PWA activa. Queda verificar el desbloqueo en Safari/iOS real.
 
 - **2026-11-08.** Interfaz en inglés con selector en Inicio. La preferencia se guarda por navegador. Los textos de los packs conservan su idioma original cuando falta una traducción.
 

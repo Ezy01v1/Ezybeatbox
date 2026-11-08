@@ -1,4 +1,4 @@
-import * as Tone from 'tone'
+import type * as Tone from 'tone'
 import { TypedEmitter } from '../events'
 import { MIX_SCHEMA_VERSION, type Mix } from '../mix/types'
 import { browserCanPlayType } from '../packs/browserFormats'
@@ -8,6 +8,7 @@ import { AUDIO_CONFIG, clampVolumeDb } from './config'
 import { DROP_BARS, type DropState, dropKeeps } from './drop'
 import { clampTempo, playbackRateFor } from './tempo'
 import { type MeterConfig, loopOffsetAtBar, loopSeconds, quarterNotesPerBar } from './timing'
+import type * as ToneRuntime from './toneRuntime'
 import { type SlotStatus, planBarTransitions, slotStatus } from './transitions'
 
 export type ContextState = 'suspended' | 'running' | 'closed' | 'interrupted'
@@ -101,6 +102,14 @@ interface LoadedPack {
   readonly loopDuration: number
 }
 
+interface AudioGraph {
+  readonly tone: typeof ToneRuntime
+  readonly context: Tone.BaseContext
+  readonly master: Tone.Volume
+  readonly limiter: Tone.Limiter
+  readonly meter: Tone.Meter
+}
+
 function levelOf(meter: Tone.Meter): number {
   const value = meter.getValue()
   return typeof value === 'number' ? value : Math.max(0, ...value)
@@ -116,11 +125,10 @@ function levelOf(meter: Tone.Meter): number {
  */
 export class AudioEngine {
   private readonly emitter = new TypedEmitter<AudioEngineEvents>()
-  // A Volume, not a Channel: Tone's solo is global, so a master Channel would be muted
-  // whenever any character is soloed (silencing everything).
-  private readonly master: Tone.Volume
-  private readonly limiter: Tone.Limiter
-  private readonly masterMeter: Tone.Meter
+  private nativeContext: AudioContext | null = null
+  private graph: AudioGraph | null = null
+  private initializing: Promise<void> | null = null
+  private disposed = false
   private readonly onContextStateChange = () =>
     this.emitter.emit('contextStateChanged', { state: this.contextState })
   private recorder: Tone.Recorder | null = null
@@ -133,19 +141,10 @@ export class AudioEngine {
   private bpm = 0
   private targetBpm = 0
 
-  constructor() {
-    this.master = new Tone.Volume(AUDIO_CONFIG.defaultMasterVolumeDb)
-    this.limiter = new Tone.Limiter(AUDIO_CONFIG.limiterThresholdDb)
-    this.masterMeter = new Tone.Meter({ normalRange: true, smoothing: AUDIO_CONFIG.meterSmoothing })
-    this.master.chain(this.limiter, Tone.getDestination())
-    this.limiter.connect(this.masterMeter)
-    Tone.getContext().on('statechange', this.onContextStateChange)
-  }
-
   readonly on = this.emitter.on.bind(this.emitter)
 
   get contextState(): ContextState {
-    return Tone.getContext().state as ContextState
+    return (this.nativeContext?.state ?? 'suspended') as ContextState
   }
 
   get isPlaying(): boolean {
@@ -158,11 +157,54 @@ export class AudioEngine {
 
   /** Resumes the AudioContext. Must be called from a user gesture (tap/click/key). */
   async unlock(): Promise<void> {
+    if (this.disposed) throw new AudioEngineError('Audio engine was disposed')
     // iOS 17+ (Audio Session API): "playback" keeps Web Audio audible with the silent switch
     // on, like a music app. Other browsers do not expose it and ignore this.
     const session = (navigator as Navigator & { audioSession?: { type: string } }).audioSession
     if (session) session.type = 'playback'
-    await Tone.start()
+
+    // Resume before any await. Some browsers require the original user gesture even if
+    // downloading the Tone chunk takes longer than the activation window.
+    const NativeContext =
+      window.AudioContext ??
+      (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
+    if (!NativeContext) throw new AudioEngineError('Web Audio is unavailable')
+    const context = (this.nativeContext ??= new NativeContext({ latencyHint: 'interactive' }))
+    const resumed = context.resume()
+    if (!this.graph) {
+      this.initializing ??= this.initializeGraph(context).finally(() => {
+        this.initializing = null
+      })
+      await Promise.all([resumed, this.initializing])
+    } else {
+      await resumed
+    }
+  }
+
+  private async initializeGraph(nativeContext: AudioContext): Promise<void> {
+    const tone = await import('./toneRuntime')
+    if (this.disposed) throw new AudioEngineError('Audio engine was disposed')
+    // Tone may have created a default context when its module evaluated. Use the already
+    // unlocked context for the whole graph and release the unused default.
+    tone.setContext(nativeContext, true)
+    const context = tone.getContext()
+    // A master Channel would be muted by Tone's global solo when any character is soloed.
+    const master = new tone.Volume(this.masterVolumeDb)
+    const limiter = new tone.Limiter(AUDIO_CONFIG.limiterThresholdDb)
+    const meter = new tone.Meter({ normalRange: true, smoothing: AUDIO_CONFIG.meterSmoothing })
+    master.chain(limiter, tone.getDestination())
+    limiter.connect(meter)
+    context.on('statechange', this.onContextStateChange)
+    this.graph = { tone, context, master, limiter, meter }
+  }
+
+  private get tone(): AudioGraph['tone'] {
+    return this.requireGraph().tone
+  }
+
+  private requireGraph(): AudioGraph {
+    if (!this.graph) throw new AudioEngineError('Audio must be unlocked first')
+    return this.graph
   }
 
   async loadPack(
@@ -170,6 +212,7 @@ export class AudioEngine {
     packUrl: string,
     options: LoadPackOptions = {},
   ): Promise<LoadPackResult> {
+    const { tone, master } = this.requireGraph()
     const token = ++this.loadToken
     const canPlayType = options.canPlayType ?? browserCanPlayType()
     this.stop()
@@ -186,7 +229,7 @@ export class AudioEngine {
     options.onProgress?.(0)
     const results = await Promise.allSettled(
       sounds.map(async ({ sound, url }) => {
-        const buffer = await Tone.ToneAudioBuffer.fromUrl(url)
+        const buffer = await tone.ToneAudioBuffer.fromUrl(url)
         options.onProgress?.(++loaded / sounds.length)
         return [sound.id, buffer] as const
       }),
@@ -226,13 +269,13 @@ export class AudioEngine {
 
     const slots = new Map<string, Slot>()
     for (const def of manifest.characters) {
-      const channel = new Tone.Channel({ volume: AUDIO_CONFIG.defaultChannelVolumeDb })
-      const channelMeter = new Tone.Meter({
+      const channel = new tone.Channel({ volume: AUDIO_CONFIG.defaultChannelVolumeDb })
+      const channelMeter = new tone.Meter({
         normalRange: true,
         smoothing: AUDIO_CONFIG.meterSmoothing,
       })
-      const dropGain = new Tone.Gain(1).connect(channel)
-      channel.connect(this.master)
+      const dropGain = new tone.Gain(1).connect(channel)
+      channel.connect(master)
       channel.connect(channelMeter)
 
       slots.set(def.id, {
@@ -247,7 +290,7 @@ export class AudioEngine {
       })
     }
 
-    const transport = Tone.getTransport()
+    const transport = this.tone.getTransport()
     transport.stop()
     transport.position = 0
     transport.bpm.value = manifest.bpm
@@ -267,7 +310,7 @@ export class AudioEngine {
     this.requirePack()
     if (this.playing) return
     await this.unlock()
-    Tone.getTransport().start(Tone.now() + AUDIO_CONFIG.startDelaySeconds, 0)
+    this.tone.getTransport().start(this.tone.now() + AUDIO_CONFIG.startDelaySeconds, 0)
     this.playing = true
     this.emitter.emit('transportChanged', { playing: true })
   }
@@ -275,9 +318,9 @@ export class AudioEngine {
   /** Stops everything immediately. Selected sounds stay selected and restart on `start()`. */
   stop(): void {
     if (!this.playing) return
-    const now = Tone.now()
-    Tone.getTransport().stop(now)
-    Tone.getDraw().cancel(0)
+    const now = this.tone.now()
+    this.tone.getTransport().stop(now)
+    this.tone.getDraw().cancel(0)
     this.resetDrop(now)
     this.pack?.slots.forEach((slot) => {
       if (slot.playing !== null) {
@@ -355,7 +398,7 @@ export class AudioEngine {
 
   setMasterVolume(volumeDb: number): void {
     this.masterVolumeDb = clampVolumeDb(volumeDb)
-    this.master.volume.rampTo(this.masterVolumeDb, AUDIO_CONFIG.volumeRampSeconds)
+    this.graph?.master.volume.rampTo(this.masterVolumeDb, AUDIO_CONFIG.volumeRampSeconds)
   }
 
   getMeter(characterId: string): LevelReader {
@@ -364,12 +407,12 @@ export class AudioEngine {
   }
 
   getMasterMeter(): LevelReader {
-    return { getLevel: () => levelOf(this.masterMeter) }
+    return { getLevel: () => (this.graph ? levelOf(this.graph.meter) : 0) }
   }
 
   /** Whether this browser can record the master output (MediaRecorder). */
   get canRecord(): boolean {
-    return Tone.Recorder.supported
+    return this.graph?.tone.Recorder.supported ?? typeof MediaRecorder !== 'undefined'
   }
 
   /**
@@ -377,9 +420,10 @@ export class AudioEngine {
    * MediaRecorder is not sample-accurate: callers start it on a bar event.
    */
   async startRecording(): Promise<void> {
+    const { tone, limiter } = this.requireGraph()
     if (!this.recorder) {
-      this.recorder = new Tone.Recorder()
-      this.limiter.connect(this.recorder)
+      this.recorder = new tone.Recorder()
+      limiter.connect(this.recorder)
     }
     await this.recorder.start()
   }
@@ -398,8 +442,7 @@ export class AudioEngine {
    */
   getOutputLatency(): number {
     // Not every browser exposes these (Safari lacks outputLatency); fall back to 0.
-    const raw = Tone.getContext().rawContext as { outputLatency?: number; baseLatency?: number }
-    return (raw.outputLatency ?? 0) + (raw.baseLatency ?? 0)
+    return (this.nativeContext?.outputLatency ?? 0) + (this.nativeContext?.baseLatency ?? 0)
   }
 
   getBeatClock(): BeatClock {
@@ -408,8 +451,8 @@ export class AudioEngine {
       beatsPerBar: pack.manifest.timeSignature[0],
       getBeatPosition: () => {
         if (!this.playing || this.pack !== pack) return null
-        const heardAt = Tone.immediate() - this.getOutputLatency()
-        const ticks = Tone.getTransport().getTicksAtTime(heardAt)
+        const heardAt = this.tone.immediate() - this.getOutputLatency()
+        const ticks = this.tone.getTransport().getTicksAtTime(heardAt)
         return ticks > 0 ? ticks / pack.ticksPerBeat : null
       },
     }
@@ -452,14 +495,23 @@ export class AudioEngine {
   }
 
   dispose(): void {
+    if (this.disposed) return
+    this.disposed = true
     this.loadToken++
     this.stop()
     this.disposePack()
-    Tone.getContext().off('statechange', this.onContextStateChange)
-    this.recorder?.dispose()
-    this.masterMeter.dispose()
-    this.limiter.dispose()
-    this.master.dispose()
+    const graph = this.graph
+    if (graph) {
+      graph.context.off('statechange', this.onContextStateChange)
+      this.recorder?.dispose()
+      graph.meter.dispose()
+      graph.limiter.dispose()
+      graph.master.dispose()
+      graph.context.dispose()
+      this.graph = null
+    } else {
+      void this.nativeContext?.close().catch(() => undefined)
+    }
     this.emitter.clear()
   }
 
@@ -478,13 +530,13 @@ export class AudioEngine {
     const pack = this.pack
     if (!pack) return
     const beatsPerBar = pack.manifest.timeSignature[0]
-    const beatIndex = Math.round(Tone.getTransport().getTicksAtTime(time) / pack.ticksPerBeat)
+    const beatIndex = Math.round(this.tone.getTransport().getTicksAtTime(time) / pack.ticksPerBeat)
     const bar = Math.floor(beatIndex / beatsPerBar)
     const beat = beatIndex % beatsPerBar
 
     if (beat === 0) this.applyBarTransitions(pack, bar, time)
 
-    Tone.getDraw().schedule(() => {
+    this.tone.getDraw().schedule(() => {
       if (beat === 0) this.emitter.emit('barStart', { bar })
       this.emitter.emit('beat', { bar, beat })
     }, time)
@@ -507,7 +559,7 @@ export class AudioEngine {
       if (to !== null) slot.players.get(to)?.start(time, offset)
       slot.playing = to
 
-      Tone.getDraw().schedule(() => {
+      this.tone.getDraw().schedule(() => {
         if (from !== null) this.emitter.emit('soundStopped', { characterId, soundId: from })
         if (to !== null) this.emitter.emit('soundStarted', { characterId, soundId: to })
       }, time)
@@ -532,8 +584,10 @@ export class AudioEngine {
       gain.linearRampToValueAtTime(1, end)
     }
     this.dropState = 'dropping'
-    Tone.getDraw().schedule(() => this.emitter.emit('dropChanged', { state: 'dropping' }), time)
-    Tone.getDraw().schedule(() => this.setDropState('idle'), end)
+    this.tone
+      .getDraw()
+      .schedule(() => this.emitter.emit('dropChanged', { state: 'dropping' }), time)
+    this.tone.getDraw().schedule(() => this.setDropState('idle'), end)
   }
 
   /**
@@ -544,7 +598,7 @@ export class AudioEngine {
    * bar are started by the transitions right after, already at the new rate.
    */
   private applyTempoAtBar(pack: LoadedPack, time: number, offset: number): void {
-    Tone.getTransport().bpm.setValueAtTime(this.targetBpm, time)
+    this.tone.getTransport().bpm.setValueAtTime(this.targetBpm, time)
     this.bpm = this.targetBpm
     const rate = playbackRateFor(this.bpm, pack.manifest.bpm)
     for (const slot of pack.slots.values()) {
@@ -553,12 +607,12 @@ export class AudioEngine {
         slot.players.get(slot.playing)?.start(time, offset)
       }
     }
-    Tone.getDraw().schedule(() => this.emitTempo(), time)
+    this.tone.getDraw().schedule(() => this.emitTempo(), time)
   }
 
   /** New tempo while stopped: nothing is sounding, so it applies at once. */
   private applyTempoNow(pack: LoadedPack): void {
-    Tone.getTransport().bpm.value = this.targetBpm
+    this.tone.getTransport().bpm.value = this.targetBpm
     this.bpm = this.targetBpm
     const rate = playbackRateFor(this.bpm, pack.manifest.bpm)
     pack.slots.forEach((slot) => slot.players.forEach((player) => (player.playbackRate = rate)))
@@ -602,7 +656,7 @@ export class AudioEngine {
     const pack = this.requirePack()
     const buffer = pack.buffers.get(soundId)
     if (!buffer) throw new AudioEngineError(`Unknown sound "${soundId}"`)
-    const player = new Tone.Player({
+    const player = new this.tone.Player({
       url: buffer,
       loop: true,
       // Loop length always comes from the tempo, never from the file, so encoder padding
@@ -620,7 +674,7 @@ export class AudioEngine {
   private disposePack(): void {
     const pack = this.pack
     if (!pack) return
-    Tone.getTransport().clear(pack.repeatId)
+    this.tone.getTransport().clear(pack.repeatId)
     pack.slots.forEach((slot) => {
       slot.players.forEach((player) => player.dispose())
       slot.meter.dispose()
