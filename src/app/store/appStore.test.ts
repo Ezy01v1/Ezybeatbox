@@ -1,5 +1,5 @@
 import { PackLoadError } from '@/core/packs/loader'
-import { createTestApp } from './testing'
+import { createTestApp, makeOtherPack } from './testing'
 
 const setup = createTestApp
 
@@ -25,6 +25,41 @@ describe('appStore', () => {
     engine.failUnlock = true
     await store.getState().begin()
     expect(store.getState()).toMatchObject({ phase: 'error', error: { kind: 'audio-blocked' } })
+  })
+
+  it('loads only the first requested pack while audio is unlocking', async () => {
+    const { engine, store, fetchFn } = setup({ extraPacks: [makeOtherPack()] })
+    const { begin } = store.getState()
+    await Promise.all([begin('other-pack'), begin('test-pack')])
+
+    expect(fetchFn.mock.calls.map(([url]) => url)).toEqual(['/packs/other-pack/manifest.json'])
+    expect(engine.loadedPackUrls).toEqual(['/packs/other-pack/'])
+    expect(store.getState().manifest?.id).toBe('other-pack')
+  })
+
+  it('retries the selected pack if audio was blocked before loading it', async () => {
+    const { engine, store } = setup({ extraPacks: [makeOtherPack()] })
+    engine.failUnlock = true
+    await store.getState().begin('other-pack')
+    engine.failUnlock = false
+    await store.getState().begin()
+
+    expect(store.getState().manifest?.id).toBe('other-pack')
+  })
+
+  it('keeps the current beat through a temporary manifest error and retries the requested pack', async () => {
+    const { engine, store, fetchFn } = setup({ extraPacks: [makeOtherPack()] })
+    await store.getState().begin()
+    await store.getState().togglePlay()
+    fetchFn.mockResolvedValueOnce(new Response(null, { status: 503 }))
+
+    await store.getState().begin('other-pack')
+    expect(store.getState()).toMatchObject({ phase: 'error', manifest: { id: 'test-pack' } })
+    expect(engine.isPlaying).toBe(true)
+
+    await store.getState().begin()
+    expect(store.getState()).toMatchObject({ phase: 'ready', manifest: { id: 'other-pack' } })
+    expect(engine.loadedPackUrls).toEqual(['/packs/test-pack/', '/packs/other-pack/'])
   })
 
   it('reports pack errors with details', async () => {

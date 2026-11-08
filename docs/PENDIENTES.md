@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-08**. Los personajes SVG llevan un parche de ropa distinto por género.
+> Última actualización: **2026-11-08**. La carga de packs evita duplicados y permite reintentar el género elegido.
 
 ## Estado en una línea
 
@@ -62,7 +62,7 @@ Esa sesión hizo una portada neutra y personajes SVG streetwear **que nunca se s
 - [x] **Bases por temática:** hecho el 2026-11-06, en el escenario y no en un paso aparte. Detalle original: después de elegir el género, elegir una base (se propusieron **tres por temática**) o **"Crear desde cero"**. Las bases deben sonar bien juntas y compartir tempo y duración.
 - [ ] **Personaje piloto:** pulir **solo Kick** al nivel de su concepto (`docs/design/characters-v1/kick.webp`), comparándolo en escritorio y móvil, antes de rehacer los seis.
 - [x] **Pulso del cuerpo con el audio:** cubierto por el rig de Rive. El parpadeo escalonado quedó como pendiente en la sección de Rive.
-- [ ] **Robustez de carga:** evitar dos cargas de pack simultáneas y, si falla, reintentar el pack pedido en vez de volver al predeterminado. Verificar contra el código actual, que ya maneja "pack inexistente".
+- [x] **Robustez de carga** (2026-11-08). Se bloquean cargas simultáneas y «Reintentar» vuelve a abrir el pack pedido.
 - [ ] **Controles en móvil:** M/S debajo del personaje y quitar sonido junto a él, sin que tocar ese botón inicie un arrastre. Se relaciona con el punto de los botones de 32 px de la sección 5.
 
 ## 2. Tareas de Daniel (no son código)
@@ -129,6 +129,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-08.** Se bloquea una segunda carga desde el desbloqueo de audio. Si falla el desbloqueo o la red, «Reintentar» usa el pack elegido. Si el beat anterior sigue disponible, se puede volver a él con «Continuar mi beat». Un pack inexistente sigue devolviendo al escenario anterior con aviso.
 
 - **2026-11-08.** Parche SVG por género en la ropa de los seis personajes. Vinilo en Boom Bap, rayo en Trap, sol en Reggaetón, bola facetada en House, flechas en Drum & Bass y rombos en Afrobeat. El parche se mueve con el torso y sigue al género aunque el personaje cambie de sonido.
 

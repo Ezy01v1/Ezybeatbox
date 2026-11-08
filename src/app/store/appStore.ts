@@ -345,10 +345,20 @@ export function createAppStore({
      * so if another pack is already playing and the new one is missing, the user keeps the
      * current stage and gets a notice instead of an error screen.
      */
-    const openPack = async (packId: string) => {
+    const openPack = async (packId: string, unlockAudio = false) => {
       requestedPackId = packId
       const previous = get().manifest
-      set({ phase: 'loading', progress: 0, error: null, contextState: engine.contextState })
+      // Claim the loading phase before the gesture's async unlock so a second click cannot enter.
+      set({ phase: 'loading', progress: 0, error: null })
+      if (unlockAudio) {
+        try {
+          await engine.unlock()
+        } catch {
+          set({ phase: 'error', error: { kind: 'audio-blocked' } })
+          return
+        }
+      }
+      set({ contextState: engine.contextState })
       // Ids come from the catalog, a link or a saved mix; all are validated kebab-case (no paths).
       const packUrl = `${packsBaseUrl}${packId}/`
 
@@ -356,7 +366,8 @@ export function createAppStore({
       try {
         manifest = await fetchManifest(packUrl, fetchFn)
       } catch (error) {
-        if (previous) {
+        const status = error instanceof PackLoadError ? error.httpStatus : undefined
+        if (previous && (status === 404 || status === 410)) {
           dropPendingFor(packId)
           requestedPackId = previous.id
           set({ phase: 'ready' })
@@ -417,8 +428,9 @@ export function createAppStore({
 
       openLink(hash) {
         if (!receiveHash(hash)) return
-        const manifest = get().manifest
-        if (get().phase !== 'ready' || !manifest) {
+        const { phase, manifest } = get()
+        if (phase === 'error' && pendingShared) requestedPackId = pendingShared.packId
+        if (phase !== 'ready' || !manifest) {
           set({ openingSharedMix: pendingShared !== null })
         } else if (pendingShared && pendingShared.packId !== manifest.id) {
           // Audio is already unlocked, so switching packs needs no new gesture.
@@ -429,9 +441,10 @@ export function createAppStore({
       },
 
       async begin(packId) {
-        if (get().phase === 'loading') return
-        const id = packId ?? pendingShared?.packId ?? requestedPackId
-        const current = get().manifest
+        const { phase, manifest: current } = get()
+        if (phase === 'loading') return
+        const id =
+          packId ?? (phase === 'error' ? requestedPackId : pendingShared?.packId) ?? requestedPackId
         if (current && current.id === id) {
           // Back from the picker to the pack that is still loaded: keep its mix.
           requestedPackId = id
@@ -440,13 +453,7 @@ export function createAppStore({
           applyPendingSaved(current)
           return
         }
-        try {
-          await engine.unlock()
-        } catch {
-          set({ phase: 'error', error: { kind: 'audio-blocked' } })
-          return
-        }
-        await openPack(id)
+        await openPack(id, true)
       },
 
       async loadCatalog() {
@@ -586,7 +593,6 @@ export function createAppStore({
       },
 
       async loadSavedMix(id) {
-        const manifest = get().manifest
         let saved
         try {
           saved = await repository.get(id)
@@ -594,6 +600,8 @@ export function createAppStore({
           notify('error', 'storageError')
           return
         }
+        const { phase, manifest } = get()
+        if (phase === 'loading') return
         if (!saved || !manifest) {
           notify('error', 'mixNotFound')
           return

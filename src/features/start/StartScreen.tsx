@@ -9,6 +9,7 @@ export function StartScreen() {
   const phase = useAppStore((s) => s.phase)
   const progress = useAppStore((s) => s.progress)
   const error = useAppStore((s) => s.error)
+  const manifest = useAppStore((s) => s.manifest)
   const begin = useAppStore((s) => s.begin)
   const openingSharedMix = useAppStore((s) => s.openingSharedMix)
   const catalogFailed = useAppStore((s) => s.catalog.state === 'error')
@@ -89,6 +90,15 @@ export function StartScreen() {
           >
             {t('errors.retry')}
           </button>
+          {manifest && (
+            <button
+              type="button"
+              onClick={() => void begin(manifest.id)}
+              className="border-line bg-card text-ink min-h-11 rounded-xl border px-6 py-2 font-semibold"
+            >
+              {t('picker.continue')}
+            </button>
+          )}
         </div>
       )}
     </main>

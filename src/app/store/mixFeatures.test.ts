@@ -109,6 +109,16 @@ describe('share links', () => {
     await app.store.getState().begin()
     expect(app.store.getState()).toMatchObject({ phase: 'error', error: { kind: 'pack' } })
   })
+
+  it('honors a new shared link opened from the pack error screen', async () => {
+    const app = createTestApp({ extraPacks: [makeOtherPack()] })
+    await app.store.getState().begin('missing-pack')
+    app.store.getState().openLink('#v=1&p=other-pack&pv=1&s=fx.other-fx-2')
+    await app.store.getState().begin()
+
+    expect(app.store.getState().manifest?.id).toBe('other-pack')
+    expect(app.store.getState().slots.fx?.target).toBe('other-fx-2')
+  })
 })
 
 describe('saved mixes', () => {

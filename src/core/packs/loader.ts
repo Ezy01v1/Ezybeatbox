@@ -3,17 +3,19 @@ import { type LocalizedText, type PackManifest, type SoundDef, packManifestSchem
 export class PackLoadError extends Error {
   readonly kind: 'network' | 'invalid-json' | 'invalid-manifest' | 'audio'
   readonly details: readonly string[]
+  readonly httpStatus: number | undefined
 
   constructor(
     kind: PackLoadError['kind'],
     message: string,
     details: readonly string[] = [],
-    options?: ErrorOptions,
+    options?: ErrorOptions & { httpStatus?: number },
   ) {
     super(message, options)
     this.name = 'PackLoadError'
     this.kind = kind
     this.details = details
+    this.httpStatus = options?.httpStatus
   }
 }
 
@@ -42,7 +44,9 @@ export async function fetchManifest(
     throw new PackLoadError('network', `Could not fetch ${url}`, [], { cause })
   }
   if (!response.ok) {
-    throw new PackLoadError('network', `Could not fetch ${url} (HTTP ${response.status})`)
+    throw new PackLoadError('network', `Could not fetch ${url} (HTTP ${response.status})`, [], {
+      httpStatus: response.status,
+    })
   }
 
   let data: unknown
