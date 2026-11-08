@@ -3,6 +3,11 @@
     "name": "EzyBeatbox",
     "tagline": "Arma tu beat, capa por capa."
   },
+  "language": {
+    "label": "Idioma",
+    "es": "Español",
+    "en": "English"
+  },
   "start": {
     "tap": "Toca para empezar",
     "hint": "Sube el volumen o ponte audífonos.",

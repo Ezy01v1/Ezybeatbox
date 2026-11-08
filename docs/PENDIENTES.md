@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-08**. Los controles del escenario se ajustan al ancho de cada personaje.
+> Última actualización: **2026-11-08**. La interfaz está disponible en español e inglés.
 
 ## Estado en una línea
 
@@ -113,7 +113,7 @@ Detalle completo en `docs/QA.md`. Lo más importante:
 - [ ] **Alertas moderadas de `npm audit`:** solo en herramientas de desarrollo (ESLint/minimatch, workbox-build). Revisar cuando salgan versiones arregladas, sin forzar un downgrade.
 - [ ] **Safari no informa `outputLatency`:** ahí los visuales no compensan la latencia de Bluetooth.
 - [ ] **El audio exportado dura ~47 ms menos** de lo esperado, porque MediaRecorder tarda en arrancar. Se decidió mantener `Tone.Recorder` (2026-11-04) en lugar del render offline a WAV.
-- [ ] **Agregar el idioma inglés:** crear `src/i18n/locales/en/common.json`; la estructura ya está lista.
+- [x] **Inglés para la interfaz** (2026-11-08). El selector de Inicio recuerda el idioma.
 
 ## 6. Más adelante (roadmap)
 
@@ -129,6 +129,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-08.** Interfaz en inglés con selector en Inicio. La preferencia se guarda por navegador. Los textos de los packs conservan su idioma original cuando falta una traducción.
 
 - **2026-11-08.** M/S/✕ caben en su columna sin invadir la de otro personaje. Si falta altura, el escenario se desplaza sobre la paleta para mantener accesibles ambas filas. Se comprobó en Chromium de 320 a 1280 px, incluido quitar un sonido con un toque emulado a 320 px.
 

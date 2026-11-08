@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { PackLoadError } from '@/core/packs/loader'
+import i18n from '@/i18n'
 import { App } from './App'
 import { AppStoreProvider } from './store/AppStoreProvider'
 import type { FakeEngine } from './store/fakeEngine'
@@ -38,6 +39,20 @@ describe('App', () => {
 
   describe('pack picker', () => {
     const withCatalog = { extraPacks: [makeOtherPack()], catalog: ['test-pack', 'other-pack'] }
+
+    it('uses the language chosen on the home screen in the picker and on stage', async () => {
+      const { user } = renderApp(undefined, withCatalog)
+      try {
+        await user.selectOptions(screen.getByRole('combobox', { name: 'Idioma' }), 'en')
+        expect(document.documentElement.lang).toBe('en')
+        expect(localStorage.getItem('ezybeatbox:language')).toBe('en')
+        await user.click(await screen.findByRole('button', { name: 'Explore Test Pack' }))
+        await screen.findByRole('main', { name: 'Stage' })
+        expect(screen.getByRole('button', { name: 'Play' })).toBeInTheDocument()
+      } finally {
+        await act(() => i18n.changeLanguage('es'))
+      }
+    })
 
     it('lists the packs and opens the one you choose', async () => {
       const { user, store } = renderApp(undefined, withCatalog)

@@ -5,6 +5,7 @@ import type { PackSummary } from '@/core/packs/catalog'
 import { useLocalizedText } from '@/i18n/useLocalizedText'
 import { Logo } from '@/ui/Logo'
 import { DEFAULT_THEME } from '@/visuals'
+import { LanguagePicker } from './LanguagePicker'
 
 function ArrowIcon() {
   return (
@@ -160,8 +161,9 @@ export function PackPicker() {
   return (
     <div className="flex min-h-dvh flex-col">
       <header className="border-line border-b">
-        <div className="mx-auto flex max-w-6xl items-center px-5 py-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
           <Logo />
+          <LanguagePicker />
         </div>
       </header>
 

@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useAppStore } from '@/app/store/AppStoreContext'
 import { Logo } from '@/ui/Logo'
+import { LanguagePicker } from './LanguagePicker'
 import { PackPicker } from './PackPicker'
 
 /** "Toca para empezar" → loading with progress → (stage) or a visible error with retry. */
@@ -29,6 +30,7 @@ export function StartScreen() {
 
       {phase === 'start' && (
         <div className="flex flex-col items-center gap-3">
+          <LanguagePicker />
           <button
             type="button"
             onClick={() => void begin()}

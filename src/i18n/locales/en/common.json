@@ -1,0 +1,169 @@
+{
+  "app": {
+    "name": "EzyBeatbox",
+    "tagline": "Build your beat, layer by layer."
+  },
+  "language": {
+    "label": "Language",
+    "es": "Español",
+    "en": "English"
+  },
+  "start": {
+    "tap": "Tap to start",
+    "hint": "Turn up the volume or put on headphones.",
+    "loading": "Loading sounds… {{percent}}%",
+    "shared": "Someone shared a mix with you."
+  },
+  "errors": {
+    "title": "Something went wrong",
+    "pack": "Couldn't load the sound pack. Check your connection and try again.",
+    "audioBlocked": "Your browser blocked audio. Tap the button to try again.",
+    "unknown": "An unexpected error occurred.",
+    "retry": "Try again",
+    "details": "Technical details"
+  },
+  "resume": {
+    "title": "Audio is paused",
+    "action": "Tap to resume"
+  },
+  "transport": {
+    "play": "Play",
+    "pause": "Pause",
+    "masterVolume": "Master volume",
+    "position": "Bar {{bar}}, beat {{beat}}",
+    "bar": "Bar {{bar}}",
+    "pack": "{{name}} · {{bpm}} BPM",
+    "changePack": "Change style",
+    "home": "Go to home"
+  },
+  "tempo": {
+    "label": "Tempo",
+    "value": "{{bpm}} BPM",
+    "slower": "Slower",
+    "faster": "Faster",
+    "current": "Tempo: {{bpm}} BPM, the pack's original tempo",
+    "reset": "Tempo: {{bpm}} BPM. Reset to {{packBpm}} BPM",
+    "resetHint": "Tap to reset to the original tempo",
+    "waiting": "Changes at the next bar"
+  },
+  "stage": {
+    "label": "Stage",
+    "hint": "Drag a sound onto a character or tap it to assign it."
+  },
+  "character": {
+    "status": {
+      "empty": "Silent",
+      "queued": "Queued",
+      "playing": "Playing",
+      "excludedBySolo": "Excluded by solo",
+      "stopping": "Stops at the next bar"
+    },
+    "label": "{{name}}: {{status}}",
+    "labelWithSound": "{{name}}: {{sound}}, {{status}}",
+    "mute": "Mute {{name}}",
+    "solo": "Solo {{name}}",
+    "remove": "Remove sound from {{name}}",
+    "dropHere": "Drop here",
+    "dragOutHint": "Drag to another character to move the sound, or offstage to remove it"
+  },
+  "palette": {
+    "label": "Sounds",
+    "sound": "{{sound}} ({{section}})",
+    "selected": "{{sound}} ({{section}}), played by {{character}}",
+    "keysHint": "Press Enter to assign the sound automatically, or a number to pick who plays it: {{characters}}"
+  },
+  "common": {
+    "close": "Close"
+  },
+  "pwa": {
+    "updateAvailable": "A new version of EzyBeatbox is available.",
+    "updateHint": "Updating reloads the page and stops playback.",
+    "update": "Update",
+    "later": "Later",
+    "offlineReady": "EzyBeatbox is ready to use offline."
+  },
+  "mixes": {
+    "button": "My mixes",
+    "title": "My mixes",
+    "nameLabel": "Mix name",
+    "namePlaceholder": "My beat",
+    "save": "Save current mix",
+    "empty": "You haven't saved any mixes yet.",
+    "load": "Load",
+    "loadLabel": "Load “{{name}}”",
+    "delete": "Delete",
+    "deleteLabel": "Delete “{{name}}”",
+    "confirmDelete": "Delete this mix?",
+    "savedAt": "Saved on {{date}}",
+    "localOnly": "Mixes are saved in this browser."
+  },
+  "share": {
+    "button": "Share",
+    "title": "Share mix",
+    "hint": "Anyone who opens this link can hear your exact mix. The mix is stored in the link itself.",
+    "linkLabel": "Mix link",
+    "copy": "Copy link",
+    "copied": "Copied!",
+    "copyFailed": "Couldn't copy the link. Select it and copy it manually.",
+    "native": "Share…",
+    "nativeTitle": "My EzyBeatbox mix",
+    "emptyWarning": "Your mix has no sounds yet."
+  },
+  "export": {
+    "button": "Export audio",
+    "waiting": "Waiting for the loop to start…",
+    "recording": "Recording… {{done}}/{{total}}",
+    "recordingLabel": "Recording audio: bar {{done}} of {{total}}"
+  },
+  "notices": {
+    "dismiss": "Dismiss notification",
+    "linkLoaded": "Shared mix loaded. Press Play to hear it.",
+    "linkInvalid": "This mix link is invalid. The stage is empty.",
+    "linkNewerVersion": "This link is from a newer version of EzyBeatbox. Reload to update.",
+    "linkPackVersionChanged": "This mix was made with a different pack version. Some sounds may have changed.",
+    "missingSounds_one": "Skipped {{count}} sound that is no longer in the pack.",
+    "missingSounds_other": "Skipped {{count}} sounds that are no longer in the pack.",
+    "mixSaved": "Saved “{{name}}”.",
+    "mixLoaded": "Loaded “{{name}}”. Changes take effect at the next bar.",
+    "mixDeleted": "Mix deleted.",
+    "mixNotFound": "Couldn't find that mix.",
+    "storageError": "Couldn't use browser storage. It may be full or blocked, for example in private browsing.",
+    "exportDone": "Audio exported. Check your downloads.",
+    "exportUnsupported": "Your browser doesn't support audio recording. Try Chrome or Firefox.",
+    "exportEmpty": "Add at least one sound before exporting.",
+    "exportFailed": "Couldn't export the audio.",
+    "exportCancelled": "Export canceled because playback stopped.",
+    "packUnavailable": "Couldn't open “{{pack}}”. Your current stage is still open."
+  },
+  "picker": {
+    "eyebrow": "Your voice. Your rhythm.",
+    "title": "What will you create today?",
+    "subtitle": "Pick a style and build your beat, layer by layer.",
+    "loading": "Loading styles…",
+    "error": "Couldn't load the styles. You can start with the default pack.",
+    "details": "{{bpm}} BPM · {{count}} voices",
+    "choose": "Explore {{name}}",
+    "current": "Current style",
+    "backToStage": "Back to the stage",
+    "coverAlt": "{{name}} cover art",
+    "footer": "Made with the mouth. Created by you.",
+    "headphones": "Best with headphones",
+    "continueTitle": "Your {{name}} beat is still here",
+    "continuePlaying": "Playing",
+    "continuePaused": "Paused",
+    "continue": "Continue my beat"
+  },
+  "bases": {
+    "label": "Starter beats",
+    "scratch": "Start from scratch",
+    "surprise": "Surprise me",
+    "surpriseHint": "Build a random beat with sounds from this pack"
+  },
+  "drop": {
+    "idle": "Drop",
+    "queued": "Drop queued…",
+    "dropping": "Drop!",
+    "hint": "Just kick and bass for one bar, then everyone comes back",
+    "needsPlay": "Press Play to drop"
+  }
+}
