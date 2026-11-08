@@ -16,11 +16,11 @@ import { PackCharacter } from '@/visuals/PackCharacter'
 import { compensateLatency } from '@/visuals/levels'
 
 /**
- * Round M / S / ✕ controls: 44 px on wide screens. On phones three characters share a row, so
- * they shrink to 32 px to fit (still separated, and the whole figure is the drop target).
+ * Keep the control height and gaps when a stage column is too narrow for three round buttons.
+ * The flex row can shrink their widths without spilling into the neighboring character.
  */
 const controlClass =
-  'grid size-8 place-items-center rounded-full text-sm font-bold transition-colors motion-reduce:transition-none sm:size-9 lg:size-11'
+  'grid size-8 min-w-0 place-items-center rounded-full text-sm font-bold transition-colors motion-reduce:transition-none sm:size-9 lg:size-11'
 const controlIdle =
   'bg-(--stage-ink)/8 text-(--stage-ink) hover:bg-(--stage-ink)/15 disabled:opacity-30 disabled:hover:bg-(--stage-ink)/8'
 
@@ -154,7 +154,7 @@ export function CharacterSlot({
           {sound ? `${localize(sound.label)} · ${status}` : status}
         </p>
 
-        <div className="flex gap-0.5 sm:gap-1">
+        <div className="flex w-full justify-center gap-0.5 sm:gap-1">
           <button
             type="button"
             aria-pressed={slot.muted}

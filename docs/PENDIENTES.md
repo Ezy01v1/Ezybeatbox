@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-08**. La carga de packs evita duplicados y permite reintentar el género elegido.
+> Última actualización: **2026-11-08**. Los controles del escenario se ajustan al ancho de cada personaje.
 
 ## Estado en una línea
 
@@ -63,7 +63,7 @@ Esa sesión hizo una portada neutra y personajes SVG streetwear **que nunca se s
 - [ ] **Personaje piloto:** pulir **solo Kick** al nivel de su concepto (`docs/design/characters-v1/kick.webp`), comparándolo en escritorio y móvil, antes de rehacer los seis.
 - [x] **Pulso del cuerpo con el audio:** cubierto por el rig de Rive. El parpadeo escalonado quedó como pendiente en la sección de Rive.
 - [x] **Robustez de carga** (2026-11-08). Se bloquean cargas simultáneas y «Reintentar» vuelve a abrir el pack pedido.
-- [ ] **Controles en móvil:** M/S debajo del personaje y quitar sonido junto a él, sin que tocar ese botón inicie un arrastre. Se relaciona con el punto de los botones de 32 px de la sección 5.
+- [x] **Controles en móvil** (2026-11-08). M/S/✕ están debajo del personaje y fuera del área de arrastre. La fila se ajusta al ancho de su columna.
 
 ## 2. Tareas de Daniel (no son código)
 
@@ -108,7 +108,7 @@ Detalle completo en `docs/QA.md`. Lo más importante:
 ## 5. Deuda técnica y mejoras menores
 
 - [ ] **Cargar Tone.js recién después de "Toca para empezar".** Hoy la app pesa 193 KB comprimida, casi todo es Tone.js.
-- [ ] **Botones M/S/✕ de 32 px en celular** (44 px desde `lg`), para que entren tres tarjetas por fila. Revisar en QA táctil si alcanza o si conviene otro layout.
+- [ ] **Comodidad de los botones M/S/✕ en un celular real.** La altura se mantiene en 32 px en móvil, 36 px en `sm` y 44 px desde `lg`. El ancho se ajusta si la columna es estrecha.
 - [ ] **Volver a TypeScript 7** cuando `typescript-eslint` lo soporte (hoy está fijado en 6.0 por eso).
 - [ ] **Alertas moderadas de `npm audit`:** solo en herramientas de desarrollo (ESLint/minimatch, workbox-build). Revisar cuando salgan versiones arregladas, sin forzar un downgrade.
 - [ ] **Safari no informa `outputLatency`:** ahí los visuales no compensan la latencia de Bluetooth.
@@ -129,6 +129,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-08.** M/S/✕ caben en su columna sin invadir la de otro personaje. Si falta altura, el escenario se desplaza sobre la paleta para mantener accesibles ambas filas. Se comprobó en Chromium de 320 a 1280 px, incluido quitar un sonido con un toque emulado a 320 px.
 
 - **2026-11-08.** Se bloquea una segunda carga desde el desbloqueo de audio. Si falla el desbloqueo o la red, «Reintentar» usa el pack elegido. Si el beat anterior sigue disponible, se puede volver a él con «Continuar mi beat». Un pack inexistente sigue devolviendo al escenario anterior con aviso.
 
