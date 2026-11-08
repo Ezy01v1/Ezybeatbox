@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-08**. Daniel dio su visto bueno al aspecto del piloto de Kick de Boom Bap.
+> Última actualización: **2026-11-08**. El elenco de Boom Bap incorpora el nivel de detalle del piloto de Kick.
 
 ## Estado en una línea
 
@@ -62,7 +62,7 @@ Esa sesión hizo una portada neutra y personajes SVG streetwear **que nunca se s
 - [x] **Bases por temática:** hecho el 2026-11-06, en el escenario y no en un paso aparte. Detalle original: después de elegir el género, elegir una base (se propusieron **tres por temática**) o **"Crear desde cero"**. Las bases deben sonar bien juntas y compartir tempo y duración.
 - [x] **Personaje piloto** (2026-11-08). Se pulió Kick de Boom Bap con el concepto de referencia y se comparó en escritorio y móvil.
 - [x] **Revisión visual del piloto** (2026-11-08). A Daniel le gustó el nuevo aspecto de Kick y le pareció una mejora clara.
-- [ ] **Pulir el resto del elenco de Boom Bap** usando el piloto de Kick y el concepto aprobado de cada personaje como referencias.
+- [x] **Pulir el resto del elenco de Boom Bap** (2026-11-08). Snare, Hi-Hat, Bass, Voice y FX ya tienen ropa, pelo y detalles propios basados en sus conceptos.
 - [x] **Pulso del cuerpo con el audio:** cubierto por el rig de Rive. El parpadeo escalonado quedó como pendiente en la sección de Rive.
 - [x] **Robustez de carga** (2026-11-08). Se bloquean cargas simultáneas y «Reintentar» vuelve a abrir el pack pedido.
 - [x] **Controles en móvil** (2026-11-08). M/S/✕ están debajo del personaje y fuera del área de arrastre. La fila se ajusta al ancho de su columna.
@@ -131,6 +131,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-08.** Se completó el elenco SVG de Boom Bap. Snare lleva chaleco utilitario, Hi-Hat un rompevientos con bolso cruzado, Bass chaleco acolchado, Voice chaqueta varsity y FX anorak con audífonos. Los cinco conservan la boca reactiva, el rebote y el color del sonido que tocan.
 
 - **2026-11-08.** Piloto SVG de Kick en Boom Bap, con gorra hacia atrás, bomber más ancha, cadena y sombreado del concepto aprobado. El personaje conserva la boca reactiva, el rebote y el parche de vinilo. Los ojos abiertos en reposo también usan el parpadeo del rig.
 

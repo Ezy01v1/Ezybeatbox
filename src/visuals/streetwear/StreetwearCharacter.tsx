@@ -16,6 +16,13 @@ import {
   headSvg,
   paletteFor,
 } from './art'
+import {
+  BOOM_BAP_EYES,
+  boomBapBody,
+  boomBapBrows,
+  boomBapHead,
+  boomBapPatchTransform,
+} from './boomBapArt'
 import { KICK_PILOT_BROWS, KICK_PILOT_EYES, kickPilotBody, kickPilotHead } from './kickPilot'
 
 /** Same framing as the old Rive artboard: 120 × 158, art space from y = -6, cut at the hips. */
@@ -42,10 +49,10 @@ const MOTION = {
 
 type Expression = 'resting' | 'queued' | 'singing'
 
-function expressionSvg(expression: Expression, kickPilot: boolean): string {
-  const brows = kickPilot ? KICK_PILOT_BROWS : BROWS_SVG
-  const eyes = `<g data-eyes="">${kickPilot ? KICK_PILOT_EYES : EYES_SVG}</g>`
-  if (expression === 'resting') return brows + (kickPilot ? eyes : '') + SMILE_SVG
+function expressionSvg(expression: Expression, face?: { brows: string; eyes: string }): string {
+  const brows = face?.brows ?? BROWS_SVG
+  const eyes = `<g data-eyes="">${face?.eyes ?? EYES_SVG}</g>`
+  if (expression === 'resting') return brows + (face ? eyes : '') + SMILE_SVG
   if (expression === 'queued') return brows + eyes + QUEUED_MOUTH_SVG
   return brows + eyes + SINGING_MOUTH_SVG.replace('<ellipse', '<ellipse data-mouth=""')
 }
@@ -60,18 +67,34 @@ function expressionSvg(expression: Expression, kickPilot: boolean): string {
  */
 export function StreetwearCharacter(props: CharacterRenderProps & { packId?: string | undefined }) {
   const { role, color, status, muted, packId } = props
-  const kickPilot = packId === 'boom-bap-01' && role === 'kick'
+  const boomBap = packId === 'boom-bap-01'
   const glowId = useId()
   const singing = status === 'playing' || status === 'stopping'
   const expression: Expression = singing ? 'singing' : status === 'queued' ? 'queued' : 'resting'
 
-  const { head, body } = useMemo(() => {
+  const { head, body, patchTransform } = useMemo(() => {
     const palette = paletteFor(color)
-    const face = expressionSvg(expression, kickPilot)
-    return kickPilot
-      ? { head: kickPilotHead(palette, face), body: kickPilotBody(palette) }
-      : { head: headSvg(role, palette, face), body: bodySvg(role, palette) }
-  }, [role, color, expression, kickPilot])
+    if (!boomBap) {
+      return {
+        head: headSvg(role, palette, expressionSvg(expression)),
+        body: bodySvg(role, palette),
+      }
+    }
+    if (role === 'kick') {
+      const face = expressionSvg(expression, { brows: KICK_PILOT_BROWS, eyes: KICK_PILOT_EYES })
+      return {
+        head: kickPilotHead(palette, face),
+        body: kickPilotBody(palette),
+        patchTransform: 'translate(79 99) rotate(8) scale(.72)',
+      }
+    }
+    const face = expressionSvg(expression, { brows: boomBapBrows(role), eyes: BOOM_BAP_EYES })
+    return {
+      head: boomBapHead(role, palette, face),
+      body: boomBapBody(role, palette),
+      patchTransform: boomBapPatchTransform[role],
+    }
+  }, [role, color, expression, boomBap])
 
   const live = useRef(props)
   useLayoutEffect(() => {
@@ -149,10 +172,7 @@ export function StreetwearCharacter(props: CharacterRenderProps & { packId?: str
         <g ref={pivotRef}>
           <g ref={headRef} dangerouslySetInnerHTML={{ __html: head }} />
           <g dangerouslySetInnerHTML={{ __html: body }} />
-          <GenrePatch
-            packId={packId}
-            transform={kickPilot ? 'translate(79 99) rotate(8) scale(.72)' : undefined}
-          />
+          <GenrePatch packId={packId} transform={patchTransform} />
         </g>
       </g>
     </svg>

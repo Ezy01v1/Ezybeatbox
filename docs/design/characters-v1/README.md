@@ -2,7 +2,7 @@
 
 Approved by Daniel on 2026-11-04 as the visual direction for the six hip hop characters. Concept references only, not production sprites. Originally PNG (~1.5 MB each); stored here as WebP (quality 88) to keep the repo light.
 
-The game on `main` uses the streetwear SVG renderer. Boom Bap's Kick is the pilot for a closer adaptation of these concepts. Its cap, bomber and face are drawn in `src/visuals/streetwear/kickPilot.ts` in the stage's waist-up framing. The repository also contains the Rive artwork and generator.
+The game on `main` uses the streetwear SVG renderer. Boom Bap's cast follows these concepts in the stage's waist-up framing. The approved Kick pilot lives in `src/visuals/streetwear/kickPilot.ts`. The other five characters use `src/visuals/streetwear/boomBapArt.ts` for their hair, faces and outfits. The repository also contains the Rive artwork and generator.
 
 ## Prompt set
 

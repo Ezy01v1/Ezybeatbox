@@ -61,6 +61,15 @@ describe('StreetwearCharacter', () => {
     ).toBeNull()
   })
 
+  it.each(['snare', 'hihat', 'bass', 'voice', 'fx'] as const)(
+    'uses the refined %s outfit only in Boom Bap',
+    (role) => {
+      const outfit = `[data-boom-bap-outfit="${role}"]`
+      expect(draw('playing', 0, false, 'boom-bap-01', role).querySelector(outfit)).not.toBeNull()
+      expect(draw('playing', 0, false, 'trap-01', role).querySelector(outfit)).toBeNull()
+    },
+  )
+
   it('draws a distinct outfit patch for each shipped pack', () => {
     const patches = [
       'boom-bap-01',
