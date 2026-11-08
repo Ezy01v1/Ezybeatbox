@@ -80,8 +80,8 @@ El audio real no se puede validar con pruebas unitarias. Esta lista se recorre a
 
 - [x] Mis mixes en Trap: guardé seis capas, quité FX del escenario y cargué el mix guardado. Las seis capas se restauraron, incluido Riser. También cargué ese mix desde Boom Bap: la app cambió a Trap y restauró los seis sonidos.
 
-- [ ] **Link en otro navegador o dispositivo:** arma un mix con mute, solo y volumen general. "Compartir" → "Copiar link" → ábrelo en otro navegador (o en el celular). Tras "Toca para empezar" debe sonar idéntico.
-- [ ] El aviso "Vas a escuchar un mix que te compartieron" aparece en la pantalla de inicio. Después de cargar, la barra de direcciones queda sin `#…`.
+- [x] **Link en otro navegador** (2026-11-08). Un mix de Trap creado en Chrome se abrió en un perfil nuevo de Edge. Volver a compartirlo reprodujo el mismo link con seis sonidos, caja silenciada, bombo y bajo en Solo, volumen general de −7 dB y tempo de 146 BPM. Las dos exportaciones WebM/Opus duraron 6,54 s frente a los 6,58 s teóricos. Tras alinearlas, la correlación de las señales decodificadas fue de 0,9991.
+- [x] Al abrir el link en Edge apareció «Vas a escuchar un mix que te compartieron». Después de cargar, la app quitó el fragmento `#…` de la barra de direcciones.
 - [ ] Pegar un link en una pestaña que ya tiene la app abierta: el mix se aplica en el siguiente compás.
 - [ ] Link roto (borra caracteres): aviso "no es válido" y escenario vacío, sin pantalla en blanco.
 - [ ] Link con `v=9`: aviso de versión más nueva.
@@ -90,7 +90,7 @@ El audio real no se puede validar con pruebas unitarias. Esta lista se recorre a
 - [ ] Modo privado / almacenamiento bloqueado: aviso de error al guardar, la app sigue funcionando.
 - [ ] **Exportar audio:** el archivo dura ~10,7 s (2 loops a 90 BPM), empieza en el compás 1 del loop y suena igual que la app (incluyendo mute/solo y volumen general).
 - [x] Trap con seis capas en el navegador integrado: la app completó la grabación de cuatro compases y mostró «Audio exportado». Pendiente abrir el archivo para verificar contenido y duración.
-- [ ] Exportar con **solo** activo: Trap completó cuatro compases con el Kick en Solo y mostró «Audio exportado». Pendiente abrir el archivo y verificar que se escuche el Kick.
+- [x] **Exportar con Solo activo** (2026-11-08). La grabación de Trap con seis sonidos cargados y Solo en bombo y bajo coincide con la referencia que solo tenía esas dos capas cargadas. La correlación tras alinear las grabaciones fue de 0,9992.
 - [x] Pausar durante la exportación en Trap: la app mostró el aviso de cancelación y habilitó de nuevo el botón. La prueba automatizada confirma que la cancelación no devuelve audio.
 - [ ] Safari: la exportación descarga `.m4a`/MP4 y se reproduce. Si Safari no soporta MediaRecorder, aparece el aviso de "no permite grabar".
 - [ ] Teclado: los diálogos se abren y cierran con Enter y Escape, y el foco vuelve al botón que los abrió.

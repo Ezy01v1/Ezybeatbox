@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-08**. El elenco de Boom Bap incorpora el nivel de detalle del piloto de Kick.
+> Última actualización: **2026-11-08**. Se verificaron los enlaces compartidos entre Chrome y Edge y la exportación con Solo.
 
 ## Estado en una línea
 
@@ -96,7 +96,7 @@ Detalle completo en `docs/QA.md`. Lo más importante:
   - [ ] Que el `.m4a` dure exacto (sin avisos de duración al cargar).
   - [ ] Que la exportación de audio funcione.
   - [ ] Que con el switch de silencio activado se siga escuchando.
-- [ ] **Link compartido** en otro dispositivo o navegador: debe sonar idéntico. Verificado en otra pestaña del navegador local: Trap restauró 808 Largo y Rápido y ambos entraron en reproducción.
+- [x] **Link compartido en otro navegador** (2026-11-08). Edge restauró un mix de Trap creado en Chrome, con seis sonidos, mute, solo, volumen y tempo. El audio exportado coincidió tras alinear las grabaciones. Ver `docs/QA.md`.
 - [ ] **Bluetooth:** que los visuales caigan junto con el golpe que se escucha.
 - [ ] **PWA:** instalarla en Android e iOS y usarla en modo avión.
 
@@ -131,6 +131,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-08.** QA de un mix de Trap compartido de Chrome a Edge. El link se restauró completo y las exportaciones coincidieron con una correlación de 0,9991 tras alinearlas. Una grabación de referencia con solo bombo y bajo confirmó que el resto de las capas quedó fuera de la exportación con Solo activo.
 
 - **2026-11-08.** Se completó el elenco SVG de Boom Bap. Snare lleva chaleco utilitario, Hi-Hat un rompevientos con bolso cruzado, Bass chaleco acolchado, Voice chaqueta varsity y FX anorak con audífonos. Los cinco conservan la boca reactiva, el rebote y el color del sonido que tocan.
 
