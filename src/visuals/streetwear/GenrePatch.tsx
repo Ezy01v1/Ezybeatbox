@@ -52,12 +52,18 @@ const patches = new Map<string, { color: string; symbol: ReactNode }>([
   ],
 ])
 
-export function GenrePatch({ packId }: { packId: string | undefined }) {
+export function GenrePatch({
+  packId,
+  transform = 'translate(73 103) rotate(8)',
+}: {
+  packId: string | undefined
+  transform?: string | undefined
+}) {
   const patch = packId ? patches.get(packId) : undefined
   if (!patch) return null
 
   return (
-    <g data-genre-patch="" transform="translate(73 103) rotate(8)" color={patch.color}>
+    <g data-genre-patch="" transform={transform} color={patch.color}>
       <rect x="-10" y="-9" width="20" height="18" rx="4" fill={INK} stroke="currentColor" />
       <g
         fill="none"

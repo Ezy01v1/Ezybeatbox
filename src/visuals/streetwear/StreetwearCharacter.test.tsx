@@ -1,5 +1,6 @@
 import { act, render } from '@testing-library/react'
 import type { SlotStatus } from '@/core/audio/transitions'
+import type { CharacterRole } from '@/core/packs/schema'
 import { PackCharacter } from '../PackCharacter'
 import { svgStyle } from '../rive/characterArt'
 import { BLINK, blinkScale } from './art'
@@ -26,11 +27,17 @@ describe('StreetwearCharacter', () => {
     }
   }
 
-  function draw(status: SlotStatus, level = 0, muted = false, packId?: string) {
+  function draw(
+    status: SlotStatus,
+    level = 0,
+    muted = false,
+    packId = 'boom-bap-01',
+    role: CharacterRole = 'kick',
+  ) {
     return render(
       <PackCharacter
-        packId={packId ?? 'boom-bap-01'}
-        role="kick"
+        packId={packId}
+        role={role}
         color="#c2410c"
         outline="#1c1917"
         status={status}
@@ -44,6 +51,14 @@ describe('StreetwearCharacter', () => {
 
   it('uses the pack role color for the outfit', () => {
     expect(draw('empty').innerHTML).toContain('#c2410c')
+  })
+
+  it('uses the pilot art only for the Boom Bap kick character', () => {
+    expect(draw('playing').querySelector('[data-kick-pilot]')).not.toBeNull()
+    expect(draw('playing', 0, false, 'trap-01').querySelector('[data-kick-pilot]')).toBeNull()
+    expect(
+      draw('playing', 0, false, 'boom-bap-01', 'snare').querySelector('[data-kick-pilot]'),
+    ).toBeNull()
   })
 
   it('draws a distinct outfit patch for each shipped pack', () => {

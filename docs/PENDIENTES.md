@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-08**. «Mis mixes» ya se puede abrir desde Inicio.
+> Última actualización: **2026-11-08**. Kick de Boom Bap tiene un SVG piloto basado en el concepto aprobado.
 
 ## Estado en una línea
 
@@ -60,7 +60,8 @@ Esa sesión hizo una portada neutra y personajes SVG streetwear **que nunca se s
 - [x] **Inicio sin perder el beat** (2026-11-06): el logo del escenario es "Ir al inicio"; el beat sigue sonando en la portada, con una franja para pausarlo o reanudarlo y **"Continuar mi beat"**. "Cambiar estilo" también deja de detenerlo; solo se detiene al abrir otro pack.
 - [x] **«Mis mixes» desde la portada** (2026-11-08). La biblioteca permite cargar un mix antes de elegir pack.
 - [x] **Bases por temática:** hecho el 2026-11-06, en el escenario y no en un paso aparte. Detalle original: después de elegir el género, elegir una base (se propusieron **tres por temática**) o **"Crear desde cero"**. Las bases deben sonar bien juntas y compartir tempo y duración.
-- [ ] **Personaje piloto:** pulir **solo Kick** al nivel de su concepto (`docs/design/characters-v1/kick.webp`), comparándolo en escritorio y móvil, antes de rehacer los seis.
+- [x] **Personaje piloto** (2026-11-08). Se pulió Kick de Boom Bap con el concepto de referencia y se comparó en escritorio y móvil.
+- [ ] **Revisar el piloto con Daniel** antes de aplicar el mismo tratamiento a los otros personajes.
 - [x] **Pulso del cuerpo con el audio:** cubierto por el rig de Rive. El parpadeo escalonado quedó como pendiente en la sección de Rive.
 - [x] **Robustez de carga** (2026-11-08). Se bloquean cargas simultáneas y «Reintentar» vuelve a abrir el pack pedido.
 - [x] **Controles en móvil** (2026-11-08). M/S/✕ están debajo del personaje y fuera del área de arrastre. La fila se ajusta al ancho de su columna.
@@ -129,6 +130,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-08.** Piloto SVG de Kick en Boom Bap, con gorra hacia atrás, bomber más ancha, cadena y sombreado del concepto aprobado. El personaje conserva la boca reactiva, el rebote y el parche de vinilo. Los ojos abiertos en reposo también usan el parpadeo del rig.
 
 - **2026-11-08.** «Mis mixes» desde Inicio abre una biblioteca de solo carga. Elegir un mix restaura su género y su mezcla. Si el pack ya no existe, vuelve a Inicio con un aviso. Guardar y eliminar siguen disponibles en el escenario.
 
