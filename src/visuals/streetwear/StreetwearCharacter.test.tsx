@@ -1,5 +1,6 @@
 import { act, render } from '@testing-library/react'
 import type { SlotStatus } from '@/core/audio/transitions'
+import { PackCharacter } from '../PackCharacter'
 import { svgStyle } from '../rive/characterArt'
 import { BLINK, blinkScale } from './art'
 import { StreetwearCharacter } from './StreetwearCharacter'
@@ -25,9 +26,10 @@ describe('StreetwearCharacter', () => {
     }
   }
 
-  function draw(status: SlotStatus, level = 0, muted = false) {
+  function draw(status: SlotStatus, level = 0, muted = false, packId?: string) {
     return render(
-      <StreetwearCharacter
+      <PackCharacter
+        packId={packId ?? 'boom-bap-01'}
         role="kick"
         color="#c2410c"
         outline="#1c1917"
@@ -42,6 +44,20 @@ describe('StreetwearCharacter', () => {
 
   it('uses the pack role color for the outfit', () => {
     expect(draw('empty').innerHTML).toContain('#c2410c')
+  })
+
+  it('draws a distinct outfit patch for each shipped pack', () => {
+    const patches = [
+      'boom-bap-01',
+      'trap-01',
+      'reggaeton-01',
+      'house-01',
+      'dnb-01',
+      'afrobeat-01',
+    ].map((packId) => draw('empty', 0, false, packId).querySelector('[data-genre-patch]'))
+
+    expect(patches.every((patch) => patch instanceof SVGElement)).toBe(true)
+    expect(new Set(patches.map((patch) => patch?.innerHTML)).size).toBe(6)
   })
 
   it('shows the dashed ring only while queued', () => {

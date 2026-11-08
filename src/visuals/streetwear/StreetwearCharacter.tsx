@@ -3,6 +3,7 @@ import { subscribeFrame } from '../animationLoop'
 import type { CharacterRenderProps } from '../CharacterRenderer'
 import { beatImpulse } from '../pose'
 import { followRiveLevel } from '../rive/motion'
+import { GenrePatch } from './GenrePatch'
 import {
   BROWS_SVG,
   EYES_CENTER_Y,
@@ -48,15 +49,15 @@ function expressionSvg(expression: Expression): string {
 }
 
 /**
- * The streetwear characters (Boom Bap), drawn as plain SVG. React renders the markup only when
+ * The streetwear characters, drawn as plain SVG. React renders the base art only when
  * the role, color or expression changes; per-frame motion (squash, head bounce, mouth, glow and
  * the staggered blink) is written straight to SVG attributes from the shared animation loop.
  *
  * The markup comes from our own art constants plus pack colors validated as `#rrggbb`
  * (core/packs/schema), so injecting it as HTML is safe.
  */
-export function StreetwearCharacter(props: CharacterRenderProps) {
-  const { role, color, status, muted } = props
+export function StreetwearCharacter(props: CharacterRenderProps & { packId?: string | undefined }) {
+  const { role, color, status, muted, packId } = props
   const glowId = useId()
   const singing = status === 'playing' || status === 'stopping'
   const expression: Expression = singing ? 'singing' : status === 'queued' ? 'queued' : 'resting'
@@ -142,6 +143,7 @@ export function StreetwearCharacter(props: CharacterRenderProps) {
         <g ref={pivotRef}>
           <g ref={headRef} dangerouslySetInnerHTML={{ __html: head }} />
           <g dangerouslySetInnerHTML={{ __html: body }} />
+          <GenrePatch packId={packId} />
         </g>
       </g>
     </svg>

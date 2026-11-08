@@ -25,7 +25,7 @@ export function PackCharacter({
   const src = characterArt(packId, props.role)
   const fallback =
     svgStyle(packId) === 'streetwear' ? (
-      <StreetwearCharacter {...props} />
+      <StreetwearCharacter {...props} packId={packId} />
     ) : (
       <SvgCharacter {...props} />
     )

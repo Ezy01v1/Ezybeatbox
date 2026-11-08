@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-06 (PC1, casa)**: teclas 1–6 en la paleta, nombres de los personajes, tempo en vivo, botones "Drop" y "Sorpréndeme" y 11 sonidos por sección, con remates, corte y ×2. Antes, en la PC2: Seis géneros con paleta sonora propia, cualquier sonido en cualquier personaje, bases, animaciones al compás, y todo en SVG (ya no hay Rive). Daniel sigue desde la PC1 en casa.
+> Última actualización: **2026-11-08**. Los personajes SVG llevan un parche de ropa distinto por género.
 
 ## Estado en una línea
 
@@ -14,7 +14,7 @@ Las 6 fases del plan (0–5) y la PWA están terminadas. Hay seis géneros: Boom
 - 11 sonidos por sección (5 propios más swing, ½, dos remates, corte y ×2);
 - su paleta sonora propia.
 
-Cualquier personaje toca cualquier sonido, uno por personaje. **Falta:** que Daniel escuche y ajuste los sonidos, más combinaciones, las funcionalidades nuevas, publicar la app y la QA en el celular.
+Cualquier personaje toca cualquier sonido, uno por personaje. Queda escuchar los loops y las funciones nuevas, ajustar los sonidos según esa revisión, publicar la app y hacer la QA en el celular.
 
 ---
 
@@ -36,7 +36,7 @@ Cualquier personaje toca cualquier sonido, uno por personaje. **Falta:** que Dan
      - Decidir si el rango de ±15 % alcanza o si quiere conservar el tono. Eso requeriría `GrainPlayer`, que en baterías suena peor.
 4. [x] **Nombres de los personajes** (2026-11-06): nombres al azar y neutros, un elenco distinto por género. Si alguno no le gusta a Daniel, se cambia en `scripts/placeholders/names.ts`.
 5. [x] **Teclado** (2026-11-06): con un sonido enfocado, las teclas 1–6 eligen el personaje que lo toca.
-6. [ ] **Ropa o accesorios por género:** hoy todos los géneros comparten el personaje streetwear y solo cambian los colores.
+6. [x] **Ropa o accesorios por género** (2026-11-08). Los seis géneros tienen un parche propio sobre la ropa streetwear.
 7. [ ] **Golpes CC0 o grabados por Daniel** para las voces y los FX (como beatboxer), y algunos golpes de batería. Solo con licencia CC0 (por ejemplo, Freesound filtrado por "Creative Commons 0"), porque la app redistribuye los sonidos. Los ritmos los compone Claude.
 
 Foco de Daniel (2026-11-06): **diseño, animaciones, funcionalidades, variedad de ritmo y de géneros**. "Mis mixes" desde la portada queda para después.
@@ -129,6 +129,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-08.** Parche SVG por género en la ropa de los seis personajes. Vinilo en Boom Bap, rayo en Trap, sol en Reggaetón, bola facetada en House, flechas en Drum & Bass y rombos en Afrobeat. El parche se mueve con el torso y sigue al género aunque el personaje cambie de sonido.
 
 - **2026-11-06 (PC1):** **teclado en la paleta**. Con un sonido enfocado, Enter lo pone donde decide `placeSound` (como antes) y las teclas 1–6 lo ponen en ese personaje, en el orden del escenario. Así se pueden poner dos bombos.
   - La pista con los números y los nombres ("1 Tali · 2 Luca…") aparece solo al navegar con el teclado. Los lectores de pantalla la leen siempre (`aria-describedby`, `aria-keyshortcuts`).
