@@ -3,41 +3,34 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-08**. Los seis géneros cargan y reproducen una base sin conexión en Chromium de escritorio.
+> Última actualización: **2026-11-08**. El código de los seis géneros y la PWA está en `main`. Quedan la revisión de sonido, la publicación de la app y las pruebas en dispositivos reales.
 
 ## Estado en una línea
 
-Las 6 fases del plan (0–5) y la PWA están terminadas. Hay seis géneros: Boom Bap 90, Trap 140, Reggaetón 95, House 124, Drum & Bass 174 y Afrobeat 105. Cada uno tiene:
+Las 6 fases del plan (0–5) y la implementación de la PWA están completas. Hay seis géneros: Boom Bap 90, Trap 140, Reggaetón 95, House 124, Drum & Bass 174 y Afrobeat 105. Cada uno tiene:
 
 - sus colores, su escenario con patrón que late al compás y su portada;
 - tres bases prearmadas;
 - 11 sonidos por sección (5 propios más swing, ½, dos remates, corte y ×2);
 - su paleta sonora propia.
 
-Cualquier personaje toca cualquier sonido, uno por personaje. Queda escuchar los loops y las funciones nuevas, ajustar los sonidos según esa revisión, publicar la app y hacer la QA en el celular.
+Cualquier personaje toca cualquier sonido, uno por personaje. Los seis géneros usan personajes SVG streetwear. Boom Bap tiene el elenco rediseñado a partir del piloto aprobado por Daniel. La carga y reproducción sin conexión ya se comprobaron en Chromium de escritorio.
 
 ---
 
 ## 1. Próximo paso de código (en este orden)
 
-**Para retomar en la otra PC:** `git pull`, `npm install` (se agregaron `ffmpeg-static` y `sharp` como dependencias de desarrollo) y `npm run dev`.
+Para retomar en la otra PC, sigue los pasos del final del archivo.
 
-1. [ ] **Ajustar los sonidos según lo que escuche Daniel.** Le gustaron en general (2026-11-06), pero falta su lista concreta.
+1. [ ] **Ajustar los sonidos que Daniel señale durante la revisión.** La escucha general con audífonos ya se hizo. Queda identificar qué remates, cortes o versiones ×2 conviene cambiar.
    - Los sonidos de cada género están en `scripts/placeholders/palettes.ts`, los instrumentos en `voices.ts` e `instruments.ts`, y el color de mezcla en `finish.ts`.
    - Para regenerar un pack: `npx tsx scripts/generate-placeholders.ts --force --pack <id>`. Después, `git checkout` de los `.ogg`/`.m4a` de los packs que no se tocaron, porque `--force` vuelve a codificar todo y cambia los bytes.
-2. [ ] **Más combinaciones por género:** ya hay 11 sonidos por sección (2026-11-06), con remates automáticos (ver "Hecho recientemente").
-   - Falta que Daniel los escuche: si algún remate o "×2" suena mal, se cambia su fuente en `withFills` (`scripts/placeholders/packs.ts`) o se reemplaza con `overrideSounds` por uno escrito a mano.
-   - Queda **1 lugar libre por sección** (el máximo del manifest es 12). Agregar ids nuevos solo al final, para no romper las mezclas guardadas.
-3. [ ] **Funcionalidades** (recomendado en este orden):
-   - [x] **"Sorpréndeme"** (2026-11-06): botón junto a las bases. Falta que Daniel lo pruebe varias veces y diga si las mezclas le suenan bien.
-   - [x] **Drops** (2026-11-06): botón "Drop" junto a las bases. Falta que Daniel lo escuche. Si gusta, se podría agregar un atajo de teclado o un drop de dos compases.
-   - [x] **BPM en vivo** (2026-11-06): control − / BPM / + en la barra superior. Pendiente:
-     - Que Daniel lo escuche. Al cambiar de tempo, el último instante antes del compás puede sonar con el tono nuevo, porque Tone aplica el `playbackRate` con anticipación.
-     - Decidir si el rango de ±15 % alcanza o si quiere conservar el tono. Eso requeriría `GrainPlayer`, que en baterías suena peor.
-4. [x] **Nombres de los personajes** (2026-11-06): nombres al azar y neutros, un elenco distinto por género. Si alguno no le gusta a Daniel, se cambia en `scripts/placeholders/names.ts`.
-5. [x] **Teclado** (2026-11-06): con un sonido enfocado, las teclas 1–6 eligen el personaje que lo toca.
-6. [x] **Ropa o accesorios por género** (2026-11-08). Los seis géneros tienen un parche propio sobre la ropa streetwear.
-7. [ ] **Golpes CC0 o grabados por Daniel** para las voces y los FX (como beatboxer), y algunos golpes de batería. Solo con licencia CC0 (por ejemplo, Freesound filtrado por "Creative Commons 0"), porque la app redistribuye los sonidos. Los ritmos los compone Claude.
+   - `withFills` se define en `scripts/placeholders/recipes.ts` y se configura por género en `packs.ts`. También se puede sustituir una receta con `overrideSounds`.
+   - Ya hay **11 sonidos por sección**. Queda 1 lugar libre por sección. Agregar ids nuevos al final preserva las mezclas guardadas.
+   - El borrador anterior de remate y redoble, con los audios que se llegaron a generar, queda en la rama `codex/respaldo-remates-2026-11-08`.
+2. [ ] **Recoger la opinión de Daniel sobre «Sorpréndeme», «Drop» y BPM en vivo.** Las tres funciones ya están implementadas y tienen pruebas. Queda decidir si el rango de ±15 % alcanza y si conviene conservar el tono al cambiar de tempo. En el instante anterior al cambio puede oírse el nuevo tono por la anticipación de `playbackRate`.
+3. [ ] **Incorporar golpes CC0 o grabados por Daniel** para las voces, los FX y algunos golpes de batería.
+4. [ ] **Implementar la Loop Station** después de publicar la app para probar el micrófono en el celular. Los contratos están en `src/extensions/loopStation.ts` y `src/extensions/userSounds.ts`. El diseño está en `docs/EXTENSIONS.md`.
 
 Foco de Daniel (2026-11-06): **diseño, animaciones, funcionalidades, variedad de ritmo y de géneros**.
 
@@ -51,11 +44,9 @@ Foco de Daniel (2026-11-06): **diseño, animaciones, funcionalidades, variedad d
 - [x] Cualquier sonido en cualquier personaje, uno por personaje. El color viene del sonido; el aspecto es el del personaje.
 - [x] Paleta sonora propia en los seis géneros: voces con formantes, talkbox, 808, 909, caja de break, scratch, rewind, tape stop, bocina, shekere, log drum y color de mezcla por género.
 
-- [ ] **Loop Station** (contratos en `src/extensions/loopStation.ts` y `userSounds.ts`, diseño en `docs/EXTENSIONS.md`). Conviene hacerla con la app ya publicada, para probar el micrófono en el celular.
+### Ideas de la PC1 incorporadas
 
-### Ideas rescatadas de la PC1 (sesión del 2026-11-04, sin implementar todavía)
-
-Esa sesión hizo una portada neutra y personajes SVG streetwear **que nunca se subieron**. La interfaz actual los reemplazó con el selector de packs y Rive. Las referencias visuales están ahora en `docs/design/` (`characters-v1/` y `home-neutral-v1/`). El código completo quedó solo en la rama local `respaldo/portada-neutra-pc1` de la PC1 (no está en GitHub). Ideas que valen la pena evaluar:
+Los conceptos de la portada neutra y los personajes están en `docs/design/home-neutral-v1/` y `docs/design/characters-v1/`. El prototipo original quedó en la rama local `respaldo/portada-neutra-pc1` de la PC1. La app actual usa el selector de géneros y los personajes SVG.
 
 - [x] **Inicio sin perder el beat** (2026-11-06): el logo del escenario es "Ir al inicio"; el beat sigue sonando en la portada, con una franja para pausarlo o reanudarlo y **"Continuar mi beat"**. "Cambiar estilo" también deja de detenerlo; solo se detiene al abrir otro pack.
 - [x] **«Mis mixes» desde la portada** (2026-11-08). La biblioteca permite cargar un mix antes de elegir pack.
@@ -63,7 +54,7 @@ Esa sesión hizo una portada neutra y personajes SVG streetwear **que nunca se s
 - [x] **Personaje piloto** (2026-11-08). Se pulió Kick de Boom Bap con el concepto de referencia y se comparó en escritorio y móvil.
 - [x] **Revisión visual del piloto** (2026-11-08). A Daniel le gustó el nuevo aspecto de Kick y le pareció una mejora clara.
 - [x] **Pulir el resto del elenco de Boom Bap** (2026-11-08). Snare, Hi-Hat, Bass, Voice y FX ya tienen ropa, pelo y detalles propios basados en sus conceptos.
-- [x] **Pulso del cuerpo con el audio:** cubierto por el rig de Rive. El parpadeo escalonado quedó como pendiente en la sección de Rive.
+- [x] **Animación de personajes:** el SVG tiene rebote al compás, boca y brillo reactivos y parpadeo escalonado. Se comprobó «Reducir movimiento» en Chromium.
 - [x] **Robustez de carga** (2026-11-08). Se bloquean cargas simultáneas y «Reintentar» vuelve a abrir el pack pedido.
 - [x] **Controles en móvil** (2026-11-08). M/S/✕ están debajo del personaje y fuera del área de arrastre. La fila se ajusta al ancho de su columna.
 
@@ -71,9 +62,9 @@ Esa sesión hizo una portada neutra y personajes SVG streetwear **que nunca se s
 
 - [x] **Diseño en Stitch:** dirección elegida y 6 personajes por temática (2026-11-05). Stitch está conectado por MCP en la configuración de usuario de esta PC (en la otra PC hay que agregarlo de nuevo con `claude mcp add stitch …`).
 - [ ] **Rotar la API key de Stitch**: quedó escrita en una conversación.
-- [ ] **Seguir revisando la interfaz nueva** con `npm run dev` (selector, escenario hip hop y trap, "Cambiar estilo"). Aprobada y fusionada en `main` el 2026-11-05; anotar aquí los ajustes que aparezcan.
-- [ ] **Generar más ritmos sintéticos** para ampliar la variedad de loops de prueba de Boom Bap y Trap.
-- [ ] **Grabar los samples reales del pack trap** (140 BPM, 2 compases). Los nombres de los sonidos están en `scripts/placeholders/trapRecipes.ts`; para regenerar los placeholders hace falta `ffmpeg` en el `PATH`.
+- [x] **Revisión visual de la interfaz:** se aprobó y fusionó en `main` el 2026-11-05. Daniel también aprobó el nuevo aspecto del piloto de Boom Bap el 2026-11-08.
+- [x] **Ampliar los ritmos sintéticos de Boom Bap y Trap:** cada sección de ambos géneros pasó de 5 a 11 sonidos. Los ajustes de escucha quedan en la sección 1.
+- [ ] **Grabar los samples reales del pack Trap** (140 BPM, 2 compases). Los nombres están en `scripts/placeholders/trapRecipes.ts`.
 - [x] ~~Animar los avatares de Trap en Rive~~: Trap pasó a SVG streetwear el 2026-11-06. Rive queda para el día que haya plan de pago.
 - [x] **CLI de Rive en las dos PCs:** instalado y con sesión iniciada en ambas (PC2, cuenta Easy01v: 1.9.1, 2026-11-06). Instalación: `irm https://releases.rive.app/cli/install.ps1 | iex`; `rive login` funciona con un código que se aprueba en el navegador.
 - [ ] **Grabar los samples reales** del pack hip hop siguiendo `docs/SAMPLES.md` (90 BPM, 2 compases exactos, ~−18 LUFS). Basta reemplazar los archivos: el script de placeholders no los vuelve a pisar.
@@ -84,7 +75,7 @@ Esa sesión hizo una portada neutra y personajes SVG streetwear **que nunca se s
   - Al terminar, anotar aquí la URL publicada.
 - [ ] **QA en dispositivos reales:** Daniel retomará la prueba en su celular cuando tenga el cable para conectarlo a la PC. Ver la sección 3.
 
-## 3. QA pendiente (solo se puede probar a mano)
+## 3. QA en dispositivos reales
 
 Detalle completo en `docs/QA.md`. Lo más importante:
 
@@ -98,7 +89,7 @@ Detalle completo en `docs/QA.md`. Lo más importante:
   - [ ] Que con el switch de silencio activado se siga escuchando.
 - [x] **Link compartido en otro navegador** (2026-11-08). Edge restauró un mix de Trap creado en Chrome, con seis sonidos, mute, solo, volumen y tempo. El audio exportado coincidió tras alinear las grabaciones. Ver `docs/QA.md`.
 - [ ] **Bluetooth:** que los visuales caigan junto con el golpe que se escucha.
-- [ ] **PWA:** instalarla en Android e iOS y usarla en modo avión.
+- [ ] **PWA:** instalarla en Android e iOS y usarla en modo avión. La reproducción sin conexión de los seis géneros ya se verificó en Chromium de escritorio.
 
 ## 4. Decisiones abiertas
 
@@ -237,7 +228,7 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 
 - **2026-11-06:** identidad visual de los géneros nuevos. Los cuatro usan los personajes streetwear SVG con su paleta. Cada uno tiene su fondo: sol y palmeras, rayos de club, líneas de velocidad y tela kente. Los patrones viven en `src/visuals/patterns.ts` y los comparten el escenario y el generador de portadas. Las portadas se rasterizan con `sharp`: `npx tsx scripts/covers/build-covers.ts`.
 
-- **2026-11-06:** cuatro géneros nuevos con 30 loops sintéticos cada uno: `reggaeton-01`, `house-01`, `dnb-01` y `afrobeat-01`. Se agregaron instrumentos nuevos (`tom`, `cowbell`, `pluck`, `chord`, `reese`) en `scripts/placeholders/instruments.ts`. El generador usa `ffmpeg-static` si `ffmpeg` no está en el `PATH`. Los personajes usan el SVG clásico con la paleta de cada género. Faltan las portadas.
+- **2026-11-06:** cuatro géneros nuevos con 30 loops sintéticos cada uno: `reggaeton-01`, `house-01`, `dnb-01` y `afrobeat-01`. Se agregaron instrumentos nuevos (`tom`, `cowbell`, `pluck`, `chord`, `reese`) en `scripts/placeholders/instruments.ts`. El generador usa `ffmpeg-static` si `ffmpeg` no está en el `PATH`. Los personajes usan el SVG streetwear con la paleta de cada género. Las portadas se completaron en la misma sesión.
 
 - **2026-11-06:** Boom Bap pasó de Rive a SVG propio para quitar la marca de agua del plan gratuito. Mismos valores de movimiento que el rig (aplaste a la cadera, rebote, boca, brillo, parpadeo escalonado compartido en `BLINK`). Se quitaron los `.riv` de Boom Bap de `public/`; el generador de Rive queda para las vistas previas.
 
@@ -284,8 +275,8 @@ npm install
 npm run dev
 ```
 
-- Requisitos: Node ≥ 22 (recomendado 24) y `ffmpeg` en el `PATH` (solo para regenerar placeholders).
+- Usa Node 24 (mínimo 22). Para regenerar audio, el script usa `ffmpeg` del `PATH` o el binario de `ffmpeg-static`.
 - Antes de dar algo por terminado: `npm run lint`, `npm test` y `npm run build` en limpio.
 - Claude lee `CLAUDE.md` al iniciar, y ahí se le indica revisar este archivo.
 - **Ver los avatares sin instalar nada:** `docs/design/characters-rive/README.md` (en GitHub se ve como galería: cantando y en reposo). Los conceptos originales están en `docs/design/characters-v1/`.
-- **Para editar los avatares en otra PC:** instalar el CLI de Rive. `npm run rive:streetwear -- --previews` regenera escenas e imágenes; con `--publish` (requiere `rive login`) también los `.riv` del juego.
+- **Para editar los avatares activos:** el arte SVG vive en `src/visuals/streetwear/`. Los comandos de Rive siguen disponibles para regenerar las vistas previas históricas.

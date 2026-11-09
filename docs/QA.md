@@ -90,7 +90,7 @@ El audio real no se puede validar con pruebas unitarias. Esta lista se recorre a
 - [x] Almacenamiento bloqueado simulado en Chromium. Al bloquear la escritura, «Mis mixes» muestra el aviso dentro del diálogo y conserva el nombre y el beat. Al desbloquearla, se puede reintentar. Con la lectura bloqueada, Inicio sigue disponible y muestra el aviso al intentar abrir la biblioteca.
 - [x] Un mix válido con una fecha dañada sigue disponible para cargar. La biblioteca omite esa fecha. Verificado en Chromium después de recargar.
 - [ ] **Exportar audio:** el archivo dura ~10,7 s (2 loops a 90 BPM), empieza en el compás 1 del loop y suena igual que la app (incluyendo mute/solo y volumen general).
-- [x] Trap con seis capas en el navegador integrado: la app completó la grabación de cuatro compases y mostró «Audio exportado». Pendiente abrir el archivo para verificar contenido y duración.
+- [x] Trap con seis capas en el navegador integrado: la app completó la grabación de cuatro compases y mostró «Audio exportado». La duración y la señal de las exportaciones de Trap se comprobaron después en Chrome y Edge, con Solo activo.
 - [x] **Exportar con Solo activo** (2026-11-08). La grabación de Trap con seis sonidos cargados y Solo en bombo y bajo coincide con la referencia que solo tenía esas dos capas cargadas. La correlación tras alinear las grabaciones fue de 0,9992.
 - [x] Pausar durante la exportación en Trap: la app mostró el aviso de cancelación y habilitó de nuevo el botón. La prueba automatizada confirma que la cancelación no devuelve audio.
 - [ ] Safari: la exportación descarga `.m4a`/MP4 y se reproduce. Si Safari no soporta MediaRecorder, aparece el aviso de "no permite grabar".
@@ -121,9 +121,10 @@ Con `npm run build` y luego `npm run preview` (el service worker no existe en `d
 
 ## Selector de packs y temáticas (2026-11-05)
 
-- [ ] La portada muestra Boom Bap y Trap con su ilustración, BPM y descripción. En el celular las tarjetas se apilan.
+- [x] En Chromium de escritorio, la portada muestra los seis géneros con su ilustración. La prueba sin conexión también cargó las seis portadas.
+- [ ] En un celular real, las tarjetas muestran su ilustración, BPM y descripción, y se apilan.
 - [ ] Tocar una tarjeta (o su botón "Explorar…") desbloquea el audio y abre ese pack. En iOS, comprobar que suena después de ese primer toque.
-- [ ] El chip del pack en la barra ("Trap · 140 BPM ⇄") detiene la música y vuelve al selector, con "Estilo actual" en el pack cargado.
+- [ ] El chip del pack vuelve al selector, con «Estilo actual» en el pack cargado. El beat sigue sonando al volver a Inicio y se detiene al cargar otro género.
 - [ ] "Volver al escenario" conserva el mix; elegir el otro pack lo abre con el escenario vacío.
 - [ ] Trap: el escenario es gris pizarra con anillos lima, y los sonidos van a 140 BPM sin desfase con el compás.
 - [ ] Abrir un link compartido de Trap con la app en Boom Bap: cambia de pack solo y suena el mix.
