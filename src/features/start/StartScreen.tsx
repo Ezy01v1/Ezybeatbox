@@ -13,6 +13,7 @@ export function StartScreen() {
   const error = useAppStore((s) => s.error)
   const manifest = useAppStore((s) => s.manifest)
   const begin = useAppStore((s) => s.begin)
+  const openPackPicker = useAppStore((s) => s.openPackPicker)
   const openingSharedMix = useAppStore((s) => s.openingSharedMix)
   const catalogFailed = useAppStore((s) => s.catalog.state === 'error')
 
@@ -103,6 +104,13 @@ export function StartScreen() {
               {t('picker.continue')}
             </button>
           )}
+          <button
+            type="button"
+            onClick={openPackPicker}
+            className="border-line bg-card text-ink min-h-11 rounded-xl border px-6 py-2 font-semibold"
+          >
+            {t('transport.changePack')}
+          </button>
         </div>
       )}
     </main>

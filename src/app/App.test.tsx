@@ -90,6 +90,25 @@ describe('App', () => {
       expect(store.getState().manifest?.id).toBe('other-pack')
     })
 
+    it('returns to the picker when a shared pack fails to load', async () => {
+      const { user, engine, store } = renderApp(
+        (engine) => {
+          engine.failLoad = new PackLoadError('audio', 'boom', ['/packs/other-pack/kick.ogg'])
+        },
+        { ...withCatalog, initialHash: '#v=1&p=other-pack&pv=1&s=kick.other-kick-2' },
+      )
+      await user.click(await screen.findByRole('button', { name: 'Toca para empezar' }))
+      const alert = await screen.findByRole('alert')
+      await user.click(within(alert).getByRole('button', { name: 'Cambiar estilo' }))
+      expect(store.getState().openingSharedMix).toBe(false)
+      expect(screen.queryByRole('alert')).toBeNull()
+
+      engine.failLoad = null
+      await user.click(await screen.findByRole('button', { name: 'Explorar Other Pack' }))
+      await screen.findByRole('main', { name: 'Escenario' })
+      expect(store.getState().slots.kick?.target).toBeNull()
+    })
+
     it('"Cambiar estilo" opens the picker and you can go back to the same stage', async () => {
       const { user } = renderApp(undefined, withCatalog)
       await user.click(await screen.findByRole('button', { name: 'Explorar Test Pack' }))
@@ -224,14 +243,18 @@ describe('App', () => {
   })
 
   it('shows a visible error with retry when the pack fails to load', async () => {
-    const { user } = renderApp((engine) => {
+    const { user, engine } = renderApp((engine) => {
       engine.failLoad = new PackLoadError('audio', 'boom', ['/packs/x/kick.ogg'])
     })
     await user.click(await screen.findByRole('button', { name: 'Toca para empezar' }))
 
     const alert = await screen.findByRole('alert')
     expect(within(alert).getByText(/No se pudo cargar el pack/)).toBeInTheDocument()
-    expect(within(alert).getByRole('button', { name: 'Reintentar' })).toBeInTheDocument()
+    await user.click(within(alert).getByText('Detalles técnicos'))
+    expect(within(alert).getByText('/packs/x/kick.ogg')).toBeVisible()
+    engine.failLoad = null
+    await user.click(within(alert).getByRole('button', { name: 'Reintentar' }))
+    await screen.findByRole('main', { name: 'Escenario' })
   })
 
   describe('bases', () => {

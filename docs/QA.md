@@ -52,7 +52,7 @@ El audio real no se puede validar con pruebas unitarias. Esta lista se recorre a
 `npm run dev` y abre la raíz (`/`). En el celular: `npm run dev -- --host`.
 
 - [ ] "Toca para empezar" desbloquea el audio y muestra el progreso de carga.
-- [ ] Sin red (o renombrando un `.ogg`): aparece el error con detalles y "Reintentar" funciona al restaurarlo.
+- [x] Un archivo de audio falla y «Detalles técnicos» muestra su ruta. Al restaurarlo, «Reintentar» abre el género. Si el fallo persiste al abrir un mix compartido, «Cambiar estilo» vuelve al selector y permite reproducir otro género. Verificado en Chromium con un HTTP 503 simulado para el bombo de Trap.
 - [ ] **Touch real:** arrastrar un sonido hacia arriba hasta su personaje lo asigna. Deslizar en horizontal sobre la paleta hace scroll y **no** arrastra.
 - [ ] Mientras arrastras: el personaje correcto muestra "Suelta aquí" y los demás se atenúan. Soltar en otro personaje o en el vacío no hace nada.
 - [ ] Tocar un sonido sin arrastrar lo asigna (lo mismo que hace un clic).

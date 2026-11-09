@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-08**. El escenario pausa el dibujo al cambiar de pestaña y lo reanuda al volver.
+> Última actualización: **2026-11-08**. Si falla la carga de audio, se puede reintentar o volver al selector con «Cambiar estilo».
 
 ## Estado en una línea
 
@@ -131,6 +131,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-08.** La pantalla de error de carga ofrece «Cambiar estilo». Si había un mix pendiente, se descarta al volver al selector. En Chromium se simuló un fallo en el bombo de Trap, se abrió Trap al restaurar el archivo y se pudo reproducir House al salir de un mix compartido mientras persistía el fallo.
 
 - **2026-11-08.** Se pausa el bucle visual cuando la pestaña queda oculta. En Chromium, el escenario dejó de dibujar mientras el reloj de audio siguió avanzando con las seis capas de Boom Bap. Al volver, el dibujo se reanudó con un intervalo nuevo.
 

@@ -183,7 +183,7 @@ export interface AppStoreOptions {
   shareBaseUrl: string
   /** `location.hash` at startup; a share link here is applied after the pack loads. */
   initialHash?: string
-  /** Called when a link is applied or rejected, e.g. to clear the address bar hash. */
+  /** Called when a link is applied or discarded, e.g. to clear the address bar hash. */
   onLinkConsumed?: () => void
   fetchFn?: typeof fetch
 }
@@ -514,8 +514,19 @@ export function createAppStore({
       },
 
       openPackPicker() {
-        if (get().phase !== 'ready') return
-        set({ phase: 'start' })
+        const { phase, manifest } = get()
+        if (phase !== 'ready' && phase !== 'error') return
+        if (phase === 'error') {
+          const abandonedLink = pendingShared !== null
+          pendingShared = null
+          pendingSaved = null
+          followSharedAfterLoad = false
+          requestedPackId = manifest?.id ?? defaultPackId
+          set({ phase: 'start', error: null, openingSharedMix: false })
+          if (abandonedLink) onLinkConsumed?.()
+        } else {
+          set({ phase: 'start' })
+        }
         void get().loadCatalog()
       },
 
