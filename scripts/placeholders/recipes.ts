@@ -126,6 +126,47 @@ export function withVariations(
 }
 
 /**
+ * Two fills per character, appended after the existing sounds (new ids, old ones untouched):
+ * the source pattern plays as usual until the fill zone at the end of the loop, where its
+ * first bar is squeezed in as a roll. "Remate" fills the last beat (4x speed), "Redoble" the
+ * last two beats (2x speed). Like the variations, they rely on `at`.
+ */
+export function withFills(
+  recipes: CharacterRecipe[],
+  prefix: string,
+  sources: Partial<Record<CharacterRole, number>> = {},
+): CharacterRecipe[] {
+  return recipes.map((character) => {
+    const n = sources[character.role] ?? 1
+    const from = character.sounds[n - 1]
+    if (!from) throw new Error(`${character.id} has no sound ${n}`)
+    const count = character.sounds.length
+    const fill = (id: number, label: string, zoneSteps: number): SoundRecipe => ({
+      id: `${prefix}${character.id}-${id}`,
+      label: `${from.label} ${label}`,
+      render: (c) => {
+        const totalSteps = Math.round(c.buffer.data.length / c.buffer.sampleRate / c.step)
+        const zone = totalSteps - zoneSteps
+        const speed = c.stepsPerBar / zoneSteps
+        from.render({ ...c, at: (s) => (s < zone ? s * c.step : null) })
+        from.render({
+          ...c,
+          at: (s) => (s < c.stepsPerBar ? (zone + s / speed) * c.step : null),
+        })
+      },
+    })
+    return {
+      ...character,
+      sounds: [
+        ...character.sounds,
+        fill(count + 1, 'remate', 4),
+        fill(count + 2, 'redoble', 8),
+      ],
+    }
+  })
+}
+
+/**
  * Replaces sounds by id (label and render), keeping ids so saved mixes, links and bases still
  * point at the same slot. Fails loudly on an unknown id.
  */
