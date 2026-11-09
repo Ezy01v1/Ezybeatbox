@@ -94,7 +94,7 @@ animationLoop (un solo rAF) ──► SvgCharacter × 6: followLevel → compute
                             └─► StageBackdrop (canvas): nivel master → brillo; ringsAt(beat) → anillos
 ```
 
-- **Un único `requestAnimationFrame`** (`visuals/animationLoop.ts`) para todo lo animado. Solo corre mientras hay suscriptores, y el navegador lo pausa en pestañas ocultas.
+- **Un único `requestAnimationFrame`** (`visuals/animationLoop.ts`) para todo lo animado. Solo corre con suscriptores y la pestaña visible. `visibilitychange` cancela el cuadro pendiente al ocultarla y reinicia el intervalo visual al volver. El motor de audio mantiene su propio reloj.
 - **Cero renders de React por frame.** React dibuja las formas solo cuando cambia el estado (`status`, `muted`). El movimiento (boca, rebote, pulso, brillo) se escribe directo en los atributos SVG mediante refs. Lo verifica `features/stage/animation.test.tsx` con `<Profiler>`: 30 frames animados, 0 commits.
 - **Pose independiente del arte:** `computePose` (función pura) convierte nivel + tiempo de compás en `{ mouthOpen, headOffset, bodyScale, glow }`. Un renderer de Rive puede reutilizarla mapeando esos valores a los inputs de su state machine.
 - **Sincronía con lo que se escucha:**

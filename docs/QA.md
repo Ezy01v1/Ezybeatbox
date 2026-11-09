@@ -74,7 +74,7 @@ El audio real no se puede validar con pruebas unitarias. Esta lista se recorre a
 - [ ] Los personajes en silencio "respiran" suavemente.
 - [x] Con «Reducir movimiento» activo, el cuerpo y la cabeza quedan quietos, los ojos no parpadean y desaparecen los anillos del fondo. La boca y el brillo siguen el nivel. Verificado en Chromium al activar y desactivar la preferencia mientras sonaba Boom Bap.
 - [ ] **Rendimiento en un celular de gama media:** Chrome DevTools remoto → Performance, 10 s con los 6 sonando. Objetivo: ~60 fps y ningún frame largo.
-- [ ] La pestaña en segundo plano no consume CPU por animación (rAF pausado).
+- [x] Al cambiar a otra pestaña en Chromium, el escenario dejó de dibujar cuadros durante 2,1 s con las seis capas de Boom Bap sonando. El reloj de audio siguió avanzando y el dibujo se reanudó al volver.
 
 ## Guardar, compartir y exportar (Fase 4)
 

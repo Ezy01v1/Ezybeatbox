@@ -149,6 +149,52 @@ describe('ringsAt', () => {
 })
 
 describe('subscribeFrame', () => {
+  it('cancels hidden frames and resumes with a fresh delta', () => {
+    const hidden = vi.spyOn(document, 'hidden', 'get').mockReturnValue(false)
+    const frames = new Map<number, FrameRequestCallback>()
+    let nextId = 0
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+      const id = ++nextId
+      frames.set(id, callback)
+      return id
+    })
+    vi.stubGlobal('cancelAnimationFrame', (id: number) => frames.delete(id))
+    const frame = (now: number) => {
+      const [id, callback] = frames.entries().next().value!
+      frames.delete(id)
+      callback(now)
+    }
+    const subscriber = vi.fn()
+    const off = subscribeFrame(subscriber)
+    const visibilityChange = (isHidden: boolean) => {
+      hidden.mockReturnValue(isHidden)
+      document.dispatchEvent(new Event('visibilitychange'))
+    }
+
+    try {
+      frame(1000)
+      frame(1016)
+      expect(subscriber).toHaveBeenLastCalledWith(1016, 0.016)
+      visibilityChange(true)
+      expect(frames.size).toBe(0)
+
+      const offWhileHidden = subscribeFrame(vi.fn())
+      try {
+        expect(frames.size).toBe(0)
+        visibilityChange(false)
+        expect(frames.size).toBe(1)
+        frame(5000)
+        expect(subscriber).toHaveBeenLastCalledWith(5000, 0)
+      } finally {
+        offWhileHidden()
+      }
+    } finally {
+      off()
+      hidden.mockRestore()
+      vi.unstubAllGlobals()
+    }
+  })
+
   it('runs a single rAF loop shared by all subscribers, and stops when none are left', () => {
     const frames: FrameRequestCallback[] = []
     vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => frames.push(cb))

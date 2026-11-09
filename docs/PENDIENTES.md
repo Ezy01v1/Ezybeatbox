@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-08**. «Mis mixes» conserva el nombre si falla el guardado y puede abrir mixes con fechas dañadas.
+> Última actualización: **2026-11-08**. El escenario pausa el dibujo al cambiar de pestaña y lo reanuda al volver.
 
 ## Estado en una línea
 
@@ -131,6 +131,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-08.** Se pausa el bucle visual cuando la pestaña queda oculta. En Chromium, el escenario dejó de dibujar mientras el reloj de audio siguió avanzando con las seis capas de Boom Bap. Al volver, el dibujo se reanudó con un intervalo nuevo.
 
 - **2026-11-08.** «Mis mixes» muestra el error de almacenamiento dentro del formulario y conserva el nombre para reintentar mientras sigue el beat. La biblioteca omite las fechas ilegibles y permite cargar los mixes válidos. Verificado en Chromium con bloqueos de lectura y escritura simulados.
 
