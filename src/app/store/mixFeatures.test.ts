@@ -69,11 +69,16 @@ describe('share links', () => {
     expect(state.slots.snare?.target).toBe('snare-1')
   })
 
-  it('a link opened while the app is running (hash change) is applied right away', async () => {
+  it('queues a link opened during playback for the next bar', async () => {
     const app = createTestApp()
-    await ready(app)
-    app.store.getState().openLink('#v=1&p=test-pack&pv=1&s=fx.fx-2')
-    expect(app.store.getState().slots.fx?.target).toBe('fx-2')
+    const state = await ready(app)
+    state.setSound('fx', 'fx-1')
+    await state.togglePlay()
+    app.engine.advanceBar()
+    state.openLink('#v=1&p=test-pack&pv=1&s=fx.fx-2')
+    expect(app.store.getState().slots.fx).toMatchObject({ playing: 'fx-1', target: 'fx-2' })
+    app.engine.advanceBar()
+    expect(app.store.getState().slots.fx?.playing).toBe('fx-2')
     expect(keys(app)).toEqual(['linkLoaded'])
     expect(app.onLinkConsumed).toHaveBeenCalledOnce()
 
@@ -88,6 +93,56 @@ describe('share links', () => {
 
     await vi.waitFor(() => expect(app.store.getState().manifest?.id).toBe('other-pack'))
     expect(app.engine.loadedPackUrls).toEqual(['/packs/test-pack/', '/packs/other-pack/'])
+    expect(app.store.getState().slots.fx?.target).toBe('other-fx-2')
+    expect(keys(app)).toEqual(['linkLoaded'])
+  })
+
+  it('opens the latest link after the current audio load finishes', async () => {
+    const app = createTestApp({ extraPacks: [makeOtherPack()] })
+    const loadPack = app.engine.loadPack.bind(app.engine)
+    let release = () => {}
+    const hold = new Promise<void>((resolve) => {
+      release = resolve
+    })
+    const load = vi.spyOn(app.engine, 'loadPack').mockImplementationOnce(async (...args) => {
+      await hold
+      return loadPack(...args)
+    })
+
+    const opening = app.store.getState().begin()
+    await vi.waitFor(() => expect(load).toHaveBeenCalledOnce())
+    app.store.getState().openLink('#v=1&p=other-pack&pv=1&s=fx.other-fx-1')
+    app.store.getState().openLink('#v=1&p=other-pack&pv=1&s=fx.other-fx-2')
+    expect(load).toHaveBeenCalledOnce()
+    release()
+    await opening
+
+    expect(app.engine.loadedPackUrls).toEqual(['/packs/test-pack/', '/packs/other-pack/'])
+    expect(app.store.getState()).toMatchObject({ phase: 'ready', manifest: { id: 'other-pack' } })
+    expect(app.store.getState().slots.fx?.target).toBe('other-fx-2')
+    expect(keys(app)).toEqual(['linkLoaded'])
+    expect(app.onLinkConsumed).toHaveBeenCalledOnce()
+  })
+
+  it('follows a link received while the previous manifest request fails', async () => {
+    const app = createTestApp({ extraPacks: [makeOtherPack()] })
+    let release = () => {}
+    const hold = new Promise<void>((resolve) => {
+      release = resolve
+    })
+    app.fetchFn.mockImplementationOnce(async () => {
+      await hold
+      return new Response(null, { status: 404 })
+    })
+    const opening = app.store.getState().begin('missing-pack')
+    await vi.waitFor(() =>
+      expect(app.fetchFn).toHaveBeenCalledWith('/packs/missing-pack/manifest.json'),
+    )
+    app.store.getState().openLink('#v=1&p=other-pack&pv=1&s=fx.other-fx-2')
+    release()
+    await opening
+
+    expect(app.engine.loadedPackUrls).toEqual(['/packs/other-pack/'])
     expect(app.store.getState().slots.fx?.target).toBe('other-fx-2')
     expect(keys(app)).toEqual(['linkLoaded'])
   })

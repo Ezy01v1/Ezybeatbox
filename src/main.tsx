@@ -16,20 +16,29 @@ if (!rootElement) {
 }
 
 const engine = new AudioEngine()
+let receivedHash = window.location.hash
 const store = createAppStore({
   engine,
   packsBaseUrl: `${import.meta.env.BASE_URL}packs/`,
   defaultPackId: 'boom-bap-01',
   repository: new LocalStorageMixRepository(),
   shareBaseUrl: `${window.location.origin}${window.location.pathname}`,
-  initialHash: window.location.hash,
-  // Drop the hash once applied, so a reload starts clean instead of re-applying the link.
-  onLinkConsumed: () =>
-    history.replaceState(null, '', `${window.location.pathname}${window.location.search}`),
+  initialHash: receivedHash,
+  onLinkConsumed: () => {
+    // A newer hash may already be in the address bar before its hashchange event is delivered.
+    if (window.location.hash === receivedHash) {
+      history.replaceState(null, '', `${window.location.pathname}${window.location.search}`)
+    }
+  },
 })
 
 // Pasting a share link into a tab that already shows the app only changes the hash.
-window.addEventListener('hashchange', () => store.getState().openLink(window.location.hash))
+window.addEventListener('hashchange', ({ newURL }) => {
+  const hash = new URL(newURL).hash
+  if (hash !== window.location.hash) return
+  receivedHash = hash
+  store.getState().openLink(hash)
+})
 
 createRoot(rootElement).render(
   <StrictMode>

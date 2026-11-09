@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-08**. «Reducir movimiento» conserva la boca y el brillo reactivos.
+> Última actualización: **2026-11-08**. Si llega otro enlace durante una carga, la app abre el más reciente.
 
 ## Estado en una línea
 
@@ -131,6 +131,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-08.** Se verificaron los links pegados durante la reproducción. Un link del mismo pack cambia los sonidos en el próximo compás. Si llega un link durante una carga, la app conserva el más reciente y lo abre al terminar la operación en curso, sin solapar cargas de audio.
 
 - **2026-11-08.** El SVG streetwear separa la boca y el brillo reactivos del rebote y el aplaste. En Chromium se comprobó que, al activar «Reducir movimiento» con Boom Bap sonando, desaparecen el rebote, el parpadeo y los anillos del fondo. El indicador de espera queda estático.
 

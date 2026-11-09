@@ -82,7 +82,7 @@ El audio real no se puede validar con pruebas unitarias. Esta lista se recorre a
 
 - [x] **Link en otro navegador** (2026-11-08). Un mix de Trap creado en Chrome se abrió en un perfil nuevo de Edge. Volver a compartirlo reprodujo el mismo link con seis sonidos, caja silenciada, bombo y bajo en Solo, volumen general de −7 dB y tempo de 146 BPM. Las dos exportaciones WebM/Opus duraron 6,54 s frente a los 6,58 s teóricos. Tras alinearlas, la correlación de las señales decodificadas fue de 0,9991.
 - [x] Al abrir el link en Edge apareció «Vas a escuchar un mix que te compartieron». Después de cargar, la app quitó el fragmento `#…` de la barra de direcciones.
-- [ ] Pegar un link en una pestaña que ya tiene la app abierta: el mix se aplica en el siguiente compás.
+- [x] Pegar un link en una pestaña con el mismo pack sonando aplica los cambios de sonido en el siguiente compás. Verificado en Chromium con Boom Bap. También se retuvo la solicitud del manifest de Trap y se pegó un link de House. La app abrió House y solo llegó a solicitar el manifest de Trap.
 - [ ] Link roto (borra caracteres): aviso "no es válido" y escenario vacío, sin pantalla en blanco.
 - [ ] Link con `v=9`: aviso de versión más nueva.
 - [ ] En el celular aparece "Compartir…" (menú nativo) y funciona.

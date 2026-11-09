@@ -201,6 +201,7 @@ export function createAppStore({
 }: AppStoreOptions) {
   let pendingShared: SharedMix | null = null
   let pendingLinkError: ShareLinkError | null = null
+  let followSharedAfterLoad = false
   /** A saved mix from another pack, applied once that pack has loaded. */
   let pendingSaved: { name: string; mix: Mix } | null = null
   /** Last pack asked for, so "Reintentar" retries that one and not the default. */
@@ -351,20 +352,36 @@ export function createAppStore({
     }
     const startLoading = () => set({ phase: 'loading', progress: 0, error: null })
 
+    /** A link pasted during a load takes precedence once the current step is safe to leave. */
+    const takeQueuedPack = (packId: string): string | undefined => {
+      if (!followSharedAfterLoad) return
+      followSharedAfterLoad = false
+      pendingSaved = null
+      const next = pendingShared?.packId
+      return next === packId ? undefined : next
+    }
+
+    const reportAudioBlocked = (packId: string) => {
+      requestedPackId = takeQueuedPack(packId) ?? packId
+      set({ phase: 'error', error: { kind: 'audio-blocked' } })
+    }
+
     /**
      * Loads `packId` and shows its stage. The manifest is fetched before the engine is touched,
      * so if another pack is already playing and the new one is missing, the user keeps the
      * current stage and gets a notice instead of an error screen.
      */
-    const openPack = async (packId: string, unlockAudio = false) => {
+    const openPack = async (packId: string, unlockAudio = false): Promise<void> => {
       requestedPackId = packId
       const previous = get().manifest
       // Claim the loading phase before the gesture's async unlock so a second click cannot enter.
       startLoading()
       if (unlockAudio && !(await tryUnlockAudio())) {
-        set({ phase: 'error', error: { kind: 'audio-blocked' } })
+        reportAudioBlocked(packId)
         return
       }
+      const afterUnlock = takeQueuedPack(packId)
+      if (afterUnlock) return openPack(afterUnlock)
       set({ contextState: engine.contextState })
       // Ids come from the catalog, a link or a saved mix; all are validated kebab-case (no paths).
       const packUrl = `${packsBaseUrl}${packId}/`
@@ -373,6 +390,8 @@ export function createAppStore({
       try {
         manifest = await fetchManifest(packUrl, fetchFn)
       } catch (error) {
+        const next = takeQueuedPack(packId)
+        if (next) return openPack(next)
         const status = error instanceof PackLoadError ? error.httpStatus : undefined
         if (
           (previous || pendingSaved?.mix.packId === packId) &&
@@ -393,6 +412,8 @@ export function createAppStore({
         })
         return
       }
+      const afterManifest = takeQueuedPack(packId)
+      if (afterManifest) return openPack(afterManifest)
 
       try {
         await engine.loadPack(manifest, packUrl, {
@@ -400,8 +421,10 @@ export function createAppStore({
         })
       } catch (error) {
         // The engine dropped the previous pack before loading this one: nothing to go back to.
+        set({ manifest: null, slots: {} })
+        const next = takeQueuedPack(packId)
+        if (next) return openPack(next)
         set({
-          manifest: null,
           phase: 'error',
           error:
             error instanceof PackLoadError
@@ -411,8 +434,11 @@ export function createAppStore({
         return
       }
 
-      set({ manifest, phase: 'ready' })
+      set({ manifest })
       refreshAllSlots()
+      const afterAudio = takeQueuedPack(packId)
+      if (afterAudio) return openPack(afterAudio)
+      set({ phase: 'ready' })
       applySharedLink(manifest)
       applyPendingSaved(manifest)
       void get().refreshSavedMixes()
@@ -427,10 +453,12 @@ export function createAppStore({
       if (unlockAudio && get().error?.kind === 'audio-blocked') {
         startLoading()
         if (!(await tryUnlockAudio())) {
-          set({ phase: 'error', error: { kind: 'audio-blocked' } })
+          reportAudioBlocked(packId)
           return
         }
       }
+      const next = takeQueuedPack(packId)
+      if (next) return openPack(next)
       // Returning to the loaded stage keeps its beat and applies any mix the user just chose.
       requestedPackId = packId
       set({ phase: 'ready', error: null, contextState: engine.contextState })
@@ -459,7 +487,11 @@ export function createAppStore({
       openLink(hash) {
         if (!receiveHash(hash)) return
         const { phase, manifest } = get()
-        if (phase === 'error' && pendingShared) requestedPackId = pendingShared.packId
+        followSharedAfterLoad = phase === 'loading' && pendingShared !== null
+        if (phase === 'error' && pendingShared) {
+          requestedPackId = pendingShared.packId
+          pendingSaved = null
+        }
         if (phase !== 'ready' || !manifest) {
           set({ openingSharedMix: pendingShared !== null })
         } else if (pendingShared && pendingShared.packId !== manifest.id) {
@@ -640,8 +672,7 @@ export function createAppStore({
         }
         pendingSaved = saved
         if (audioReady && !(await audioReady)) {
-          requestedPackId = saved.mix.packId
-          set({ phase: 'error', error: { kind: 'audio-blocked' } })
+          reportAudioBlocked(saved.mix.packId)
           return
         }
         await openOrResumePack(saved.mix.packId, !fromHome)

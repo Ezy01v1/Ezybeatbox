@@ -119,7 +119,7 @@ animationLoop (un solo rAF) ──► SvgCharacter × 6: followLevel → compute
   - `decodeShareLink` nunca lanza errores. Devuelve `invalid` o `newer-version`, y los ids se validan como kebab-case, así que un link no puede apuntar fuera de `public/packs/`.
   - `resolveSharedMix` adapta el mix al pack cargado: omite los sonidos que ya no existen y avisa si el pack cambió de versión. Las migraciones de formatos viejos van en `decodeShareLink`, según `v`.
 
-- **Al abrir un link:** el hash se lee al iniciar (`initialHash`). Después de "Toca para empezar" se carga **el pack del link** y se aplica el mix. Luego el hash se borra de la barra de direcciones para que una recarga empiece limpia. Si el link llega con la app ya abierta (`hashchange`), se aplica en el momento.
+- **Al abrir un link.** El hash se lee al iniciar (`initialHash`). Después de «Toca para empezar» se carga el pack del link y se aplica el mix. La app borra el hash después de consumirlo si todavía coincide con el de la barra de direcciones. Con la app abierta, un link del mismo pack encola los cambios de sonido para el próximo compás y un link de otro pack abre el nuevo escenario. Si llega otro link durante una carga, el más reciente toma el relevo al terminar la operación en curso.
 - **Exportar audio:** `AudioEngine.startRecording`/`stopRecording` usan `Tone.Recorder` (MediaRecorder) conectado **después del limitador**, así que se graba lo mismo que se escucha.
   - MediaRecorder no es preciso a la muestra, por eso el store arranca la grabación en el evento `barStart` de un **inicio de loop** y la detiene tras `EXPORT_LOOP_COUNT` (2) loops completos.
   - El formato depende del navegador: WebM/Opus en Chrome y Firefox, MP4 en Safari.
