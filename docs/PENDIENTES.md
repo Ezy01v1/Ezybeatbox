@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-08**. Los enlaces rotos o de una versión futura muestran un aviso inmediato.
+> Última actualización: **2026-11-08**. Los diálogos de mezclas conservan el foco al borrar un elemento.
 
 ## Estado en una línea
 
@@ -131,6 +131,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-08.** Se verificó el teclado en «Compartir» y «Mis mixes». Tab y Mayús+Tab recorren los controles del diálogo. Al borrar el mix enfocado, el foco vuelve al campo de nombre. Escape cierra el diálogo y devuelve el foco al botón que lo abrió.
 
 - **2026-11-08.** Los enlaces rotos o de versiones futuras muestran su aviso desde Inicio y dejan elegir un género. Si ya hay un beat activo o un mix válido cargándose, el enlace inválido se descarta sin reemplazarlo. Se verificó el flujo en Chromium.
 

@@ -50,6 +50,9 @@ describe('Mis mixes', () => {
     expect(within(dialog).getByText('Borrar')).toBeInTheDocument()
     await user.click(within(dialog).getByRole('button', { name: '¿Seguro?' }))
     expect(await within(dialog).findByText('Todavía no guardaste ningún mix.')).toBeInTheDocument()
+    expect(within(dialog).getByLabelText('Nombre del mix')).toHaveFocus()
+    await user.tab()
+    expect(within(dialog).getByRole('button', { name: 'Guardar mix actual' })).toHaveFocus()
 
     await user.keyboard('{Escape}')
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
@@ -58,6 +61,28 @@ describe('Mis mixes', () => {
 })
 
 describe('Compartir', () => {
+  it('keeps keyboard focus inside the dialog and restores it on Escape', async () => {
+    const { user } = await renderStage()
+    const opener = screen.getByRole('button', { name: 'Compartir' })
+    opener.focus()
+    await user.keyboard('{Enter}')
+
+    const dialog = screen.getByRole('dialog', { name: 'Compartir mix' })
+    const close = within(dialog).getByRole('button', { name: 'Cerrar' })
+    const copy = within(dialog).getByRole('button', { name: 'Copiar link' })
+    expect(within(dialog).getByRole('textbox', { name: 'Link del mix' })).toHaveFocus()
+
+    await user.tab({ shift: true })
+    expect(close).toHaveFocus()
+    await user.tab({ shift: true })
+    expect(copy).toHaveFocus()
+    await user.tab()
+    expect(close).toHaveFocus()
+
+    await user.keyboard('{Escape}')
+    expect(opener).toHaveFocus()
+  })
+
   it('shows the share link for the current mix and copies it', async () => {
     const { user } = await renderStage()
     await user.click(screen.getByRole('button', { name: 'bass 1 (bass)' }))

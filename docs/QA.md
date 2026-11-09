@@ -93,7 +93,7 @@ El audio real no se puede validar con pruebas unitarias. Esta lista se recorre a
 - [x] **Exportar con Solo activo** (2026-11-08). La grabación de Trap con seis sonidos cargados y Solo en bombo y bajo coincide con la referencia que solo tenía esas dos capas cargadas. La correlación tras alinear las grabaciones fue de 0,9992.
 - [x] Pausar durante la exportación en Trap: la app mostró el aviso de cancelación y habilitó de nuevo el botón. La prueba automatizada confirma que la cancelación no devuelve audio.
 - [ ] Safari: la exportación descarga `.m4a`/MP4 y se reproduce. Si Safari no soporta MediaRecorder, aparece el aviso de "no permite grabar".
-- [ ] Teclado: los diálogos se abren y cierran con Enter y Escape, y el foco vuelve al botón que los abrió.
+- [x] Los diálogos se abren con Enter, conservan el foco al recorrerlos con Tab o Mayús+Tab y devuelven el foco al botón de apertura al cerrarlos con Escape. Verificado en Chromium con «Compartir», «Mis mixes» en el escenario y la biblioteca vacía de Inicio. Al borrar el mix enfocado, el foco regresó al campo de nombre.
 
 ## PWA
 

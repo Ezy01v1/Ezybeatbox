@@ -2,7 +2,7 @@ import { type ReactNode, useEffect, useId, useLayoutEffect, useRef } from 'react
 import { useTranslation } from 'react-i18next'
 
 const FOCUSABLE =
-  'button:not([disabled]), [href], input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])'
+  ':is(button, [href], input, select, textarea, [tabindex]):not(:disabled):not([tabindex="-1"])'
 
 interface ModalProps {
   title: string
@@ -19,43 +19,46 @@ export function Modal({ title, onClose, children }: ModalProps) {
   const titleId = useId()
   const panelRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
+  const onCloseRef = useRef(onClose)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const previous = document.activeElement as HTMLElement | null
-    // Focus the first control of the content (not the header's close button).
-    const target =
-      contentRef.current?.querySelector<HTMLElement>(FOCUSABLE) ??
-      panelRef.current?.querySelector<HTMLElement>(FOCUSABLE)
-    target?.focus()
     return () => previous?.focus()
   }, [])
 
-  // Escape is handled on the document: focus can leave the panel (e.g. a removed list item).
-  const onCloseRef = useRef(onClose)
   useLayoutEffect(() => {
     onCloseRef.current = onClose
+    const panel = panelRef.current
+    if (!panel || panel.contains(document.activeElement)) return
+    // Focus the content on open and recover when the focused control is removed.
+    const target =
+      contentRef.current?.querySelector<HTMLElement>(FOCUSABLE) ??
+      panel.querySelector<HTMLElement>(FOCUSABLE)
+    target?.focus()
   })
-  useEffect(() => {
-    const onEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onCloseRef.current()
-    }
-    document.addEventListener('keydown', onEscape)
-    return () => document.removeEventListener('keydown', onEscape)
-  }, [])
 
-  const onKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key !== 'Tab' || !panelRef.current) return
-    const items = [...panelRef.current.querySelectorAll<HTMLElement>(FOCUSABLE)]
-    const first = items[0]
-    const last = items[items.length - 1]
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault()
-      last?.focus()
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault()
-      first?.focus()
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        onCloseRef.current()
+        return
+      }
+      const panel = panelRef.current
+      if (event.key !== 'Tab' || !panel) return
+      const items = [...panel.querySelectorAll<HTMLElement>(FOCUSABLE)]
+      const first = items[0]
+      const last = items.at(-1)
+      const active = document.activeElement
+      if (!panel.contains(active) || active === (event.shiftKey ? first : last)) {
+        event.preventDefault()
+        const target = event.shiftKey ? last : first
+        target?.focus()
+      }
     }
-  }
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
+  }, [])
 
   return (
     <div
@@ -67,7 +70,6 @@ export function Modal({ title, onClose, children }: ModalProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        onKeyDown={onKeyDown}
         className="border-line bg-card text-ink flex max-h-[85dvh] w-full flex-col gap-4 overflow-y-auto rounded-t-3xl border p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl sm:max-w-md sm:rounded-2xl"
       >
         <div className="flex items-center justify-between gap-2">
