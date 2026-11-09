@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-08**. Si falla la carga de audio, se puede reintentar o volver al selector con «Cambiar estilo».
+> Última actualización: **2026-11-08**. Los seis géneros cargan y reproducen una base sin conexión en Chromium de escritorio.
 
 ## Estado en una línea
 
@@ -131,6 +131,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-08.** Se verificó la PWA con un perfil limpio de Chromium. El aviso de disponibilidad sin conexión apareció y se cerró solo. Con el servidor apagado se cargaron las seis portadas, se decodificaron los 396 archivos de audio `.ogg` desde la caché y se reprodujo una base por género. Ver `docs/QA.md`.
 
 - **2026-11-08.** La pantalla de error de carga ofrece «Cambiar estilo». Si había un mix pendiente, se descarta al volver al selector. En Chromium se simuló un fallo en el bombo de Trap, se abrió Trap al restaurar el archivo y se pudo reproducir House al salir de un mix compartido mientras persistía el fallo.
 

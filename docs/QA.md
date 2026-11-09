@@ -103,7 +103,8 @@ Con `npm run build` y luego `npm run preview` (el service worker no existe en `d
 - [ ] Chrome escritorio: aparece el ícono de "Instalar" en la barra de direcciones; la app instalada abre en ventana propia con el ícono correcto.
 - [ ] Android: "Agregar a la pantalla de inicio" muestra el ícono adaptable (maskable) sin recortes raros.
 - [ ] iOS: "Compartir → Agregar a inicio" usa el apple-touch-icon y abre a pantalla completa.
-- [ ] Primera visita: aparece "EzyBeatbox ya funciona sin conexión" y se cierra solo.
+- [x] Primera visita en Chromium de escritorio con un perfil limpio: aparece «EzyBeatbox ya funciona sin conexión» y se cierra solo.
+- [x] Con el servidor local apagado, Chromium de escritorio volvió a abrir la app desde la caché. El selector mostró las seis portadas. Cada género decodificó sus 66 archivos `.ogg`, inició la reproducción de una base y avanzó al segundo tiempo del compás.
 - [ ] **Offline:** modo avión, abrir la app instalada → "Toca para empezar" → el pack carga y suena.
 - [ ] **Actualización:** con la app abierta, publicar un build nuevo y recargar → "Hay una versión nueva…". "Después" la cierra; "Actualizar" recarga con la nueva versión.
 - [ ] **iOS, switch de silencio activado:** la música se escucha (Safari 17+).
@@ -127,4 +128,4 @@ Con `npm run build` y luego `npm run preview` (el service worker no existe en `d
 - [ ] Trap: el escenario es gris pizarra con anillos lima, y los sonidos van a 140 BPM sin desfase con el compás.
 - [ ] Abrir un link compartido de Trap con la app en Boom Bap: cambia de pack solo y suena el mix.
 - [x] Cargar desde "Mis mixes" un mix guardado en el otro pack: Boom Bap cambió a Trap y restauró las seis capas.
-- [ ] Modo avión después de haber abierto la app una vez: el selector muestra las dos portadas y ambos packs suenan.
+- [ ] Modo avión en un celular después de haber abierto la app una vez: el selector muestra las seis portadas y se puede reproducir una base de cada género.
