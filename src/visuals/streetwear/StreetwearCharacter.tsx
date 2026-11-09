@@ -112,13 +112,16 @@ export function StreetwearCharacter(props: CharacterRenderProps & { packId?: str
     return subscribeFrame((now, delta) => {
       const current = live.current
       const playing = current.status === 'playing' || current.status === 'stopping'
-      const moving = playing && !current.muted && !current.reducedMotion
-      level = moving ? followRiveLevel(current.role, level, current.level.getLevel(), delta) : 0
+      const audible = playing && !current.muted
+      const moving = audible && !current.reducedMotion
+      // The mouth and glow still indicate audio level when the head and torso are still.
+      level = audible ? followRiveLevel(current.role, level, current.level.getLevel(), delta) : 0
+      const squash = moving ? level : 0
       const bob = moving ? beatImpulse(current.beat.getBeatPosition()) * MOTION.headBob : 0
 
       pivotRef.current?.setAttribute(
         'transform',
-        `translate(${HIPS.x} ${HIPS.y}) scale(${(1 + level * MOTION.squashX).toFixed(4)} ${(1 - level * MOTION.squashY).toFixed(4)}) translate(${-HIPS.x} ${-HIPS.y})`,
+        `translate(${HIPS.x} ${HIPS.y}) scale(${(1 + squash * MOTION.squashX).toFixed(4)} ${(1 - squash * MOTION.squashY).toFixed(4)}) translate(${-HIPS.x} ${-HIPS.y})`,
       )
       headRef.current?.setAttribute('transform', `translate(0 ${(-bob).toFixed(2)})`)
       glowRef.current?.setAttribute('opacity', (level * MOTION.glow).toFixed(3))

@@ -60,7 +60,7 @@ El audio real no se puede validar con pruebas unitarias. Esta lista se recorre a
 - [ ] El botón ✕ quita el sonido. M y S funcionan y muestran su estado.
 - [ ] **Teclado:** Tab recorre la paleta y los controles con foco visible, y Enter/Espacio sobre un sonido lo asigna.
 - [ ] Lector de pantalla: cada personaje anuncia nombre, sonido y estado ("Kick: Doble, En espera").
-- [ ] Con "reducir movimiento" activado en el sistema, el anillo de "en espera" no pulsa.
+- [x] Con «Reducir movimiento» activo, el anillo de «En espera» permanece estático. Verificado en Chromium con la preferencia emulada.
 - [ ] El indicador de compás/tiempo avanza en sincronía con lo que suena.
 - [ ] Bloquear y desbloquear el celular con el audio sonando: aparece "Toca para reanudar" y funciona.
 - [ ] En el celular, la escena entra en pantalla sin scroll vertical (probar 375×667 y 390×844).
@@ -72,7 +72,7 @@ El audio real no se puede validar con pruebas unitarias. Esta lista se recorre a
 - [ ] Con **Bluetooth**: los visuales siguen alineados con lo que se escucha (en Chrome/Android; Safari no informa la latencia).
 - [ ] Los anillos del fondo salen en cada tiempo, más fuertes en el tiempo 1. El brillo crece con el volumen general.
 - [ ] Los personajes en silencio "respiran" suavemente.
-- [ ] Con "reducir movimiento": nada rebota ni respira y no hay anillos, pero la boca y el brillo siguen el nivel.
+- [x] Con «Reducir movimiento» activo, el cuerpo y la cabeza quedan quietos, los ojos no parpadean y desaparecen los anillos del fondo. La boca y el brillo siguen el nivel. Verificado en Chromium al activar y desactivar la preferencia mientras sonaba Boom Bap.
 - [ ] **Rendimiento en un celular de gama media:** Chrome DevTools remoto → Performance, 10 s con los 6 sonando. Objetivo: ~60 fps y ningún frame largo.
 - [ ] La pestaña en segundo plano no consume CPU por animación (rAF pausado).
 

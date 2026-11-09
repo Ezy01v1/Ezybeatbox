@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-08**. Se verificaron los enlaces compartidos entre Chrome y Edge y la exportación con Solo.
+> Última actualización: **2026-11-08**. «Reducir movimiento» conserva la boca y el brillo reactivos.
 
 ## Estado en una línea
 
@@ -131,6 +131,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-08.** El SVG streetwear separa la boca y el brillo reactivos del rebote y el aplaste. En Chromium se comprobó que, al activar «Reducir movimiento» con Boom Bap sonando, desaparecen el rebote, el parpadeo y los anillos del fondo. El indicador de espera queda estático.
 
 - **2026-11-08.** QA de un mix de Trap compartido de Chrome a Edge. El link se restauró completo y las exportaciones coincidieron con una correlación de 0,9991 tras alinearlas. Una grabación de referencia con solo bombo y bajo confirmó que el resto de las capas quedó fuera de la exportación con Solo activo.
 

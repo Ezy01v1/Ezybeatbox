@@ -33,6 +33,7 @@ describe('StreetwearCharacter', () => {
     muted = false,
     packId = 'boom-bap-01',
     role: CharacterRole = 'kick',
+    reducedMotion = false,
   ) {
     return render(
       <PackCharacter
@@ -44,7 +45,7 @@ describe('StreetwearCharacter', () => {
         muted={muted}
         level={{ getLevel: () => level }}
         beat={{ getBeatPosition: () => 0, beatsPerBar: 4 }}
-        reducedMotion={false}
+        reducedMotion={reducedMotion}
       />,
     ).container
   }
@@ -100,6 +101,23 @@ describe('StreetwearCharacter', () => {
     const mouth = draw('playing', 1, true).querySelector('[data-mouth]')
     runFrames(30)
     expect(Number(mouth?.getAttribute('ry'))).toBeLessThan(1)
+  })
+
+  it('keeps audio feedback without bouncing, squashing or blinking in reduced motion', () => {
+    const character = draw('playing', 1, false, 'boom-bap-01', 'kick', true)
+    const mouth = character.querySelector('[data-mouth]')
+    const glow = character.querySelector('circle[fill^="url("]')
+    const eyes = character.querySelector('[data-eyes]')
+    const head = eyes?.parentElement?.parentElement
+    const pivot = head?.parentElement
+
+    runFrames(45)
+
+    expect(Number(mouth?.getAttribute('ry'))).toBeGreaterThan(2)
+    expect(Number(glow?.getAttribute('opacity'))).toBeGreaterThan(0)
+    expect(pivot?.getAttribute('transform')).toContain('scale(1.0000 1.0000)')
+    expect(head?.getAttribute('transform')).toBe('translate(0 0.00)')
+    expect(eyes?.getAttribute('transform')).toBe('translate(0 0.00) scale(1 1.000)')
   })
 })
 
