@@ -92,11 +92,18 @@ describe('opening a shared link', () => {
     expect(screen.getByRole('region', { name: /^voice: voice 2, En espera/ })).toBeInTheDocument()
   })
 
-  it('shows a dismissable error for an invalid link', async () => {
-    const { user } = await renderStage({ initialHash: '#v=1&p=%%%' })
-    const message = screen.getByText(/El link del mix no es válido/)
+  it('shows a dismissible invalid-link notice before opening a pack', async () => {
+    const { engine, store } = createTestApp({ initialHash: '#v=1&p=%%%' })
+    render(
+      <AppStoreProvider store={store} engine={engine}>
+        <App />
+      </AppStoreProvider>,
+    )
+    const user = userEvent.setup()
+    const message = screen.getByText(/El enlace del mix no es válido/)
     await user.click(within(message.closest('li')!).getByRole('button', { name: 'Cerrar aviso' }))
-    expect(screen.queryByText(/El link del mix no es válido/)).not.toBeInTheDocument()
+    expect(message).not.toBeInTheDocument()
+    expect(engine.loadedPackUrls).toEqual([])
   })
 })
 

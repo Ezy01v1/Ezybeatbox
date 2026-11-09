@@ -8,7 +8,6 @@ import type { DropState } from '@/core/audio/drop'
 import type { MixRepository, SavedMixSummary } from '@/core/mix/repository'
 import {
   type SharedMix,
-  type ShareLinkError,
   decodeShareLink,
   encodeShareLink,
   resolveSharedMix,
@@ -184,7 +183,7 @@ export interface AppStoreOptions {
   shareBaseUrl: string
   /** `location.hash` at startup; a share link here is applied after the pack loads. */
   initialHash?: string
-  /** Called once a startup link was applied (e.g. to clear the hash from the address bar). */
+  /** Called when a link is applied or rejected, e.g. to clear the address bar hash. */
   onLinkConsumed?: () => void
   fetchFn?: typeof fetch
 }
@@ -200,22 +199,11 @@ export function createAppStore({
   fetchFn,
 }: AppStoreOptions) {
   let pendingShared: SharedMix | null = null
-  let pendingLinkError: ShareLinkError | null = null
   let followSharedAfterLoad = false
   /** A saved mix from another pack, applied once that pack has loaded. */
   let pendingSaved: { name: string; mix: Mix } | null = null
   /** Last pack asked for, so "Reintentar" retries that one and not the default. */
   let requestedPackId = defaultPackId
-
-  /** Decodes a hash into the pending link. Returns false for an empty hash. */
-  const receiveHash = (hash: string): boolean => {
-    if (!hash.replace(/^#/, '')) return false
-    const decoded = decodeShareLink(hash)
-    pendingShared = decoded.ok ? decoded.shared : null
-    pendingLinkError = decoded.ok ? null : decoded.error
-    return true
-  }
-  receiveHash(initialHash)
 
   let nextNoticeId = 1
 
@@ -303,22 +291,18 @@ export function createAppStore({
     engine.on('tempoChanged', (tempo) => set({ tempo }))
 
     const applySharedLink = (manifest: PackManifest) => {
-      if (pendingLinkError) {
-        notify('error', pendingLinkError === 'newer-version' ? 'linkNewerVersion' : 'linkInvalid')
-      } else if (pendingShared && pendingShared.packId !== manifest.id) {
+      if (!pendingShared) return
+      if (pendingShared.packId !== manifest.id) {
         // Defensive: openPack always loads the link's pack before calling this.
         notify('error', 'packUnavailable', { pack: pendingShared.packId })
-      } else if (pendingShared) {
+      } else {
         const { mix, packVersionChanged, missingCount } = resolveSharedMix(pendingShared, manifest)
         get().applyMix(mix)
         notify('info', 'linkLoaded')
         if (packVersionChanged) notify('info', 'linkPackVersionChanged')
         if (missingCount > 0) notify('error', 'missingSounds', { count: missingCount })
-      } else {
-        return
       }
       pendingShared = null
-      pendingLinkError = null
       set({ openingSharedMix: false })
       onLinkConsumed?.()
     }
@@ -477,7 +461,7 @@ export function createAppStore({
       position: { bar: 0, beat: 0 },
       contextState: engine.contextState,
       masterVolumeDb: AUDIO_CONFIG.defaultMasterVolumeDb,
-      openingSharedMix: pendingShared !== null,
+      openingSharedMix: false,
       notices: [],
       savedMixes: [],
       exportStatus: { state: 'idle' },
@@ -485,16 +469,23 @@ export function createAppStore({
       tempo: { bpm: 0, target: 0 },
 
       openLink(hash) {
-        if (!receiveHash(hash)) return
+        if (!hash.replace(/^#/, '')) return
+        const decoded = decodeShareLink(hash)
+        if (!decoded.ok) {
+          notify('error', decoded.error === 'newer-version' ? 'linkNewerVersion' : 'linkInvalid')
+          onLinkConsumed?.()
+          return
+        }
+        pendingShared = decoded.shared
         const { phase, manifest } = get()
-        followSharedAfterLoad = phase === 'loading' && pendingShared !== null
-        if (phase === 'error' && pendingShared) {
+        followSharedAfterLoad = phase === 'loading'
+        if (phase === 'error') {
           requestedPackId = pendingShared.packId
           pendingSaved = null
         }
         if (phase !== 'ready' || !manifest) {
-          set({ openingSharedMix: pendingShared !== null })
-        } else if (pendingShared && pendingShared.packId !== manifest.id) {
+          set({ openingSharedMix: true })
+        } else if (pendingShared.packId !== manifest.id) {
           // Audio is already unlocked, so switching packs needs no new gesture.
           void openPack(pendingShared.packId)
         } else {
@@ -734,5 +725,6 @@ export function createAppStore({
       },
     }
   })
+  store.getState().openLink(initialHash)
   return store
 }

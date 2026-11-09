@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-08**. Si llega otro enlace durante una carga, la app abre el más reciente.
+> Última actualización: **2026-11-08**. Los enlaces rotos o de una versión futura muestran un aviso inmediato.
 
 ## Estado en una línea
 
@@ -131,6 +131,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-08.** Los enlaces rotos o de versiones futuras muestran su aviso desde Inicio y dejan elegir un género. Si ya hay un beat activo o un mix válido cargándose, el enlace inválido se descarta sin reemplazarlo. Se verificó el flujo en Chromium.
 
 - **2026-11-08.** Se verificaron los links pegados durante la reproducción. Un link del mismo pack cambia los sonidos en el próximo compás. Si llega un link durante una carga, la app conserva el más reciente y lo abre al terminar la operación en curso, sin solapar cargas de audio.
 

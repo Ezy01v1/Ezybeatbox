@@ -118,8 +118,8 @@
   "notices": {
     "dismiss": "Dismiss notification",
     "linkLoaded": "Shared mix loaded. Press Play to hear it.",
-    "linkInvalid": "This mix link is invalid. The stage is empty.",
-    "linkNewerVersion": "This link is from a newer version of EzyBeatbox. Reload to update.",
+    "linkInvalid": "This mix link is invalid. Check that you have the full link.",
+    "linkNewerVersion": "This link is from a newer version of EzyBeatbox. Update the app and open the link again.",
     "linkPackVersionChanged": "This mix was made with a different pack version. Some sounds may have changed.",
     "missingSounds_one": "Skipped {{count}} sound that is no longer in the pack.",
     "missingSounds_other": "Skipped {{count}} sounds that are no longer in the pack.",

@@ -118,8 +118,8 @@
   "notices": {
     "dismiss": "Cerrar aviso",
     "linkLoaded": "Mix compartido cargado. Dale play para escucharlo.",
-    "linkInvalid": "El link del mix no es válido. Empezamos con el escenario vacío.",
-    "linkNewerVersion": "Este link es de una versión más nueva de EzyBeatbox. Recarga la página para actualizar.",
+    "linkInvalid": "El enlace del mix no es válido. Revisa que esté completo.",
+    "linkNewerVersion": "Este enlace es de una versión más nueva de EzyBeatbox. Actualiza la app y vuelve a abrirlo.",
     "linkPackVersionChanged": "El mix se hizo con otra versión del pack: algunos sonidos pueden haber cambiado.",
     "missingSounds_one": "{{count}} sonido ya no existe en el pack y se omitió.",
     "missingSounds_other": "{{count}} sonidos ya no existen en el pack y se omitieron.",

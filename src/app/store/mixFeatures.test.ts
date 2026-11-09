@@ -48,17 +48,52 @@ describe('share links', () => {
     expect(second.engine.getMix()).toEqual(first.engine.getMix())
   })
 
-  it('an invalid link shows an error and keeps the empty stage', async () => {
+  it('reports an invalid startup link before opening any pack', async () => {
     const app = createTestApp({ initialHash: '#v=1&p=../../x' })
+    expect(app.store.getState().phase).toBe('start')
+    expect(app.engine.loadedPackUrls).toEqual([])
+    expect(keys(app)).toEqual(['linkInvalid'])
+    expect(app.onLinkConsumed).toHaveBeenCalledOnce()
+
     const state = await ready(app)
     expect(keys(app)).toEqual(['linkInvalid'])
     expect(Object.values(state.slots).every((s) => s.target === null)).toBe(true)
   })
 
-  it('a link from a newer app version is reported as such', async () => {
+  it('reports a newer version without opening a pack', () => {
     const app = createTestApp({ initialHash: '#v=9&p=test-pack&pv=1' })
-    await ready(app)
+    expect(app.store.getState().phase).toBe('start')
     expect(keys(app)).toEqual(['linkNewerVersion'])
+    expect(app.engine.loadedPackUrls).toEqual([])
+    expect(app.onLinkConsumed).toHaveBeenCalledOnce()
+  })
+
+  it('reports a malformed link during playback and keeps the active beat', async () => {
+    const app = createTestApp()
+    const state = await ready(app)
+    state.setSound('fx', 'fx-1')
+    await state.togglePlay()
+    app.engine.advanceBar()
+
+    state.openLink('#v=1&p=test-pack&pv=1&s=fx')
+    expect(keys(app)).toEqual(['linkInvalid'])
+    expect(app.store.getState().playing).toBe(true)
+    expect(app.store.getState().slots.fx?.playing).toBe('fx-1')
+    expect(app.onLinkConsumed).toHaveBeenCalledOnce()
+  })
+
+  it('keeps a valid mix in progress when a newer-version link arrives', async () => {
+    const app = createTestApp({
+      initialHash: '#v=1&p=other-pack&pv=1&s=fx.other-fx-2',
+      extraPacks: [makeOtherPack()],
+    })
+    const opening = app.store.getState().begin()
+    app.store.getState().openLink('#v=9&p=test-pack&pv=1')
+    await opening
+
+    expect(keys(app)).toEqual(['linkNewerVersion', 'linkLoaded'])
+    expect(app.store.getState().manifest?.id).toBe('other-pack')
+    expect(app.store.getState().slots.fx?.target).toBe('other-fx-2')
   })
 
   it('a link made with another pack version warns and skips missing sounds', async () => {
