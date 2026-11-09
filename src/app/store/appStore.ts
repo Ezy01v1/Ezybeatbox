@@ -161,7 +161,7 @@ export interface AppActions {
   applyMix(mix: Mix): { missingCount: number }
   getShareUrl(): string
   refreshSavedMixes(): Promise<boolean>
-  saveCurrentMix(name: string): Promise<void>
+  saveCurrentMix(name: string): Promise<boolean>
   loadSavedMix(id: string): Promise<void>
   deleteSavedMix(id: string): Promise<void>
   /** Records `EXPORT_LOOP_COUNT` loops from the next loop start. Resolves to the audio, or null. */
@@ -635,8 +635,9 @@ export function createAppStore({
           await repository.save({ name, mix: engine.getMix() })
           notify('info', 'mixSaved', { name: name.trim() })
           await get().refreshSavedMixes()
+          return true
         } catch {
-          notify('error', 'storageError')
+          return false
         }
       },
 

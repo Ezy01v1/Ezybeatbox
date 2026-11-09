@@ -3,7 +3,7 @@
 > **Fuente de verdad de lo que falta.** Vive en el repo para que esté igual en cualquier PC o cuenta.
 > Al terminar algo: márcalo `[x]`, muévelo a "Hecho recientemente" con la fecha y haz commit junto con el cambio.
 >
-> Última actualización: **2026-11-08**. Los diálogos de mezclas conservan el foco al borrar un elemento.
+> Última actualización: **2026-11-08**. «Mis mixes» conserva el nombre si falla el guardado y puede abrir mixes con fechas dañadas.
 
 ## Estado en una línea
 
@@ -131,6 +131,8 @@ Orden sugerido en `docs/EXTENSIONS.md`:
 ---
 
 ## Hecho recientemente
+
+- **2026-11-08.** «Mis mixes» muestra el error de almacenamiento dentro del formulario y conserva el nombre para reintentar mientras sigue el beat. La biblioteca omite las fechas ilegibles y permite cargar los mixes válidos. Verificado en Chromium con bloqueos de lectura y escritura simulados.
 
 - **2026-11-08.** Se verificó el teclado en «Compartir» y «Mis mixes». Tab y Mayús+Tab recorren los controles del diálogo. Al borrar el mix enfocado, el foco vuelve al campo de nombre. Escape cierra el diálogo y devuelve el foco al botón que lo abrió.
 

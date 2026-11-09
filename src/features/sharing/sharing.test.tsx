@@ -4,6 +4,7 @@ import { App } from '@/app/App'
 import { AppStoreProvider } from '@/app/store/AppStoreProvider'
 import type { AppStoreOptions } from '@/app/store/appStore'
 import { createTestApp } from '@/app/store/testing'
+import { MIX_STORAGE_KEY } from '@/core/mix/localStorageRepository'
 import { exportFileName } from './download'
 
 async function renderStage(overrides: Partial<AppStoreOptions> = {}) {
@@ -20,6 +21,57 @@ async function renderStage(overrides: Partial<AppStoreOptions> = {}) {
 }
 
 describe('Mis mixes', () => {
+  it('can load a saved mix even if its stored date is damaged', async () => {
+    const { user, store, engine } = await renderStage()
+    await user.click(screen.getByRole('button', { name: 'kick 2 (kick)' }))
+    const saved = engine.getMix()
+    const timestamp = '2026-11-08T10:00:00.000Z'
+    localStorage.setItem(
+      MIX_STORAGE_KEY,
+      JSON.stringify([
+        { id: 'damaged', name: 'Noche', createdAt: timestamp, updatedAt: 'bad date', mix: saved },
+      ]),
+    )
+    await act(() => store.getState().refreshSavedMixes())
+    await user.click(screen.getByRole('button', { name: 'Quitar sonido de kick' }))
+    await user.click(screen.getByRole('button', { name: 'Mis mixes' }))
+
+    const dialog = screen.getByRole('dialog', { name: 'Mis mixes' })
+    expect(within(dialog).queryByText(/Guardado el/)).toBeNull()
+    await user.click(within(dialog).getByRole('button', { name: 'Cargar «Noche»' }))
+    expect(store.getState().slots.kick?.target).toBe('kick-2')
+  })
+
+  it('keeps the entered name and beat when saving fails, then lets the user retry', async () => {
+    const { user, store, engine } = await renderStage()
+    await user.click(screen.getByRole('button', { name: 'kick 2 (kick)' }))
+    await user.click(screen.getByRole('button', { name: 'Reproducir' }))
+    act(() => engine.advanceBar())
+    await user.click(screen.getByRole('button', { name: 'Mis mixes' }))
+    const dialog = screen.getByRole('dialog', { name: 'Mis mixes' })
+    const name = within(dialog).getByLabelText('Nombre del mix')
+    const save = within(dialog).getByRole('button', { name: 'Guardar mix actual' })
+    await user.type(name, 'Noche')
+    const storage = vi.spyOn(Storage.prototype, 'setItem').mockImplementationOnce(() => {
+      throw new DOMException('full', 'QuotaExceededError')
+    })
+    try {
+      await user.click(save)
+      expect(within(dialog).getByRole('alert')).toHaveTextContent(
+        'No se pudo usar el almacenamiento',
+      )
+      expect(name).toHaveValue('Noche')
+      expect(store.getState().slots.kick?.playing).toBe('kick-2')
+
+      await user.click(save)
+      expect(await within(dialog).findByText('Noche')).toBeInTheDocument()
+      expect(within(dialog).queryByRole('alert')).toBeNull()
+      expect(name).toHaveValue('')
+    } finally {
+      storage.mockRestore()
+    }
+  })
+
   it('saves the current mix, lists it and loads it back', async () => {
     const { user } = await renderStage()
     await user.click(screen.getByRole('button', { name: 'kick 2 (kick)' }))

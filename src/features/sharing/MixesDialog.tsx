@@ -16,18 +16,27 @@ export function MixesDialog({
   const loadSavedMix = useAppStore((s) => s.loadSavedMix)
   const deleteSavedMix = useAppStore((s) => s.deleteSavedMix)
   const [name, setName] = useState('')
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'error'>('idle')
   const [confirmingId, setConfirmingId] = useState<string | null>(null)
 
-  const formatDate = (iso: string) =>
-    new Intl.DateTimeFormat(i18n.language, { dateStyle: 'medium', timeStyle: 'short' }).format(
-      new Date(iso),
-    )
+  const dateFormatter = new Intl.DateTimeFormat(i18n.language, {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  })
+  const formatSavedAt = (iso: string) => {
+    const date = new Date(iso)
+    if (Number.isNaN(date.getTime())) return null
+    return t('mixes.savedAt', { date: dateFormatter.format(date) })
+  }
 
   async function onSave(event: React.FormEvent) {
     event.preventDefault()
+    if (saveStatus === 'saving') return
     const trimmed = name.trim() || t('mixes.namePlaceholder')
-    await saveCurrentMix(trimmed)
-    setName('')
+    setSaveStatus('saving')
+    const saved = await saveCurrentMix(trimmed)
+    setSaveStatus(saved ? 'idle' : 'error')
+    if (saved) setName((current) => (current === name ? '' : current))
   }
 
   return (
@@ -48,11 +57,17 @@ export function MixesDialog({
             />
             <button
               type="submit"
-              className="bg-accent hover:bg-accent-hover min-h-11 rounded-xl px-4 py-2 font-semibold text-white"
+              disabled={saveStatus === 'saving'}
+              className="bg-accent hover:bg-accent-hover min-h-11 rounded-xl px-4 py-2 font-semibold text-white disabled:opacity-60"
             >
               {t('mixes.save')}
             </button>
           </div>
+          {saveStatus === 'error' && (
+            <p role="alert" className="text-danger text-sm">
+              {t('notices.storageError')}
+            </p>
+          )}
         </form>
       )}
       <p className="text-ink-muted text-xs">{t('mixes.localOnly')}</p>
@@ -67,9 +82,7 @@ export function MixesDialog({
             <li key={saved.id} className="flex items-center gap-2 py-2">
               <div className="min-w-0 flex-1">
                 <p className="truncate font-semibold">{saved.name}</p>
-                <p className="text-ink-muted text-xs">
-                  {t('mixes.savedAt', { date: formatDate(saved.updatedAt) })}
-                </p>
+                <p className="text-ink-muted text-xs">{formatSavedAt(saved.updatedAt)}</p>
               </div>
               <button
                 type="button"

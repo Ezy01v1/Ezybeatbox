@@ -87,7 +87,8 @@ El audio real no se puede validar con pruebas unitarias. Esta lista se recorre a
 - [x] Un enlace con `v=9` muestra el aviso de versión más nueva antes de elegir un género. En Chromium se comprobó que luego se puede abrir Boom Bap con el escenario vacío.
 - [ ] En el celular aparece "Compartir…" (menú nativo) y funciona.
 - [ ] **Mis mixes:** guardar, recargar la página, cargar → mismo mix. Eliminar pide confirmación ("¿Seguro?").
-- [ ] Modo privado / almacenamiento bloqueado: aviso de error al guardar, la app sigue funcionando.
+- [x] Almacenamiento bloqueado simulado en Chromium. Al bloquear la escritura, «Mis mixes» muestra el aviso dentro del diálogo y conserva el nombre y el beat. Al desbloquearla, se puede reintentar. Con la lectura bloqueada, Inicio sigue disponible y muestra el aviso al intentar abrir la biblioteca.
+- [x] Un mix válido con una fecha dañada sigue disponible para cargar. La biblioteca omite esa fecha. Verificado en Chromium después de recargar.
 - [ ] **Exportar audio:** el archivo dura ~10,7 s (2 loops a 90 BPM), empieza en el compás 1 del loop y suena igual que la app (incluyendo mute/solo y volumen general).
 - [x] Trap con seis capas en el navegador integrado: la app completó la grabación de cuatro compases y mostró «Audio exportado». Pendiente abrir el archivo para verificar contenido y duración.
 - [x] **Exportar con Solo activo** (2026-11-08). La grabación de Trap con seis sonidos cargados y Solo en bombo y bajo coincide con la referencia que solo tenía esas dos capas cargadas. La correlación tras alinear las grabaciones fue de 0,9992.
